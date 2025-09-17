@@ -1,4 +1,3 @@
-// src/components/Desktop/Desktop.jsx
 import { useState, useEffect, useContext, useRef } from "react";
 import { GameContext } from "./../../context/GameContext";
 import Icon from "./Icon/Icon";
@@ -50,6 +49,12 @@ const Desktop = () => {
             w.id === id ? { ...w, z: zIndexCounter, minimized: false } : w
         ));
         setZIndexCounter(prev => prev + 1);
+
+        const windowToBringForward = openWindows.find(w => w.id === id);
+        if (windowToBringForward && windowToBringForward.app === "mail") {
+            setShowNotification(false);
+            setUnreadMails(0); 
+        }
     };
 
     const handleStepComplete = (trigger) => {

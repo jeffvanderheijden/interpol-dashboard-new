@@ -1,27 +1,42 @@
 .terminal-app {
-    background-color: black;
-    color: lime;
-    padding: 10px;
-    font-family: monospace;
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+    padding: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
     height: 100%;
     overflow-y: auto;
+    line-height: 1.5;
+    white-space: pre-wrap;
 
-    form {
+    .terminal-line {
+        margin-bottom: 2px;
+    }
+
+    .terminal-log {
+        margin-bottom: 10px;
+    }
+
+    .prompt {
+        color: #8be9fd;
+        font-weight: bold;
+    }
+
+    .terminal-input {
         display: flex;
         align-items: center;
-        margin-top: 5px;
+        width: 100%;
 
-        span {
-            margin-right: 5px;
-        }
-
-        input {
-            background-color: black;
-            color: lime;
+        .terminal-textinput {
+            background-color: transparent;
+            color: #f0f0f0;
             border: none;
             outline: none;
-            font-family: monospace;
-            width: 80%;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            flex-grow: 1;
+            caret-color: #f0f0f0;
+            padding-left: 5px;
         }
     }
 }

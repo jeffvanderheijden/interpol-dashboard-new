@@ -1,26 +1,5 @@
-// src/components/Desktop/apps/TerminalApp/TerminalApp.jsx
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './TerminalApp.scss';
-
-/**
- * TerminalApp - lightweight terminal simulator for training
- *
- * Commands supported:
- * - ls
- * - cd <dir> (supports ..)
- * - pwd
- * - cat <file>
- * - curl -o <outfile> <url>   (must be executed in /home/agent/training)
- *
- * Flow:
- * 1) cd training
- * 2) cat readme.txt
- * 3) cat instructions.sh  (reveals curl command)
- * 4) curl -o suspects.txt https://interpol.int/api/suspects
- *
- * On successful curl in the training folder, this component calls:
- *    onStepComplete('terminalDone')
- */
 
 const TerminalApp = ({ step = 0, setStep = () => {}, onStepComplete = () => {} }) => {
     const [log, setLog] = useState([
@@ -28,6 +7,13 @@ const TerminalApp = ({ step = 0, setStep = () => {}, onStepComplete = () => {} }
     ]);
     const [input, setInput] = useState('');
     const [path, setPath] = useState('/home/agent');
+    const logRef = useRef(null);
+
+    useEffect(() => {
+        if (logRef.current) {
+            logRef.current.scrollTop = logRef.current.scrollHeight;
+        }
+    }, [log]);
 
     const [fs, setFs] = useState({
         '/': ['home'],
@@ -40,6 +26,10 @@ const TerminalApp = ({ step = 0, setStep = () => {}, onStepComplete = () => {} }
         '/home/agent/training/readme.txt': `Goed bezig, agent.\n\nGebruik het commando in instructions.sh om de verdachtenlijst te downloaden.`,
         '/home/agent/training/instructions.sh': `#!/bin/bash\n# Gebruik dit commando:\ncurl -o suspects.txt https://interpol.int/api/suspects`,
     });
+
+    const pushLog = (entry) => {
+        setLog(prev => [...prev, entry]);
+    };
 
     const normalizePath = (base, target) => {
         if (!target) return base;
@@ -56,8 +46,6 @@ const TerminalApp = ({ step = 0, setStep = () => {}, onStepComplete = () => {} }
         const command = parts[0];
         let output = '';
         const currentDirChildren = fs[path] || [];
-
-        const pushLog = (entry) => setLog(prev => [...prev, entry]);
 
         switch (command) {
             case 'ls': {
@@ -108,7 +96,6 @@ const TerminalApp = ({ step = 0, setStep = () => {}, onStepComplete = () => {} }
                 const content = fileContents[filePath];
                 if (content !== undefined) {
                     output = content;
-                    // Progression checks
                     if (step === 0 && filePath === '/home/agent/training/readme.txt') {
                         setStep(1);
                         pushLog('Hint: cat instructions.sh');
@@ -122,7 +109,6 @@ const TerminalApp = ({ step = 0, setStep = () => {}, onStepComplete = () => {} }
                 break;
             }
             case 'curl': {
-                // expected: curl -o outfile url
                 if (parts[1] === '-o' && parts.length >= 4) {
                     const outFile = parts[2];
                     const url = parts.slice(3).join(' ');
@@ -131,7 +117,6 @@ const TerminalApp = ({ step = 0, setStep = () => {}, onStepComplete = () => {} }
                     } else if (!url.startsWith('http')) {
                         output = 'Ongeldige URL.';
                     } else {
-                        // create suspects file in current folder
                         const filePath = `${path}/${outFile}`.replace(/\/+/g, '/');
                         setFileContents(prev => ({ ...prev, [filePath]: `Suspects list downloaded from ${url}\n\n1) Docent P\n2) Student X\n` }));
                         setFs(prev => ({ ...prev, [path]: [...(prev[path] || []), outFile] }));
@@ -149,27 +134,26 @@ const TerminalApp = ({ step = 0, setStep = () => {}, onStepComplete = () => {} }
             default:
                 output = `Onbekend commando: ${command}`;
         }
-
         pushLog(`$ ${cmd}`);
         if (output) pushLog(output);
         setInput('');
     };
 
     return (
-        <div className="terminal-app">
-            <div className="terminal-log">
-                {log.map((line, idx) => <div key={idx} className="terminal-line">{line}</div>)}
+        <div className="terminal-app" ref={logRef}>
+            {log.map((line, idx) => <div key={idx} className="terminal-line">{line}</div>)}
+            <div className="terminal-input-container">
+                <form onSubmit={e => { e.preventDefault(); handleCommand(input); }} className="terminal-input">
+                    <span className="prompt">{path} $ </span>
+                    <input
+                        value={input}
+                        onChange={e => setInput(e.target.value)}
+                        autoFocus
+                        className="terminal-textinput"
+                        placeholder="Type a command (ls, cd, cat, pwd, curl -o ... )"
+                    />
+                </form>
             </div>
-            <form onSubmit={e => { e.preventDefault(); handleCommand(input); }} className="terminal-input">
-                <span className="prompt">{path} $ </span>
-                <input
-                    value={input}
-                    onChange={e => setInput(e.target.value)}
-                    autoFocus
-                    className="terminal-textinput"
-                    placeholder="Type a command (ls, cd, cat, pwd, curl -o ... )"
-                />
-            </form>
         </div>
     );
 };
