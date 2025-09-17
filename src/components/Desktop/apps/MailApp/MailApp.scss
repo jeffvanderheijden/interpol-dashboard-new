@@ -1,0 +1,50 @@
+.mail-app {
+    display: flex;
+    height: 100%;
+
+    &__sidebar {
+        min-width: 24%;
+        width: 24%;
+        border-right: 1px solid #ccc;
+        padding: 8px;
+        overflow-y: auto;
+
+        .mail-item {
+            padding: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+
+            strong {
+                display: block;
+            }
+
+            small {
+                color: #99b;
+            }
+
+            &.empty {
+                padding: 8px;
+                color: #aaa;
+                cursor: default;
+            }
+        }
+    }
+
+    &__body {
+        padding: 12px;
+        flex-grow: 1;
+        overflow-y: auto;
+
+        .empty {
+            color: #aaa;
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        div {
+            white-space: pre-wrap;
+        }
+    }
+}

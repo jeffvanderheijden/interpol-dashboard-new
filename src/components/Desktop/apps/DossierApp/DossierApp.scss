@@ -1,0 +1,27 @@
+.dossier-app {
+    background-color: #fff;
+    color: #000;
+    height: calc(100% - 20px);
+    overflow-y: auto;
+    padding: 10px;
+    font-family: monospace;
+
+    h2 {
+        margin: 0 0 10px 0;
+    }
+
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        li {
+            flex: 0 0 25%;
+            text-align: center;
+            img {
+                max-width: 120px;
+                height: auto;
+                display: block;
+                margin: 10px auto;
+            }
+        }
+    }
+}

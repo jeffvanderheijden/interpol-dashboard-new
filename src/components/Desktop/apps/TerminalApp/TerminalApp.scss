@@ -1,0 +1,27 @@
+.terminal-app {
+    background-color: black;
+    color: lime;
+    padding: 10px;
+    font-family: monospace;
+    height: 100%;
+    overflow-y: auto;
+
+    form {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+
+        span {
+            margin-right: 5px;
+        }
+
+        input {
+            background-color: black;
+            color: lime;
+            border: none;
+            outline: none;
+            font-family: monospace;
+            width: 80%;
+        }
+    }
+}
