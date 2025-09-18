@@ -8,7 +8,7 @@ const Taskbar = ({ openWindows, bringToFront }) => {
 
     return (
         <div className="taskbar">
-            <div className="taskbar__start">[Start]</div>
+            <div className="taskbar__start">Start</div>
 
             <div className="taskbar__windows">
                 {openWindows.map(win => (

@@ -1,0 +1,131 @@
+// --- Windows 95 Color Palette ---
+$win95-bg: #c0c0c0;
+$win95-teal-desktop: #008080;
+$win95-blue-titlebar: #000080;
+$border-light: #ffffff;
+$border-dark: #808080;
+$border-darker: #000000;
+
+// Set the classic desktop background and font style
+body {
+    background: $win95-teal-desktop;
+    font-family: "MS Sans Serif", "Tahoma", "Geneva", "Verdana", sans-serif;
+    font-size: 14px;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+}
+
+// Container to center the "window" on the "desktop"
+.page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+// The main form, styled as a Win95 dialog window
+.form {
+    background: $win95-bg;
+    width: 100%;
+    max-width: 380px;
+    padding: 3px;
+    border-top: 2px solid $border-light;
+    border-left: 2px solid $border-light;
+    border-right: 2px solid $border-darker;
+    border-bottom: 2px solid $border-darker;
+    box-shadow: 1px 1px 0 1px $border-darker;
+
+    // The blue title bar at the top of the window
+    &__title-bar {
+        background: $win95-blue-titlebar;
+        padding: 4px 8px;
+        margin-bottom: 12px;
+    }
+
+    &__title-text {
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+        margin: 0;
+        letter-spacing: 0.5px;
+    }
+
+    // The main content area inside the window
+    &__content {
+        padding: 0 15px 15px 15px;
+    }
+
+    // Group for labels and inputs
+    &__group {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        label {
+            width: 90px;
+            flex-shrink: 0;
+        }
+
+        input {
+            flex-grow: 1;
+            background: white;
+            padding: 5px;
+            border-radius: 0;
+            box-shadow: none;
+            border: 2px solid;
+            border-top-color: $border-dark;
+            border-left-color: $border-dark;
+            border-bottom-color: $border-light;
+            border-right-color: $border-light;
+
+            &:focus {
+                outline: 1px dotted $border-darker;
+                outline-offset: -3px;
+            }
+        }
+    }
+
+    // Container for the OK/Cancel buttons
+    &__buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    // The classic Win95 button style
+    &__button {
+        min-width: 90px;
+        padding: 8px 12px;
+        background: $win95-bg;
+        color: $border-darker;
+        border-radius: 0;
+        cursor: pointer;
+        border-top: 2px solid $border-light;
+        border-left: 2px solid $border-light;
+        border-right: 2px solid $border-dark;
+        border-bottom: 2px solid $border-dark;
+        box-shadow: 1px 1px 0 1px $border-darker;
+
+        &:active {
+            border-top-color: $border-dark;
+            border-left-color: $border-dark;
+            border-bottom-color: $border-light;
+            border-right-color: $border-light;
+            box-shadow: none;
+            padding: 9px 11px 7px 13px;
+        }
+    }
+
+    // Style for the error message
+    &__error {
+        color: #000;
+        background: #FFFFE0;
+        border: 1px solid $border-darker;
+        padding: 10px;
+        margin-bottom: 15px;
+        font-size: 13px;
+    }
+}

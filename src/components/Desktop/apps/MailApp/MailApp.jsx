@@ -16,7 +16,6 @@ const MailApp = () => {
 
     return (
         <div className="mail-app">
-            {/* Sidebar */}
             <div className="mail-app__sidebar">
                 {(!mails || mails.length === 0) && (
                     <div className="mail-item empty">Geen berichten</div>
@@ -24,7 +23,7 @@ const MailApp = () => {
                 {mails && mails.map((mail) => (
                     <div
                         key={mail.id}
-                        className="mail-item"
+                        className={`mail-item ${selected && selected.id === mail.id ? 'selected' : ''}`}
                         onClick={() => setSelected(mail)}
                     >
                         <strong>{mail.subject}</strong>
@@ -33,13 +32,16 @@ const MailApp = () => {
                 ))}
             </div>
 
-            {/* Mail body */}
             <div className="mail-app__body">
                 {selected ? (
                     <>
-                        <h3>{selected.subject}</h3>
-                        <p><strong>From:</strong> {selected.from}</p>
-                        <div>{selected.body}</div>
+                        <div className="mail-app__header">
+                            <h3>{selected.subject}</h3>
+                            <p><strong>Van:</strong> {selected.from}</p>
+                        </div>
+                        <div className="mail-app__body-content">
+                            {selected.body}
+                        </div>
                     </>
                 ) : (
                     <div className="empty">Selecteer een bericht om te lezen.</div>

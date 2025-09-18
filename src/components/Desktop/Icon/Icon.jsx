@@ -1,16 +1,13 @@
 import './Icon.scss';
 
-const Icon = ({ label, icon, onDoubleClick, x, y, badge }) => {
+const Icon = ({ label, icon, badge, onDoubleClick }) => {
     return (
-        <div 
-            className="icon" 
-            style={{ left: x, top: y }} 
-            onDoubleClick={onDoubleClick}
-        >
-            <div className="icon__symbol">{icon}</div>
-            <div className="icon__label">{label}</div>
-
-            {badge > 0 && <span className="icon__badge">{badge}</span>}
+        <div className="desktop-icon" onDoubleClick={onDoubleClick} tabIndex="0">
+            <div className="icon-image">
+                {icon} {/* De emoji wordt hier direct als tekst geplaatst */}
+                {badge && <div className="icon-badge">!</div>}
+            </div>
+            <span className="icon-label">{label}</span>
         </div>
     );
 };

@@ -1,50 +1,72 @@
+$win95-bg: #c0c0c0;
+$border-light: #ffffff;
+$border-dark: #808080;
+$border-darker: #000000;
+
+@mixin win95-border($type: 'raised', $width: 2px) {
+    border-style: solid;
+    border-width: $width;
+    @if $type == 'raised' {
+        border-color: $border-light $border-darker $border-darker $border-light;
+    } @else if $type == 'sunken' {
+        border-color: $border-dark $border-light $border-light $border-dark;
+    }
+}
+
 .taskbar {
+    @include win95-border('raised', 2px);
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 30px;
-    background-color: #c3c3c3;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px;
-    font-size: 14px;
-    border-top: 2px solid #828282;
+    height: 32px;
+    background-color: $win95-bg;
     box-sizing: border-box;
-    color: #333;
+    display: flex;
+    align-items: center;
+    padding: 3px;
+    gap: 4px;
 
     &__start {
+        @include win95-border('raised');
+        padding: 2px 8px;
         font-weight: bold;
         cursor: pointer;
+
+        &:active {
+            @include win95-border('sunken');
+        }
     }
 
     &__windows {
         display: flex;
         flex-grow: 1;
-        justify-content: center;
+        height: 100%;
+        min-width: 0;
+        gap: 3px;
 
         .taskbar__window-button {
-            margin: 0 2px;
+            @include win95-border('raised');
+            flex: 1 1 160px;
+            background-color: $win95-bg;
             padding: 2px 6px;
-            border: 1px solid #999;
-            background-color: #eee;
             cursor: pointer;
-            font-size: 12px;
-
-            &:hover {
-                background-color: #ddd;
-            }
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
             &.active {
-                background-color: #4287f5;
-                color: #fff;
-                border-color: #1a5fc0;
+                @include win95-border('sunken');
+                font-weight: bold;
             }
         }
     }
 
     &__clock {
-        font-family: monospace;
+        @include win95-border('sunken', 1px);
+        margin-left: auto;
+        padding: 4px 8px;
+        font-size: 12px;
     }
 }
