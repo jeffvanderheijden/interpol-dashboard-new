@@ -10,7 +10,7 @@ Welkom bij je Interpol-training. Bekijk de bijgevoegde video en volg de instruct
 Veel succes.`,
         trigger: "gameStart",
         startMail: true,
-        videoUrl: "/videos/terminal-intro.mp4"
+        attachement: "https://www.youtube.com/watch?v=5XgBd6rjuDQ"
     },
     {
         id: "terminal_done",
@@ -24,7 +24,7 @@ Je zult gedurende deze weken verdachten wegspelen door de puzzels op te lossen. 
     {
         id: "dossier_done",
         subject: "•‿•",
-        from: "𝖜𝖔𝖒𝖕 𝖜𝖔𝖒𝖕︎",
+        from: "h̴̗̬̚a̸̜̓͒c̴̠̯͂̇k̵̛̤͑e̸̦͑̓r̷̥̓̑",
         body: `Goed gevonden… maar je denkt toch niet dat ik mezelf zomaar laat vangen? 
         
 Ik heb iets achtergelaten in de Editor-app. Succes met de speurtocht.. "Agent".`,
@@ -38,7 +38,7 @@ Ik heb iets achtergelaten in de Editor-app. Succes met de speurtocht.. "Agent".`
 
 Onze monitoring heeft gedetecteerd dat er zojuist een mogelijk gevaarlijk bestand is gedownload op het Interpol-netwerk: virus.txt.
 
-Dit kan onderdeel zijn van de hacker zijn sporen. Open het bestand in de Editor. Vind en vervang het IP-adress met het volgende IP van de hacker: 192.168.1.1. 
+Dit kan onderdeel zijn van de hacker zijn sporen. Creëer een nieuw bestand in de Editor-app en open het gedownloade bestand virus.txt. 
 
 Vergeet niet het bestand op te slaan.`,
         trigger: "virusDownloaded",

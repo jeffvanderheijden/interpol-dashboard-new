@@ -41,6 +41,17 @@ const MailApp = () => {
                         </div>
                         <div className="mail-app__body-content">
                             {selected.body}
+                            <br />
+                            <br />
+                            {selected.attachement && (
+                                <div className="attachment">
+                                    <strong>Bijlage:</strong>
+                                    <br />
+                                    <a href={selected.attachement} target="_blank" rel="noopener noreferrer">
+                                        {selected.attachement}
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     </>
                 ) : (

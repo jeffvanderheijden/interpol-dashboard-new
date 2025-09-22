@@ -130,10 +130,8 @@ const NewTeam = ({ onSubmit }) => {
 
     return (
         <div className="new-team">
-            <div className="header">👥 Nieuw Team</div>
             <div className="content">
                 <div className="photo-section">
-                    {/* Videofeed blijft ALTIJD gemount (ook als er een foto zichtbaar is) */}
                     <div style={{ position: "relative", display: "inline-block" }}>
                         <video
                             ref={videoRef}
@@ -142,7 +140,6 @@ const NewTeam = ({ onSubmit }) => {
                             className={`video-preview ${teamPhoto ? "is-hidden" : ""}`}
                             style={{ width: "100%", maxWidth: 480 }}
                         />
-                        {/* Foto preview */}
                         <img
                             src={teamPhoto || ""}
                             alt="Teamfoto"
@@ -161,7 +158,6 @@ const NewTeam = ({ onSubmit }) => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="team-form">
-                    <h3>Teamleden</h3>
                     {members.map((m, idx) => (
                         <div key={idx} className="member-row">
                             <input

@@ -295,9 +295,13 @@ const Desktop = () => {
                 }}
             />
 
-            <Taskbar openWindows={openWindows} bringToFront={bringToFront} />
+            <Taskbar
+                openWindows={openWindows}
+                bringToFront={bringToFront}
+                openApp={openApp} 
+            />
             <img
-                src="/svgs/interpol_logo.svg"
+                src="/svgs/interpol-logo.svg"
                 className="desktop-watermark"
                 alt="Interpol Watermark"
             />

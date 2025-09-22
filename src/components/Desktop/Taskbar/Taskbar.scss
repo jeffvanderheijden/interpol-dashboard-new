@@ -26,15 +26,63 @@ $border-darker: #000000;
     align-items: center;
     padding: 3px;
     gap: 4px;
+    font-family: "MS Sans Serif", sans-serif;
+    font-size: 13px;
 
     &__start {
         @include win95-border('raised');
         padding: 2px 8px;
         font-weight: bold;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: $win95-bg;
+
+        img {
+            height: 16px;
+            width: 16px;
+        }
 
         &:active {
             @include win95-border('sunken');
+        }
+    }
+
+    &__menu {
+        position: absolute;
+        bottom: 32px; // net boven de taskbar
+        left: 0;
+        width: 180px;
+        background: $win95-bg;
+        @include win95-border('raised', 2px);
+        box-shadow: 3px 3px $border-darker;
+        z-index: 1000;
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 2px;
+        }
+
+        li {
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            white-space: nowrap;
+
+            .icon {
+                width: 16px;
+                text-align: center;
+            }
+
+            &:hover {
+                background: #000080;
+                color: #fff;
+            }
         }
     }
 
@@ -68,5 +116,6 @@ $border-darker: #000000;
         margin-left: auto;
         padding: 4px 8px;
         font-size: 12px;
+        background: $win95-bg;
     }
 }
