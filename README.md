@@ -1,12 +1,57 @@
-# React + Vite
+# 🕵️ Interpol Training Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Een **gamified onboarding/puzzelomgeving** voor studenten van het Grafisch Lyceum Rotterdam.  
+De setting: studenten worden trainee-agenten bij Interpol en moeten een hacker ontmaskeren door het oplossen van verschillende puzzels.  
 
-Currently, two official plugins are available:
+Dit project combineert **educatie, storytelling en retro UI** in een interactieve dashboard-omgeving.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Windows 95 geïnspireerde desktopomgeving**
+  - Bureaublad met iconen  
+  - Startmenu en taakbalk  
+  - Vensters die geopend, geminimaliseerd en gesloten kunnen worden  
+
+- **Apps binnen de desktop**
+  - 📬 **MailApp**: ontvang missies, hints en verhaalelementen  
+  - 🖥️ **TerminalApp**: voer commando’s uit (o.a. `ls`, `cd`, `cat`, `curl`) en los code-puzzels op  
+  - 🗂️ **DossierApp**: blader door verdachten (docenten) met foto’s, markeer ze af en vind verborgen aanwijzingen  
+  - 📝 **EditorApp**: ingebouwde code-editor (Monaco) voor taken zoals het analyseren van bestanden (bv. `virus.txt`)  
+  - 👥 **NewTeamApp**: maak een team aan met medestudenten, inclusief webcamfoto en studentgegevens  
+
+- **Narratieve voortgang**
+  - Puzzels en hints komen stap voor stap beschikbaar  
+  - Vooruitgang wordt opgeslagen in **LocalStorage** (later ook via API/database)  
+  - Elke stap triggert nieuwe mails en unlockt apps  
+
+- **Pixel-art hacker logo**
+  - Een herkenbaar “beeldmerk” dat in alle puzzels terugkomt  
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend**: [React](https://react.dev/) + [Vite](https://vitejs.dev/)  
+- **Styling**: SCSS (Win95 look & feel met borders, knoppen en retro kleuren)  
+- **Editor**: [Monaco Editor](https://microsoft.github.io/monaco-editor/)  
+- **State Management**: React Context (`GameContext`)  
+- **Persistence**: LocalStorage (API-integratie in voorbereiding)  
+- **Assets**: Verdachtenfoto’s in `src/assets/dossiers/`, retro icons, pixel-art hacker logo  
+
+---
+
+---
+
+## ▶️ Development
+
+```bash
+# Dependencies installeren
+npm install
+
+# Start development server
+npm run dev
+
+# Build voor productie
+npm run build
