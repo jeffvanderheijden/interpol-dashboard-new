@@ -31,10 +31,7 @@ const DossierApp = ({ openApp, onStepComplete }) => {
                 <div className="dossier-app__glitch-container">
                     <div
                         className="glitch-image"
-                        onClick={() => {
-                            openApp('editor');
-                            onStepComplete('dossierDone');
-                        }}
+                        onClick={() => { onStepComplete('dossierDone') }}
                     >
                         <img src="/glitch-image.png" alt="Geglitchte afbeelding, klik om te openen" />
                     </div>

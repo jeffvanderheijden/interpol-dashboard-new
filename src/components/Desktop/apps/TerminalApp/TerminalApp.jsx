@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import './TerminalApp.scss';
 
-const TerminalApp = ({ onStepComplete = () => { } }) => {
+const TerminalApp = ({ onStepComplete = () => { }, autoRunVirusSignal = null }) => {
     const [log, setLog] = useState([
         'Welkom, Agent. Open de training directory en volg de instructies.'
     ]);
@@ -9,11 +9,23 @@ const TerminalApp = ({ onStepComplete = () => { } }) => {
     const [path, setPath] = useState('/home/agent');
     const logRef = useRef(null);
 
+    // Guard zodat auto-run slechts één keer per signal gebeurt
+    const lastRunSignalRef = useRef(null);
+
     useEffect(() => {
         if (logRef.current) {
             logRef.current.scrollTop = logRef.current.scrollHeight;
         }
     }, [log]);
+
+    useEffect(() => {
+        // If autoRunVirusSignal changes and is new, start fake execution
+        if (autoRunVirusSignal && lastRunSignalRef.current !== autoRunVirusSignal) {
+            lastRunSignalRef.current = autoRunVirusSignal;
+            simulateVirusExecution();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [autoRunVirusSignal]);
 
     const [fs] = useState({
         '/': ['home'],
@@ -75,11 +87,10 @@ const TerminalApp = ({ onStepComplete = () => { } }) => {
                 break;
             }
             case 'curl': {
-                const url = 'https://interpol.int/api/suspects';
-                // Basis check: begint met curl en bevat de juiste url
-                if (cmd.includes('curl') && cmd.includes(url)) {
-                    pushLog('Download voltooid. Verdachtenlijst opgeslagen als suspects.txt.');
-                    onStepComplete && onStepComplete('terminalDone');
+                const correct = 'curl -o suspects.txt https://interpol.int/api/suspects';
+                if (cmd.trim() === correct) {
+                    pushLog('Download gestart...');
+                    simulateDownloadThenComplete();
                 } else {
                     pushLog('curl: onbekend of incorrect commando');
                 }
@@ -96,6 +107,58 @@ const TerminalApp = ({ onStepComplete = () => { } }) => {
             default:
                 pushLog(`${command}: commando niet gevonden`);
         }
+    };
+
+    const simulateDownloadThenComplete = () => {
+        const steps = [10, 30, 55, 80, 100];
+        let i = 0;
+        const tick = () => {
+            if (i >= steps.length) {
+                pushLog('Download voltooid. Verdachtenlijst opgeslagen als suspects.txt.');
+                onStepComplete('terminalDone');
+                return;
+            }
+            pushLog(`Downloading... ${steps[i]}%`);
+            i++;
+            setTimeout(tick, 450);
+        };
+        tick();
+    };
+
+    const simulateVirusExecution = () => {
+        // Simuleer veilige 'uitvoering' in de terminal voor didactisch effect
+        pushLog('');
+        pushLog('*** SYSTEM NOTICE: executing analysis sandbox ***');
+        pushLog('Loading /downloads/virus.txt into isolated VM...');
+
+        const stages = [
+            { text: 'Initializing analysis sandbox...', delay: 600 },
+            { text: 'Mounting read-only filesystem...', delay: 700 },
+            { text: 'Scanning file for indicators (static-only)...', delay: 900 },
+            { text: 'Extracting strings & metadata...', delay: 900 },
+            { text: 'Running signature heuristics (no execution)...', delay: 1000 },
+        ];
+
+        let idx = 0;
+        const runStage = () => {
+            if (idx >= stages.length) {
+                // final simulated summary
+                pushLog('--- STATIC ANALYSIS SUMMARY ---');
+                pushLog('File: /downloads/virus.txt');
+                pushLog('Verdict: suspicious (contains obfuscated fragments).');
+                pushLog('Action: quarantined in analysis VM; no execution performed.');
+                pushLog('Recommendation: continue manual forensic analysis in Notepad/Editor.');
+                pushLog('*** ANALYSIS COMPLETE ***');
+                // optionally inform game that execution-simulation finished
+                onStepComplete('virusExecutionSimulated');
+                return;
+            }
+            pushLog(stages[idx].text);
+            idx++;
+            setTimeout(runStage, stages[idx - 1].delay);
+        };
+        // start with a tiny delay to let UI update
+        setTimeout(runStage, 200);
     };
 
     const handleSubmit = (e) => {

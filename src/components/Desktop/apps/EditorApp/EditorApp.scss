@@ -24,6 +24,9 @@
 }
 
 .editor-app__sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 10px;
     font-weight: bold;
     background: #333;
@@ -61,29 +64,19 @@
 
 .editor-app__main {
     flex: 1;
-    display: flex;
     min-width: 74%;
     max-width: 74%;
     width: 74%;
 }
 
 .editor-app__toolbar {
-    background: #2d2d2d;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 10px;
-    border-bottom: 1px solid #444;
-}
-
-.editor-app__toolbar .btn {
-    margin-right: 6px;
-    padding: 4px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: background 0.2s;
+    padding: 8px;
+    border-bottom: "1px solid #333";
+    background: "#1b1b1b";
+    color: "#cfc";
 }
 
 .btn.primary {
@@ -110,33 +103,10 @@
     opacity: 0.85;
 }
 
-.editor-app__toolbar .field {
-    margin-left: 10px;
-    font-size: 12px;
-    color: #ccc;
-}
-
-.editor-app__toolbar .field span {
-    margin-right: 4px;
-}
-
-.editor-app__toolbar select,
-.editor-app__toolbar input[type="number"] {
-    background: #1e1e1e;
-    border: 1px solid #555;
-    border-radius: 4px;
-    color: #eee;
-    padding: 2px 4px;
-}
-
-.editor-app__toolbar .status {
-    font-size: 12px;
-    color: #6f6;
-}
-
 .editor-app__editor {
     flex: 1;
     position: relative;
+    height: calc(100% - 40.5px);
 }
 
 .editor-app__loading {

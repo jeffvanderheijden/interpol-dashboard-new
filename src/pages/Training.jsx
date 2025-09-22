@@ -1,4 +1,4 @@
-import { GameProvider } from "./../context/GameContext";
+import { GameProvider } from "./../components/Desktop/_context/GameContext";
 import Desktop from "./../components/Desktop/Desktop";
 
 const Training = () => {
