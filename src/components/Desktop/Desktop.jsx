@@ -7,7 +7,7 @@ import MailApp from "./apps/MailApp/MailApp";
 import DossierApp from "./apps/DossierApp/DossierApp";
 import EditorApp from "./apps/EditorApp/EditorApp";
 import Taskbar from "./Taskbar/Taskbar";
-import { removeWindow } from './_helpers/desktopHelpers';
+import Notification from './Notification/Notification';
 import './Desktop.scss';
 
 const appConfig = {
@@ -18,13 +18,17 @@ const appConfig = {
 };
 
 const Desktop = () => {
-    const { mails, showNotification, setShowNotification, lastMailSubject, addMail, unlockMail } = useContext(GameContext);
+    const { mails, showNotification, setShowNotification, lastMailSubject, unlockMail, progress } = useContext(GameContext);
+
     const [openWindows, setOpenWindows] = useState([]);
     const [zIndexCounter, setZIndexCounter] = useState(1);
     const [unreadMails, setUnreadMails] = useState(0);
     const [puzzleStep, setPuzzleStep] = useState(0);
-    const [dossierUnlocked, setDossierUnlocked] = useState(false);
-    const [editorUnlocked, setEditorUnlocked] = useState(false);
+
+    // ✅ Initialiseer unlocks vanuit localStorage progress
+    const [dossierUnlocked, setDossierUnlocked] = useState(() => !!progress.terminalDone);
+    const [editorUnlocked, setEditorUnlocked] = useState(() => !!progress.dossierDone);
+
     const prevMailCount = useRef(0);
 
     useEffect(() => {
@@ -34,6 +38,12 @@ const Desktop = () => {
         }
         prevMailCount.current = mails.length;
     }, [mails]);
+
+    // ✅ Sync unlocks met progress context bij refresh
+    useEffect(() => {
+        if (progress.terminalDone) setDossierUnlocked(true);
+        if (progress.dossierDone) setEditorUnlocked(true);
+    }, [progress]);
 
     const openApp = (appName) => {
         const existingWindow = openWindows.find(w => w.app === appName);
@@ -76,20 +86,21 @@ const Desktop = () => {
         }
     };
 
+    const removeWindow = (openWindows, winId) => {
+        return openWindows.filter((w) => w.id !== winId);
+    };
+
     const handleStepComplete = (trigger) => {
-        if (trigger === "terminalDone") setDossierUnlocked(true);
-        if (trigger === "dossierDone") setEditorUnlocked(true);
-        if (typeof unlockMail === 'function') {
-            unlockMail(trigger);
-        } else if (typeof addMail === 'function') {
-            addMail({
-                from: 'system@interpol.int',
-                subject: 'Dossier Viewer geactiveerd',
-                body: 'Je hebt het verdachte bestand gedownload. De Dossier Viewer is nu beschikbaar.'
-            });
+        if (trigger === "terminalDone" && !dossierUnlocked) {
+            setDossierUnlocked(true);
+            unlockMail?.(trigger);
+        }
+        if (trigger === "dossierDone" && !editorUnlocked) {
+            setEditorUnlocked(true);
+            unlockMail?.(trigger);
         }
     };
-    
+
     const getAppTitle = (appName) => appConfig[appName]?.title || "Application";
 
     const renderAppContent = (appName) => {
@@ -126,12 +137,15 @@ const Desktop = () => {
                 </Window>
             ))}
 
-            {showNotification && (
-                <div className="desktop-notification" onClick={() => { openApp("mail"); setShowNotification(false); }}>
-                    <span>Nieuwe mail ontvangen</span><br /><strong>{lastMailSubject}</strong>
-                </div>
-            )}
-            
+            <Notification
+                show={showNotification}
+                subject={lastMailSubject}
+                onClick={() => {
+                    openApp("mail");
+                    setShowNotification(false);
+                }}
+            />
+
             <Taskbar openWindows={openWindows} bringToFront={bringToFront} />
             <img src="/svgs/interpol_logo.svg" className="desktop-watermark" alt="Interpol Watermark" />
         </div>

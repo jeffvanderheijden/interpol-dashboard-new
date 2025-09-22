@@ -2,8 +2,7 @@ import './Taskbar.scss';
 
 const Taskbar = ({ openWindows, bringToFront }) => {
     const now = new Date();
-
-    // Vind actieve window (hoogste z-index)
+    
     const activeWindow = openWindows.reduce((prev, curr) => (!prev || curr.z > prev.z ? curr : prev), null);
 
     return (

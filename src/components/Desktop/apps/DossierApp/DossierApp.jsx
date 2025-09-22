@@ -12,7 +12,7 @@ const DossierApp = ({ openApp, onStepComplete }) => {
 
     return (
         <div className="dossier-app">
-            <h2 className="dossier-app__header">Dossiers - Interne Archieven</h2>
+            <h2 className="dossier-app__header">Verdachte docenten</h2>
             
             <div className="dossier-app__content">
                 <ul className="dossier-app__list">

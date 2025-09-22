@@ -15,14 +15,20 @@ Veel succes.`,
     },
     {
         id: "terminal_done",
-        subject: "Goed gedaan, Agent! Dossier Viewer geactiveerd",
-        body: `Je hebt succesvol de verdachtenlijst gedownload. De Dossier Viewer is nu beschikbaar op je desktop. Open deze app en zoek naar een verborgen aanwijzing.`,
+        subject: "Goed gedaan, Agent! Dossier app geactiveerd",
+        from: "admin@interpol.sd-lab.nl",
+        body: `Je hebt succesvol de verdachtenlijst gedownload. De Dossiers van de verdachte zijn nu beschikbaar op je desktop. 
+        
+Je zult gedurende deze weken verdachten wegspelen door de puzzels op te lossen. Open de Dossier app en begin met het analyseren van de verdachten.`,
         trigger: "terminalDone",
     },
     {
         id: "dossier_done",
-        subject: "Nieuwe aanwijzing gevonden! Ga naar de Tekst Editor",
-        body: `Je hebt de gecodeerde aanwijzing in het dossier gevonden. De code is automatisch geopend in de Tekst Editor op je bureaublad. Analyseer de code om je volgende stap te bepalen.`,
+        subject: "•‿•",
+        from: "𝖜𝖔𝖒𝖕 𝖜𝖔𝖒𝖕︎",
+        body: `Goed gevonden… maar je denkt toch niet dat ik mezelf zomaar laat vangen? 
+        
+Ik heb iets achtergelaten in de Notepad-app. Succes met de speurtocht.. "Agent".`,
         trigger: "dossierDone",
     },
 ];
