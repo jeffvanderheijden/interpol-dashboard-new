@@ -8,7 +8,7 @@ import {
 
 const TerminalApp = ({ onStepComplete = () => { }, autoRunVirusSignal = null }) => {
     const [log, setLog] = useState([
-        "Welkom, Agent. Open de training directory en volg de instructies.",
+        "Welkom, agent. Gebruik het terminal-commando 'help' voor een lijst met beschikbare commando's.",
     ]);
     const [input, setInput] = useState("");
     const [path, setPath] = useState("/home/agent");

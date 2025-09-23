@@ -80,11 +80,11 @@
 
         .status {
             &.saved {
-                color: #3c3;
+                color: rgb(9, 105, 9);
             }
 
             &.match {
-                color: #0c0;
+                color: rgb(9, 105, 9);
                 font-weight: bold;
             }
         }

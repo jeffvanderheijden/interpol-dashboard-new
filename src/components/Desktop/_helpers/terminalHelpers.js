@@ -10,7 +10,7 @@ export const fs = {
 
 export const fileContents = {
     "/home/agent/training/readme.txt": `Goed bezig, agent.\n\nGebruik het commando in instructions.sh om de verdachtenlijst te downloaden.`,
-    "/home/agent/training/instructions.sh": `#!/bin/bash\n# Gebruik dit commando:\ncurl -o suspects.txt https://interpol.int/api/suspects`,
+    "/home/agent/training/instructions.sh": `#!/bin/bash\n# Gebruik dit commando:\ncurl -o suspects.txt https://interpol.sd-lab.nl/api/suspects`,
 };
 
 /**
@@ -32,7 +32,7 @@ export function simulateDownload(setLog, onStepComplete) {
     let i = 0;
     const tick = () => {
         if (i >= steps.length) {
-            pushLogEntry(setLog, "Download voltooid. Verdachtenlijst opgeslagen als suspects.txt.");
+            pushLogEntry(setLog, "Download voltooid. Verdachtenlijst opgeslagen.");
             onStepComplete("terminalDone");
             return;
         }
@@ -106,7 +106,7 @@ export function makeCommands({ setLog, path, setPath, onStepComplete }) {
         },
         curl: (...args) => {
             const full = ["curl", ...args].join(" ").trim();
-            const correct = "curl -o suspects.txt https://interpol.int/api/suspects";
+            const correct = "curl -o suspects.txt https://interpol.sd-lab.nl/api/suspects";
             if (full === correct) {
                 pushLogEntry(setLog, "Download gestart...");
                 simulateDownload(setLog, onStepComplete);

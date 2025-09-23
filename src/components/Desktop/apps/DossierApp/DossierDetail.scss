@@ -1,0 +1,79 @@
+@use "sass:color";
+@use "../../../../styles/win95" as *;
+
+.dossier-detail {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; // alleen panel is interactief
+
+    &__backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        pointer-events: auto;
+    }
+
+    &__panel {
+        pointer-events: auto;
+        width: 740px;
+        max-width: calc(100% - 40px);
+        background: $win95-window-bg;
+        color: $win95-window-text;
+        @include win95-border("raised");
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        z-index: 1200;
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px;
+        background: $win95-blue-titlebar;
+        color: $win95-titlebar-text;
+        font-weight: bold;
+    }
+
+    &__body {
+        display: flex;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    &__media {
+        flex: 0 0 180px;
+
+        img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            @include win95-border("sunken");
+            display: block;
+        }
+    }
+
+    &__info {
+        flex: 1;
+        font-family: $win95-font-stack;
+        font-size: 14px;
+
+        h4 {
+            margin-top: 10px;
+            margin-bottom: 6px;
+        }
+    }
+
+    &__motive {
+        background: color.scale($win95-notification-bg, $lightness: -6%);
+        padding: 8px;
+        border-radius: 2px;
+        @include win95-border("sunken");
+    }
+
+    &__actions {
+        margin-top: 12px;
+    }
+}

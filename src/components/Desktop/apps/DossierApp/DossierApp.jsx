@@ -1,15 +1,14 @@
 import { useState } from "react";
 import "./DossierApp.scss";
+import "./DossierDetail.scss";
+import DossierDetail from "./DossierDetail";
+import { formatName } from "./../../_helpers/dossierHelpers";
 
-const formatName = (filename) =>
-    filename
-        .replace(/\.(jpg|jpeg|png)$/i, "")
-        .replace(/-/g, " ");
-
-const DossierApp = ({ openApp, onStepComplete }) => {
+const DossierApp = ({ onStepComplete }) => {
     const [selected, setSelected] = useState(null);
+    const [detailOpen, setDetailOpen] = useState(false);
+    const [activeDossier, setActiveDossier] = useState(null);
 
-    // alle docent-afbeeldingen ophalen
     const images = import.meta.glob("/src/assets/docenten/*.{jpg,jpeg,png}", {
         eager: true,
     });
@@ -23,8 +22,17 @@ const DossierApp = ({ openApp, onStepComplete }) => {
         };
     });
 
-    // TODO: dit uit server/API halen
     const notTheHacker = ["Hilda Uitvlught", "Brian Hokke", "Jeff van der Heijden"];
+
+    const openDetail = (dossier) => {
+        setActiveDossier(dossier);
+        setDetailOpen(true);
+    };
+
+    const closeDetail = () => {
+        setDetailOpen(false);
+        setActiveDossier(null);
+    };
 
     return (
         <div className="dossier-app">
@@ -33,21 +41,19 @@ const DossierApp = ({ openApp, onStepComplete }) => {
             <div className="dossier-app__content">
                 <ul className="dossier-app__list">
                     {dossiers.map((dossier) => {
-                        const isSelected = selected === dossier.id;
                         const isCleared = notTheHacker.includes(dossier.name);
+                        const isSelected = selected === dossier.id;
 
                         return (
                             <li
                                 key={dossier.id}
-                                className={`dossier-app__item ${isSelected ? "dossier-app__item--selected" : ""
-                                    }`}
+                                className={`dossier-app__item ${isSelected ? "dossier-app__item--selected" : ""}`}
+                                onClick={() => setSelected(dossier.id)}              // enkelklik = highlight
+                                onDoubleClick={() => openDetail(dossier)}             // dubbelklik = open detail
                                 role="button"
                                 tabIndex={0}
-                                onClick={() => setSelected(dossier.id)}
                                 onKeyDown={(e) => {
-                                    if (e.key === "Enter" || e.key === " ") {
-                                        setSelected(dossier.id);
-                                    }
+                                    if (e.key === "Enter" || e.key === " ") openDetail(dossier);
                                 }}
                             >
                                 <img
@@ -56,8 +62,9 @@ const DossierApp = ({ openApp, onStepComplete }) => {
                                     alt={dossier.name}
                                 />
                                 <span>{dossier.name}</span>
+
                                 {isCleared && (
-                                    <div className="dossier-app__not-hacker">
+                                    <div className="dossier-app__not-hacker" aria-hidden>
                                         <img src="/svgs/cross.svg" alt="Not the hacker" />
                                     </div>
                                 )}
@@ -65,16 +72,15 @@ const DossierApp = ({ openApp, onStepComplete }) => {
                         );
                     })}
 
-                    {/* De echte hacker */}
+                    {/* Hacker tile */}
                     <li
                         className="dossier-app__item dossier-app__item--hacker"
+                        onDoubleClick={() => onStepComplete("dossierDone")}
                         role="button"
                         tabIndex={0}
-                        onClick={() => onStepComplete("dossierDone")}
                         onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
+                            if (e.key === "Enter" || e.key === " ")
                                 onStepComplete("dossierDone");
-                            }
                         }}
                     >
                         <img
@@ -82,10 +88,19 @@ const DossierApp = ({ openApp, onStepComplete }) => {
                             src="/images/hacker.png"
                             alt="De hacker"
                         />
-                        <span className="glitched">h̴̗̬̚a̸̜̓͒c̴̠̯͂̇k̵̛̤͑e̸̦͑̓r̷̥̓̑</span>
+                        <span className="glitched">
+                            h̴̗̬̚a̸̜̓͒c̴̠̯͂̇k̵̛̤͑e̸̦͑̓r̷̥̓̑
+                        </span>
                     </li>
                 </ul>
             </div>
+
+            {detailOpen && activeDossier && (
+                <DossierDetail
+                    dossier={activeDossier}
+                    onClose={closeDetail}
+                />
+            )}
         </div>
     );
 };
