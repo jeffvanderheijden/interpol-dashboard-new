@@ -12,23 +12,36 @@
     animation: openWindowAnimation 0.12s ease-out;
     overflow: hidden;
 
+    // Actief venster krijgt diepere schaduw
     &--active {
         border-color: color.scale($border-dark, $lightness: -20%);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+
+        .window__header {
+            background-color: $win95-blue-titlebar;
+            color: $win95-titlebar-text;
+        }
+    }
+
+    // Inactief venster → grijze balk
+    &--inactive {
+        .window__header {
+            background-color: $win95-bg;
+            color: $border-dark;
+        }
     }
 
     &__header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background-color: $win95-blue-titlebar;
-        color: $win95-titlebar-text;
         padding: 4px 8px;
+        // margin-bottom: -4px; // Compenseer border
         font-weight: bold;
         cursor: move;
         user-select: none;
 
-        &-title {
+        .window__title {
             flex-grow: 1;
             font-size: 0.9rem;
             white-space: nowrap;
@@ -36,19 +49,21 @@
             text-overflow: ellipsis;
         }
 
-        &-controls {
+        .window__controls {
             display: flex;
             gap: 4px;
 
             button {
                 @include win95-button;
                 background: transparent;
-                border-radius: 2px;
-                font-size: 0.9rem;
-                padding: 0 6px;
-                line-height: 1;
+                font-size: 0.6rem;
                 transition: background-color 0.15s ease;
-
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                
                 &:hover {
                     background-color: rgba(0, 0, 0, 0.1);
                 }

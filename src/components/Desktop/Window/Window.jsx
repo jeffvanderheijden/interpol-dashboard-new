@@ -8,6 +8,7 @@ const Window = ({
     onClick,
     onMinimize,
     zIndex,
+    isActive = false,
     width = 500,
     height = 300,
 }) => {
@@ -20,7 +21,7 @@ const Window = ({
         <div
             ref={elementRef}
             onMouseDown={onClick}
-            className="window"
+            className={`window ${isActive ? "window--active" : "window--inactive"}`}
             style={{
                 left: position.x,
                 top: position.y,

@@ -27,17 +27,17 @@ const Taskbar = ({ openWindows, bringToFront, openApp }) => {
     // Apps die beschikbaar zijn afhankelijk van progress
     const availableApps = useCallback(() => {
         const baseApps = [
-            { key: "terminal", label: "Terminal", icon: "🖥️" },
-            { key: "mail", label: "E-mail", icon: "📬" },
+            { key: "terminal", label: "Terminal", icon: "/icons/terminal.ico" },
+            { key: "mail", label: "E-mail", icon: "/icons/email.ico" },
         ];
         if (progress.terminalDone) {
-            baseApps.push({ key: "dossier", label: "Dossiers", icon: "🗂️" });
+            baseApps.push({ key: "dossier", label: "Dossiers", icon: "/icons/documents.ico" });
         }
         if (progress.dossierDone) {
-            baseApps.push({ key: "editor", label: "Editor", icon: "📝" });
+            baseApps.push({ key: "editor", label: "Editor", icon: "/icons/notepad.ico" });
         }
         if (progress.virusExecutionSimulated) {
-            baseApps.push({ key: "newteam", label: "Nieuw Team", icon: "👥" });
+            baseApps.push({ key: "newteam", label: "Nieuw Team", icon: "/icons/team.ico" });
         }
         return baseApps;
     }, [progress]);
@@ -79,7 +79,7 @@ const Taskbar = ({ openWindows, bringToFront, openApp }) => {
                                 }}
                             >
                                 <span className="icon" aria-hidden="true">
-                                    {app.icon}
+                                    <img src={app.icon} alt="" className="taskbar__menu-icon" />
                                 </span>
                                 {app.label}
                             </li>

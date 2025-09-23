@@ -10,7 +10,6 @@
     &__sidebar {
         width: 200px;
         background: $win95-bg;
-        @include win95-border("raised");
         display: flex;
         flex-direction: column;
     }

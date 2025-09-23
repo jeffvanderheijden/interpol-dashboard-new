@@ -5,8 +5,9 @@
     display: flex;
     height: 100%;
     background: $win95-bg;
-    padding: 5px;
-    gap: 5px;
+    padding: 4px;
+    gap: 4px;
+    padding-top: 0px;
 
     &__sidebar {
         @include win95-border("sunken");
@@ -21,6 +22,7 @@
             display: block; // als <button> of <li role="button">
             width: 100%;
             padding: 5px 8px;
+            border: none;
             border-bottom: 1px solid $border-dark;
             cursor: pointer;
             user-select: none;

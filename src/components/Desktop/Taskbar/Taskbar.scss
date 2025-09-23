@@ -100,7 +100,7 @@
             background-color: $win95-bg;
             padding: 2px 6px;
             cursor: pointer;
-
+            max-width: 240px;
             text-align: left;
             white-space: nowrap;
             overflow: hidden;
@@ -122,11 +122,10 @@
         }
     }
 
-    &__clock {
-        @include win95-border("sunken", 1px);
-        margin-left: auto;
-        padding: 4px 8px;
-        font-size: 12px;
-        background: $win95-bg;
+    &__menu-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 6px;
+        image-rendering: pixelated;
     }
 }

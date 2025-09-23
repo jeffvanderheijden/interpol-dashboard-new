@@ -26,7 +26,7 @@ const appConfig = {
     terminal: { width: 520, height: 340, title: "MS-DOS Prompt" },
     mail: { width: 680, height: 500, title: "Inbox - E-mail Client" },
     dossier: { width: 600, height: 480, title: "Dossier Viewer" },
-    editor: { width: 680, height: 500, title: "Notepad" },
+    editor: { width: 900, height: 500, title: "Notepad" },
     newteam: { width: 480, height: 600, title: "Nieuw Team" },
 };
 
@@ -143,10 +143,15 @@ const Desktop = () => {
                 );
             case "mail":
                 return <MailApp />;
-            case "dossier":
-                return <DossierApp openApp={openApp} onStepComplete={handleStepComplete} />;
             case "editor":
                 return <EditorApp />;
+            case "dossier":
+                return (
+                    <DossierApp 
+                        openApp={openApp} 
+                        onStepComplete={handleStepComplete} 
+                    />
+                );
             case "newteam":
                 return (
                     <NewTeamApp
@@ -160,7 +165,7 @@ const Desktop = () => {
         }
     };
 
-    // unlock flow & mail-triggers gelijk aan origineel
+    // unlock flow & mail-triggers
     function handleStepComplete(trigger) {
         if (trigger === "terminalDone" && !dossierUnlocked) {
             setDossierUnlocked(true);
@@ -180,21 +185,21 @@ const Desktop = () => {
         <div className="desktop-environment">
             {/* Desktop icons */}
             <div className="desktop-icons">
-                <Icon label="Terminal" icon="🖥️" onDoubleClick={() => openApp("terminal")} />
+                <Icon label="Terminal" icon="/icons/terminal.ico" onDoubleClick={() => openApp("terminal")} />
                 <Icon
                     label="E-mail"
-                    icon="📬"
+                    icon="/icons/email.ico"
                     onDoubleClick={() => openApp("mail")}
                     badge={unreadMails > 0}
                 />
                 {dossierUnlocked && (
-                    <Icon label="Dossiers" icon="🗂️" onDoubleClick={() => openApp("dossier")} />
+                    <Icon label="Dossiers" icon="/icons/documents.ico" onDoubleClick={() => openApp("dossier")} />
                 )}
                 {editorUnlocked && (
-                    <Icon label="Editor" icon="📝" onDoubleClick={() => openApp("editor")} />
+                    <Icon label="Editor" icon="/icons/notepad.ico" onDoubleClick={() => openApp("editor")} />
                 )}
                 {newTeamUnlocked && (
-                    <Icon label="Nieuw Team" icon="👥" onDoubleClick={() => openApp("newteam")} />
+                    <Icon label="Nieuw Team" icon="/icons/team.ico" onDoubleClick={() => openApp("newteam")} />
                 )}
             </div>
 

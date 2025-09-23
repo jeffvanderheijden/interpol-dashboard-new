@@ -1,13 +1,19 @@
-import './Icon.scss';
+import "./Icon.scss";
 
-const Icon = ({ label, icon, badge, onDoubleClick }) => {
+const Icon = ({ label, icon, onDoubleClick, badge }) => {
+    const isImage = icon.endsWith(".ico") || icon.endsWith(".png") || icon.endsWith(".jpg");
+
     return (
-        <div className="desktop-icon" onDoubleClick={onDoubleClick} tabIndex="0">
+        <div className="desktop-icon" onDoubleClick={onDoubleClick} tabIndex={0}>
             <div className="icon-image">
-                {icon} {/* De emoji wordt hier direct als tekst geplaatst */}
+                {isImage ? (
+                    <img src={icon} alt={label} className="icon-img" />
+                ) : (
+                    <span>{icon}</span>
+                )}
                 {badge && <div className="icon-badge">!</div>}
             </div>
-            <span className="icon-label">{label}</span>
+            <div className="icon-label">{label}</div>
         </div>
     );
 };
