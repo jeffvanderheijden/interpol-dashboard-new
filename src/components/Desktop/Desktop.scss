@@ -1,41 +1,16 @@
-// src/components/Desktop/Desktop.scss
-
-// --- Windows 95 Stijlgids ---
-$win95-bg: #c0c0c0;
-$win95-teal-desktop: #008080;
-$win95-blue-titlebar: #000080;
-$border-light: #ffffff;
-$border-dark: #808080;
-$border-darker: #000000;
-
-// --- Mixin voor de klassieke 3D border ---
-@mixin win95-border($type: 'raised') {
-    border-style: solid;
-    border-width: 2px;
-
-    @if $type =='raised' {
-        border-color: $border-light $border-darker $border-darker $border-light;
-        box-shadow: 1px 1px 0 1px $border-darker;
-    }
-
-    @else if $type =='sunken' {
-        border-color: $border-dark $border-light $border-light $border-dark;
-        box-shadow: none;
-    }
-}
+@use "sass:color";
+@use "../../styles/win95" as *;
 
 // --- Globale Desktop Omgeving (root element van Desktop.jsx) ---
 .desktop-environment {
     background: $win95-teal-desktop;
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
-    font-family: "MS Sans Serif", "Tahoma", "Geneva", sans-serif;
-    font-size: 14px;
-    font-smooth: never;
-    -webkit-font-smoothing: none;
+
+    @include win95-font;
+
     overflow: hidden;
 
     .desktop-watermark {
@@ -50,18 +25,29 @@ $border-darker: #000000;
     }
 }
 
+// --- Notificatie Popup ---
 .desktop-notification {
-    @include win95-border('raised');
+    @include win95-border("raised");
     position: absolute;
     bottom: 40px;
     right: 10px;
-    background: #FFFFE1;
+
+    background: $win95-notification-bg;
     padding: 10px 15px;
     cursor: pointer;
     font-size: 16px;
+
     span {
         display: inline-block;
         margin-bottom: 6px;
         font-weight: bold;
+    }
+
+    &:hover {
+        background: color.scale($win95-notification-bg, $lightness: -5%);
+    }
+
+    &:active {
+        @include win95-border("sunken");
     }
 }

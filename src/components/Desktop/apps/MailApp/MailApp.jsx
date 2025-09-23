@@ -1,11 +1,12 @@
-import { useEffect, useState, useContext } from 'react';
-import { GameContext } from './../../_context/GameContext';
-import './MailApp.scss';
+import { useEffect, useState, useContext } from "react";
+import { GameContext } from "./../../_context/GameContext";
+import "./MailApp.scss";
 
 const MailApp = () => {
     const { mails } = useContext(GameContext);
     const [selected, setSelected] = useState(null);
 
+    // selecteer standaard de laatste mail
     useEffect(() => {
         if (mails && mails.length > 0) {
             setSelected(mails[mails.length - 1]);
@@ -16,50 +17,62 @@ const MailApp = () => {
 
     return (
         <div className="mail-app">
-            <div className="mail-app__sidebar">
+            <aside className="mail-app__sidebar">
                 {(!mails || mails.length === 0) && (
-                    <div className="mail-item empty">Geen berichten</div>
+                    <div className="mail-item mail-item--empty">Geen berichten</div>
                 )}
-                {mails && mails.map((mail) => (
-                    <div
-                        key={mail.id}
-                        className={`mail-item ${selected && selected.id === mail.id ? 'selected' : ''}`}
-                        onClick={() => setSelected(mail)}
-                    >
-                        <strong>{mail.subject}</strong>
-                        <small>{mail.from}</small>
-                    </div>
-                ))}
-            </div>
 
-            <div className="mail-app__body">
+                {mails &&
+                    mails.map((mail) => (
+                        <button
+                            key={mail.id}
+                            type="button"
+                            className={`mail-item ${selected && selected.id === mail.id ? "mail-item--selected" : ""
+                                }`}
+                            onClick={() => setSelected(mail)}
+                        >
+                            <strong className="mail-item__subject">{mail.subject}</strong>
+                            <small className="mail-item__from">{mail.from}</small>
+                        </button>
+                    ))}
+            </aside>
+
+            <main className="mail-app__body">
                 {selected ? (
                     <>
-                        <div className="mail-app__header">
+                        <header className="mail-app__header">
                             <h3>{selected.subject}</h3>
-                            <p><strong>Van:</strong> {selected.from}</p>
-                        </div>
-                        <div className="mail-app__body-content">
-                            {selected.body}
-                            <br />
-                            <br />
-                            {selected.attachement && (
-                                <div className="attachment">
+                            <p>
+                                <strong>Van:</strong> {selected.from}
+                            </p>
+                        </header>
+
+                        <section className="mail-app__body-content">
+                            <p>{selected.body || <em>(Leeg bericht)</em>}</p>
+
+                            {selected.attachment && (
+                                <div className="mail-app__attachment">
                                     <strong>Bijlage:</strong>
                                     <br />
-                                    <a href={selected.attachement} target="_blank" rel="noopener noreferrer">
-                                        {selected.attachement}
+                                    <a
+                                        href={selected.attachment}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {selected.attachment}
                                     </a>
                                 </div>
                             )}
-                        </div>
+                        </section>
                     </>
                 ) : (
-                    <div className="empty">Selecteer een bericht om te lezen.</div>
+                    <div className="mail-app__empty">
+                        Selecteer een bericht om te lezen.
+                    </div>
                 )}
-            </div>
+            </main>
         </div>
     );
-}
+};
 
 export default MailApp;

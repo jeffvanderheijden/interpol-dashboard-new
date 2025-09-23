@@ -1,0 +1,80 @@
+// src/styles/_win95.scss
+//
+// Centrale Windows 95 stijlmodule
+// Gebruik in SCSS: @use "../../styles/win95" as *;
+
+// --- Kleuren ---
+$win95-bg: #c0c0c0;
+$win95-teal-desktop: #008080;
+$win95-blue-titlebar: #000080;
+$win95-titlebar-text: #ffffff;
+$win95-window-bg: #ffffff;
+$win95-window-text: #333333;
+$win95-notification-bg: #ffffe1;
+
+// --- Extra status colors ---
+$win95-danger: #800000; // donkerrood, klassiek error
+$win95-success: #008000; // donkergroen
+$win95-warning: #ffcc00; // geelachtig
+
+// Terminal colors
+$win95-terminal-text: #f0f0f0;   // standaard lichtgrijs/wit
+$win95-terminal-prompt: #8be9fd; // retro cyan-blauw
+
+// Borders
+$border-light: #ffffff;
+$border-dark: #808080;
+$border-darker: #000000;
+
+// Schaduwen
+$win95-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+
+// Typografie
+$win95-font-stack: "MS Sans Serif", "Tahoma", "Geneva", sans-serif;
+$win95-font-size: 13px;
+
+// --- Mixins ---
+@mixin win95-border($type: "raised", $width: 2px) {
+    border-style: solid;
+    border-width: $width;
+
+    @if $type =="raised" {
+        border-color: $border-light $border-darker $border-darker $border-light;
+    }
+
+    @else if $type =="sunken" {
+        border-color: $border-dark $border-light $border-light $border-dark;
+    }
+}
+
+@mixin win95-font {
+    font-family: $win95-font-stack;
+    font-size: $win95-font-size;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+}
+
+// --- Buttons ---
+@mixin win95-button {
+    @include win95-border("raised");
+    background: $win95-bg;
+    padding: 2px 8px;
+    font-family: $win95-font-stack;
+    font-size: 13px;
+    cursor: pointer;
+
+    &:active {
+        @include win95-border("sunken");
+    }
+
+    &:focus {
+        outline: 1px dotted $border-darker;
+        outline-offset: 1px;
+    }
+}
+
+// --- Utility classes (optioneel) ---
+.win95-text {
+    @include win95-font;
+    color: $win95-window-text;
+}

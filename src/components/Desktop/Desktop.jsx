@@ -1,14 +1,25 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { GameContext } from "./_context/GameContext";
+
 import Icon from "./Icon/Icon";
 import Window from "./Window/Window";
 import TerminalApp from "./apps/TerminalApp/TerminalApp";
 import MailApp from "./apps/MailApp/MailApp";
 import DossierApp from "./apps/DossierApp/DossierApp";
 import EditorApp from "./apps/EditorApp/EditorApp";
-import NewTeam from "./apps/NewTeam/NewTeam";
+import NewTeamApp from "./apps/NewTeamApp/NewTeamApp";
 import Taskbar from "./Taskbar/Taskbar";
 import Notification from "./Notification/Notification";
+
+import {
+    ensureWindowOpen,
+    removeWindowById,
+    bringToFrontById,
+    getAppTitle,
+    deltaNewMails,
+    handleConditionalVirusDownload,
+} from "./_helpers/desktopHelpers";
+
 import "./Desktop.scss";
 
 const appConfig = {
@@ -18,14 +29,6 @@ const appConfig = {
     editor: { width: 680, height: 500, title: "Notepad" },
     newteam: { width: 480, height: 600, title: "Nieuw Team" },
 };
-
-const uniqueId = (() => {
-    let counter = 0;
-    return (prefix = "win") => {
-        counter += 1;
-        return `${prefix}-${Date.now()}-${counter}`;
-    };
-})();
 
 const Desktop = () => {
     const {
@@ -59,96 +62,54 @@ const Desktop = () => {
 
     const prevMailCount = useRef(0);
 
+    // ongelezen mails badge (t.o.v. vorige count)
     useEffect(() => {
-        const newMails = mails.length - prevMailCount.current;
-        if (newMails > 0) {
-            setUnreadMails((prev) => prev + newMails);
-        }
+        const add = deltaNewMails(mails.length, prevMailCount.current);
+        if (add > 0) setUnreadMails((prev) => prev + add);
         prevMailCount.current = mails.length;
     }, [mails]);
 
-    // sync unlocks bij refresh
+    // sync unlocks bij refresh / context update
     useEffect(() => {
         if (progress.terminalDone) setDossierUnlocked(true);
         if (progress.dossierDone) setEditorUnlocked(true);
         if (progress.virusExecutionSimulated) setNewTeamUnlocked(true);
     }, [progress]);
 
+    // auto-open terminal en trigger autoRunVirus na virusAnalyzed
     useEffect(() => {
         if (progress?.virusAnalyzed) {
-            openApp("terminal");                  // kan veilig 2× aangeroepen worden
+            openApp("terminal");
             if (!autoRunConsumedRef.current) {
                 setAutoRunVirusSignal(Date.now());
-                autoRunConsumedRef.current = true;  // voorkomt dubbele autorun
+                autoRunConsumedRef.current = true;
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [progress?.virusAnalyzed]);
 
-    // ✅ Start download via URL param (?download-file=true of ?downloadfile=true)
-    //    en unlock daarna de hint (1x, dankzij idempotente unlockMail).
+    // querystring-gestuurde virus.txt download
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const shouldDownload =
-            params.get("download-file") === "true" || params.get("downloadfile") === "true";
-        if (!shouldDownload) return;
-
-        // Verwijder de query meteen om dubbele runs (StrictMode) te voorkomen
-        const url = new URL(window.location.href);
-        url.searchParams.delete("download-file");
-        url.searchParams.delete("downloadfile");
-        window.history.replaceState({}, document.title, url.toString());
-
+        // IIFE naar helper verplaatst voor leesbaarheid
         (async () => {
-            try {
-                const res = await fetch("/downloads/virus.txt");
-                if (!res.ok) {
-                    console.error("Download mislukt:", res.status);
-                    return;
-                }
-                const blob = await res.blob();
-                const objUrl = URL.createObjectURL(blob);
-
-                const a = document.createElement("a");
-                a.href = objUrl;
-                a.download = "virus.txt";
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                URL.revokeObjectURL(objUrl);
-
-                // 🔓 Volgende hint (GameContext voorkomt dubbele mails)
-                unlockMail?.("virusDownloaded");
-            } catch (err) {
-                console.error("Download mislukt:", err);
-            }
+            await handleConditionalVirusDownload(unlockMail);
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // Volgende top z-index veilig bepalen
+    const nextTopZ = () => {
+        setZIndexCounter((prev) => prev + 1);
+        return zIndexCounter + 1;
+    };
+
+    // open single-instance app + mail badge/reset logica
     const openApp = (appName) => {
         const config = appConfig[appName];
         if (!config) return;
 
-        // Idempotent toevoegen: gebruik functionele set en dedupe op appName
-        setOpenWindows((prev) => {
-            if (prev.some((w) => w.app === appName)) {
-                return prev; // al open -> geen tweede venster
-            }
-            const newWindow = {
-                id: uniqueId(appName),
-                app: appName,
-                title: config.title,
-                z: zIndexCounter,         // huidige z
-                width: config.width,
-                height: config.height,
-                minimized: false,
-            };
-            return [...prev, newWindow];
-        });
-
-        // z-index omhoog (los van openWindows-update)
-        setZIndexCounter((prev) => prev + 1);
+        const topZ = nextTopZ();
+        setOpenWindows((prev) => ensureWindowOpen(prev, appName, config, topZ));
 
         if (appName === "mail") {
             setUnreadMails(0);
@@ -156,42 +117,19 @@ const Desktop = () => {
         }
     };
 
+    // breng venster naar voren + mail badge reset als nodig
     const bringToFront = (id) => {
-        setOpenWindows((prev) =>
-            prev.map((w) =>
-                w.id === id ? { ...w, z: zIndexCounter, minimized: false } : w
-            )
-        );
-        setZIndexCounter((prev) => prev + 1);
+        const topZ = nextTopZ();
+        setOpenWindows((prev) => bringToFrontById(prev, id, topZ));
 
-        const windowToBringForward = openWindows.find((w) => w.id === id);
-        if (windowToBringForward && windowToBringForward.app === "mail") {
+        const win = openWindows.find((w) => w.id === id);
+        if (win?.app === "mail") {
             setShowNotification(false);
             setUnreadMails(0);
         }
     };
 
-    const removeWindow = (openWindows, winId) => {
-        return openWindows.filter((w) => w.id !== winId);
-    };
-
-    const handleStepComplete = (trigger) => {
-        if (trigger === "terminalDone" && !dossierUnlocked) {
-            setDossierUnlocked(true);
-            unlockMail?.(trigger);
-        }
-        if (trigger === "dossierDone" && !editorUnlocked) {
-            setEditorUnlocked(true);
-            unlockMail?.(trigger);
-        }
-        if (trigger === "virusExecutionSimulated" && !newTeamUnlocked) {
-            setNewTeamUnlocked(true);
-            unlockMail?.(trigger);
-        }
-    };
-
-    const getAppTitle = (appName) => appConfig[appName]?.title || "Application";
-
+    // per-app content
     const renderAppContent = (appName) => {
         switch (appName) {
             case "terminal":
@@ -206,14 +144,12 @@ const Desktop = () => {
             case "mail":
                 return <MailApp />;
             case "dossier":
-                return (
-                    <DossierApp openApp={openApp} onStepComplete={handleStepComplete} />
-                );
+                return <DossierApp openApp={openApp} onStepComplete={handleStepComplete} />;
             case "editor":
                 return <EditorApp />;
             case "newteam":
                 return (
-                    <NewTeam
+                    <NewTeamApp
                         onSubmit={(data) => {
                             console.log("Team aangemaakt:", data);
                         }}
@@ -224,14 +160,27 @@ const Desktop = () => {
         }
     };
 
+    // unlock flow & mail-triggers gelijk aan origineel
+    function handleStepComplete(trigger) {
+        if (trigger === "terminalDone" && !dossierUnlocked) {
+            setDossierUnlocked(true);
+            unlockMail?.(trigger);
+        }
+        if (trigger === "dossierDone" && !editorUnlocked) {
+            setEditorUnlocked(true);
+            unlockMail?.(trigger);
+        }
+        if (trigger === "virusExecutionSimulated" && !newTeamUnlocked) {
+            setNewTeamUnlocked(true);
+            unlockMail?.(trigger);
+        }
+    }
+
     return (
         <div className="desktop-environment">
+            {/* Desktop icons */}
             <div className="desktop-icons">
-                <Icon
-                    label="Terminal"
-                    icon="🖥️"
-                    onDoubleClick={() => openApp("terminal")}
-                />
+                <Icon label="Terminal" icon="🖥️" onDoubleClick={() => openApp("terminal")} />
                 <Icon
                     label="E-mail"
                     icon="📬"
@@ -239,45 +188,30 @@ const Desktop = () => {
                     badge={unreadMails > 0}
                 />
                 {dossierUnlocked && (
-                    <Icon
-                        label="Dossiers"
-                        icon="🗂️"
-                        onDoubleClick={() => openApp("dossier")}
-                    />
+                    <Icon label="Dossiers" icon="🗂️" onDoubleClick={() => openApp("dossier")} />
                 )}
                 {editorUnlocked && (
-                    <Icon
-                        label="Editor"
-                        icon="📝"
-                        onDoubleClick={() => openApp("editor")}
-                    />
+                    <Icon label="Editor" icon="📝" onDoubleClick={() => openApp("editor")} />
                 )}
                 {newTeamUnlocked && (
-                    <Icon
-                        label="Nieuw Team"
-                        icon="👥"
-                        onDoubleClick={() => openApp("newteam")}
-                    />
+                    <Icon label="Nieuw Team" icon="👥" onDoubleClick={() => openApp("newteam")} />
                 )}
             </div>
 
+            {/* Windows */}
             {openWindows
                 .filter((win) => !win.minimized)
                 .map((win) => (
                     <Window
                         key={win.id}
-                        title={getAppTitle(win.app)}
+                        title={getAppTitle(appConfig, win.app)}
                         zIndex={win.z}
                         width={win.width}
                         height={win.height}
-                        onClose={() =>
-                            setOpenWindows((prev) => removeWindow(prev, win.id))
-                        }
+                        onClose={() => setOpenWindows((prev) => removeWindowById(prev, win.id))}
                         onMinimize={() =>
                             setOpenWindows((prev) =>
-                                prev.map((w) =>
-                                    w.id === win.id ? { ...w, minimized: true } : w
-                                )
+                                prev.map((w) => (w.id === win.id ? { ...w, minimized: true } : w))
                             )
                         }
                         onClick={() => bringToFront(win.id)}
@@ -286,6 +220,7 @@ const Desktop = () => {
                     </Window>
                 ))}
 
+            {/* Notification + Taskbar */}
             <Notification
                 show={showNotification}
                 subject={lastMailSubject}
@@ -295,11 +230,9 @@ const Desktop = () => {
                 }}
             />
 
-            <Taskbar
-                openWindows={openWindows}
-                bringToFront={bringToFront}
-                openApp={openApp} 
-            />
+            <Taskbar openWindows={openWindows} bringToFront={bringToFront} openApp={openApp} />
+
+            {/* Watermark */}
             <img
                 src="/svgs/interpol-logo.svg"
                 className="desktop-watermark"

@@ -1,42 +1,80 @@
+@use "sass:color";
+@use "../../../styles/win95" as *;
+
 .window {
     position: absolute;
-    border: 2px solid #ccc;
-    background-color: #FFF;
-    color: #333;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-    animation: openWindowAnimation 0.1s ease-out;
+    background-color: $win95-window-bg;
+    color: $win95-window-text;
+    @include win95-border("raised");
+    box-shadow: $win95-shadow;
+    animation: openWindowAnimation 0.12s ease-out;
+    overflow: hidden;
+
+    &--active {
+        border-color: color.scale($border-dark, $lightness: -20%);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    }
 
     &__header {
-        background-color: #ccc;
-        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: $win95-blue-titlebar;
+        color: $win95-titlebar-text;
         padding: 4px 8px;
         font-weight: bold;
         cursor: move;
-        display: flex;
-        justify-content: space-between;
         user-select: none;
 
-        button {
-            cursor: pointer;
-            background: none;
-            border: none;
-            font-weight: bold;
+        &-title {
+            flex-grow: 1;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        &-controls {
+            display: flex;
+            gap: 4px;
+
+            button {
+                @include win95-button;
+                background: transparent;
+                border-radius: 2px;
+                font-size: 0.9rem;
+                padding: 0 6px;
+                line-height: 1;
+                transition: background-color 0.15s ease;
+
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.1);
+                }
+
+                &:active {
+                    background-color: rgba(0, 0, 0, 0.2);
+                }
+            }
         }
     }
 
     &__content {
         flex-grow: 1;
         overflow: auto;
+        background: $win95-window-bg;
+        color: $win95-window-text;
     }
 }
 
+// Open animation
 @keyframes openWindowAnimation {
     from {
         opacity: 0;
-        transform: scale(0.97);
+        transform: scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: scale(1);

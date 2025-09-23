@@ -1,120 +1,110 @@
+@use "../../../../styles/win95" as *;
+
 .editor-app {
-    height: 100%;
-    display: flex;
-}
-
-.editor-app.styled {
     display: flex;
     height: 100%;
-    font-family: "Fira Code", monospace;
-    background: #1e1e1e;
-    color: #e0e0e0;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-}
+    background: $win95-window-bg;
+    color: $win95-window-text;
+    font-family: $win95-font-stack;
 
-.editor-app__sidebar {
-    width: 26%;
-    min-width: 26%;
-    max-width: 26%;
-    background: #252526;
-    border-right: 2px solid #333;
-    display: flex;
-    flex-direction: column;
-}
+    &__sidebar {
+        width: 200px;
+        background: $win95-bg;
+        @include win95-border("raised");
+        display: flex;
+        flex-direction: column;
+    }
 
-.editor-app__sidebar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    font-weight: bold;
-    background: #333;
-    color: #ccc;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-bottom: 1px solid #444;
-}
+    &__sidebar-header {
+        padding: 6px 8px;
+        font-weight: bold;
+        border-bottom: 1px solid $border-dark;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-.editor-app__filelist {
-    flex: 1;
-    overflow-y: auto;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
+        .small-new-btn {
+            @include win95-button;
+            font-size: 12px;
+            padding: 0 6px;
+            line-height: 1.4;
+        }
+    }
 
-.editor-app__file {
-    padding: 8px 12px;
-    cursor: pointer;
-    border-bottom: 1px solid #333;
-    font-size: 13px;
-    transition: background 0.2s;
-}
+    &__filelist {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        flex-grow: 1;
+        overflow-y: auto;
 
-.editor-app__file:hover {
-    background: #2a2d2e;
-}
+        .editor-app__file {
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 13px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
 
-.editor-app__file.is-active {
-    background: #094771;
-    color: #fff;
-    font-weight: bold;
-}
+            &:hover {
+                background: $win95-blue-titlebar;
+                color: $win95-titlebar-text;
+            }
 
-.editor-app__main {
-    flex: 1;
-    min-width: 74%;
-    max-width: 74%;
-    width: 74%;
-}
+            &.is-active {
+                background: $win95-blue-titlebar;
+                color: $win95-titlebar-text;
+                font-weight: bold;
+            }
+        }
+    }
 
-.editor-app__toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px;
-    border-bottom: "1px solid #333";
-    background: "#1b1b1b";
-    color: "#cfc";
-}
+    &__main {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        @include win95-border("sunken");
+    }
 
-.btn.primary {
-    background: #007acc;
-    color: white;
-}
+    &__toolbar {
+        background: $win95-bg;
+        padding: 4px 8px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid $border-dark;
 
-.btn.success {
-    background: #22863a;
-    color: white;
-}
+        .editor-app__filename {
+            font-weight: bold;
+        }
 
-.btn.danger {
-    background: #d73a49;
-    color: white;
-}
+        .status {
+            &.saved {
+                color: #3c3;
+            }
 
-.btn.warning {
-    background: #ff9800;
-    color: black;
-}
+            &.match {
+                color: #0c0;
+                font-weight: bold;
+            }
+        }
 
-.btn:hover {
-    opacity: 0.85;
-}
+        .editor-app__tip {
+            margin-left: auto;
+            opacity: 0.7;
+        }
+    }
 
-.editor-app__editor {
-    flex: 1;
-    position: relative;
-    height: calc(100% - 40.5px);
-}
+    &__editor {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
 
-.editor-app__loading {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #999;
-    font-size: 14px;
+        .editor-app__loading {
+            margin: auto;
+            font-size: 14px;
+            color: $win95-window-text;
+        }
+    }
 }

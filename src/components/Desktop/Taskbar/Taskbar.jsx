@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useContext, useEffect, useRef, useCallback } from "react";
 import { GameContext } from "./../_context/GameContext";
 import "./Taskbar.scss";
 
@@ -14,44 +14,63 @@ const Taskbar = ({ openWindows, bringToFront, openApp }) => {
                 setMenuOpen(false);
             }
         };
+
         if (menuOpen) {
-            document.addEventListener("mousedown", handleClickOutside);
+            document.addEventListener("pointerdown", handleClickOutside);
         } else {
-            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("pointerdown", handleClickOutside);
         }
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+
+        return () => document.removeEventListener("pointerdown", handleClickOutside);
     }, [menuOpen]);
 
-    const apps = [
-        { key: "terminal", label: "Terminal", icon: "🖥️" },
-        { key: "mail", label: "E-mail", icon: "📬" },
-        progress.terminalDone && { key: "dossier", label: "Dossiers", icon: "🗂️" },
-        progress.dossierDone && { key: "editor", label: "Editor", icon: "📝" },
-        progress.virusExecutionSimulated && { key: "newteam", label: "Nieuw Team", icon: "👥" },
-    ].filter(Boolean);
+    // Apps die beschikbaar zijn afhankelijk van progress
+    const availableApps = useCallback(() => {
+        const baseApps = [
+            { key: "terminal", label: "Terminal", icon: "🖥️" },
+            { key: "mail", label: "E-mail", icon: "📬" },
+        ];
+        if (progress.terminalDone) {
+            baseApps.push({ key: "dossier", label: "Dossiers", icon: "🗂️" });
+        }
+        if (progress.dossierDone) {
+            baseApps.push({ key: "editor", label: "Editor", icon: "📝" });
+        }
+        if (progress.virusExecutionSimulated) {
+            baseApps.push({ key: "newteam", label: "Nieuw Team", icon: "👥" });
+        }
+        return baseApps;
+    }, [progress]);
 
     return (
         <div className="taskbar">
             <button
                 className="taskbar__start"
-                onClick={() => setMenuOpen(!menuOpen)}
+                aria-haspopup="true"
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen((prev) => !prev)}
             >
                 Start
             </button>
 
             {menuOpen && (
-                <div className="taskbar__menu" ref={menuRef}>
+                <div
+                    className="taskbar__menu"
+                    ref={menuRef}
+                    role="menu"
+                    aria-label="Start menu"
+                >
                     <ul>
-                        {apps.map((app) => (
+                        {availableApps().map((app) => (
                             <li
                                 key={app.key}
-                                onClick={() => {
-                                    openApp(app.key);   
-                                    setMenuOpen(false); 
-                                }}
                                 className="taskbar__menu-item"
-                                role="button"
+                                role="menuitem"
                                 tabIndex={0}
+                                onClick={() => {
+                                    openApp(app.key);
+                                    setMenuOpen(false);
+                                }}
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter" || e.key === " ") {
                                         openApp(app.key);
@@ -59,7 +78,9 @@ const Taskbar = ({ openWindows, bringToFront, openApp }) => {
                                     }
                                 }}
                             >
-                                <span className="icon">{app.icon}</span>
+                                <span className="icon" aria-hidden="true">
+                                    {app.icon}
+                                </span>
                                 {app.label}
                             </li>
                         ))}
@@ -71,7 +92,8 @@ const Taskbar = ({ openWindows, bringToFront, openApp }) => {
                 {openWindows.map((w) => (
                     <button
                         key={w.id}
-                        className={`taskbar__window-button`}
+                        className={`taskbar__window-button ${w.minimized ? "" : "taskbar__window-button--active"
+                            }`}
                         onClick={() => bringToFront(w.id)}
                     >
                         {w.title}

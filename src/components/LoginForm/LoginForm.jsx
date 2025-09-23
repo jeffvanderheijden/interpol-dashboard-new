@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from './../../api/auth'; // Restored original import
+import { login } from './../../api/auth'; 
 import "./LoginForm.scss";
 
 const LoginForm = () => {
@@ -14,7 +14,7 @@ const LoginForm = () => {
         setError('');
         try {
             await login({ username, password });
-            navigate('/training'); // Restored navigate functionality
+            navigate('/training'); 
         } catch (err) {
             setError(err.message || 'Incorrect username or password.');
         }
