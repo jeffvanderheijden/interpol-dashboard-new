@@ -1,0 +1,172 @@
+@use "sass:color";
+@use "../../styles/win95" as *;
+
+.trainer-core {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: $win95-window-bg;
+    color: $win95-window-text;
+
+    /* ===== Body layout ===== */
+    .trainer-body {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    /* ===== Sidebar ===== */
+    .step-sidebar {
+        flex: 0 0 200px;
+        background: $win95-bg;
+        border-right: 2px solid $border-dark;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        font-size: 0.85rem;
+        overflow-y: auto;
+
+        li {
+            padding: 6px 8px;
+            cursor: pointer;
+
+            &.active {
+                background: $win95-blue-titlebar;
+                color: $win95-titlebar-text;
+            }
+
+            &:hover:not(.active) {
+                background: color.scale($win95-bg, $lightness: -8%);
+            }
+        }
+    }
+
+    /* ===== Main content ===== */
+    .trainer-main {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+        background: $win95-bg;
+    }
+
+    /* Explanation panel */
+    .trainer-explanation {
+        @include win95-border("sunken");
+        background: $win95-bg;
+        padding: 8px;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        max-height: clamp(100px, 25%, 200px);
+        overflow-y: auto;
+
+        h4 {
+            margin-top: 0;
+            font-size: 1rem;
+        }
+    }
+
+    /* Editors */
+    .trainer-editors {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+        gap: 6px;
+        padding: 6px;
+        background: $win95-bg;
+
+        .editor-pane {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            font-size: 0.85rem;
+            @include win95-border("sunken");
+
+            section {
+                height: 100% !important;
+            }
+
+            .editor-label {
+                background: $win95-bg;
+                color: $win95-window-text;
+                font-size: 0.75rem;
+                font-weight: bold;
+                padding: 4px 6px;
+                border-bottom: 1px solid $border-dark;
+            }
+
+            .editor-wrapper {
+                position: relative;
+                flex: 1;
+                min-height: 0;
+                overflow: hidden;
+            }
+
+            /* Force Monaco to fill and match styling */
+            .monaco-editor,
+            .monaco-editor .overflow-guard,
+            .monaco-scrollable-element {
+                height: 100% !important;
+                width: 100% !important;
+                background: #1e1e1e !important;
+                color: #fff !important;
+            }
+        }
+    }
+
+    /* Preview area */
+    .preview {
+        @include win95-border("sunken");
+        background: $win95-bg;
+        flex: 0 0 clamp(160px, 35%, 40vh);
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+
+        .preview-label {
+            background: $win95-bg;
+            color: $win95-window-text;
+            font-weight: bold;
+            font-size: 0.75rem;
+            padding: 4px 6px;
+            border-bottom: 1px solid $border-dark;
+        }
+
+        iframe {
+            flex: 1;
+            border: none;
+            background: #fff;
+            min-height: 0;
+        }
+
+        .tests {
+            border-top: 1px solid $border-light;
+            padding: 6px;
+            font-size: 0.8rem;
+            overflow-y: auto;
+            max-height: 100px;
+
+            li {
+                margin: 2px 0;
+            }
+
+            .pass {
+                color: lightgreen;
+            }
+
+            .fail {
+                color: red;
+            }
+        }
+
+        button {
+            @include win95-button;
+            margin: 6px;
+            font-size: 0.8rem;
+            align-self: flex-start;
+        }
+    }
+}
