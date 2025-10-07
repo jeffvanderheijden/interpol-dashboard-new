@@ -1,17 +1,36 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import StepSidebar from "./Editor/StepSidebar";
 import Editor from "./Editor/Editor";
 import Preview from "./Editor/Preview";
 import { runAllTests } from "./_helpers/validate";
 import "./TrainerCore.scss";
 
-const TrainerCore = ({ lesson, onClose }) => {
+const TrainerCore = ({ lesson }) => {
     const [stepIndex, setStepIndex] = useState(0);
     const step = lesson.steps[stepIndex];
     const iframeRef = useRef(null);
 
-    const [code, setCode] = useState(step.starter);
-    const [testResults, setTestResults] = useState([]);
+    // Veilige initiële state afhankelijk van het les-type
+    const getInitialCode = (step) => {
+        if (lesson.language === "htmlcss") {
+            return {
+                html: String(step?.starter?.html || ""),
+                css: String(step?.starter?.css || "")
+            };
+        }
+        if (lesson.language === "javascript") {
+            return String(step?.starter?.js || step?.starter || "");
+        }
+        return "";
+    };
+
+
+    const [code, setCode] = useState(getInitialCode(step));
+
+    // update code wanneer een nieuwe step wordt gekozen
+    useEffect(() => {
+        setCode(getInitialCode(step));
+    }, [stepIndex]);
 
     const runTests = async () => {
         const results = await runAllTests({
@@ -20,33 +39,24 @@ const TrainerCore = ({ lesson, onClose }) => {
             code,
             iframeRef,
         });
-        setTestResults(results);
+        return results;
     };
 
     return (
         <div className="trainer-core">
-            <header className="trainer-header">
-                <h3>{lesson.title}</h3>
-                <button onClick={onClose}>X</button>
-            </header>
-
             <div className="trainer-body">
-                {/* Sidebar */}
                 <StepSidebar
                     steps={lesson.steps}
                     currentIndex={stepIndex}
                     onSelect={setStepIndex}
                 />
 
-                {/* Main area */}
                 <div className="trainer-main">
-                    {/* Explanation */}
                     <div className="trainer-explanation">
                         <h4>{step.title}</h4>
                         <div dangerouslySetInnerHTML={{ __html: step.contentHtml }} />
                     </div>
 
-                    {/* Editors */}
                     <div className="trainer-editors">
                         {lesson.language === "htmlcss" ? (
                             <>
@@ -73,13 +83,10 @@ const TrainerCore = ({ lesson, onClose }) => {
                         )}
                     </div>
 
-                    {/* Preview */}
                     <Preview
                         code={code}
                         lesson={lesson}
-                        step={step}
                         iframeRef={iframeRef}
-                        testResults={testResults}
                         runTests={runTests}
                     />
                 </div>

@@ -170,3 +170,91 @@
         }
     }
 }
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutDown {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutDown {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+/* Zelfde styling als desktop, alleen position fixed zodat hij los werkt */
+.desktop-notification {
+    @include win95-border("raised");
+    position: fixed;
+    /* ← zodat het niet afhankelijk is van relative parents */
+    bottom: 40px;
+    right: 10px;
+    background: $win95-notification-bg;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 9999;
+
+    span {
+        display: inline-block;
+        margin-bottom: 6px;
+        font-weight: bold;
+    }
+
+    &--enter {
+        animation: slideInUp 0.3s ease-out forwards;
+    }
+
+    &--exit {
+        animation: slideOutDown 0.3s ease-out forwards;
+    }
+}

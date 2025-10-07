@@ -88,9 +88,7 @@ const Desktop = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [progress?.virusAnalyzed]);
 
-    // querystring-gestuurde virus.txt download
     useEffect(() => {
-        // IIFE naar helper verplaatst voor leesbaarheid
         (async () => {
             await handleConditionalVirusDownload(unlockMail);
         })();
@@ -223,9 +221,9 @@ const Desktop = () => {
                     >
                         {renderAppContent(win.app)}
                     </Window>
-                ))}
+                ))
+            }
 
-            {/* Notification + Taskbar */}
             <Notification
                 show={showNotification}
                 subject={lastMailSubject}
