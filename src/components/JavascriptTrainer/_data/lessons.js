@@ -10,7 +10,7 @@ export const LESSON = {
             contentHtml: "<p>Log de tekst <code>'Interpol training gestart'</code> naar de console.</p>",
             starter: { js: "// TODO: log de tekst\n" },
             tests: [
-                { type: "consoleContains", includes: "Interpol training gestart", label: "Tekst wordt gelogd" },
+                { type: "consoleOutputContains", includes: "Interpol training gestart", label: "Tekst wordt gelogd" },
             ],
         },
         // 2
@@ -30,7 +30,7 @@ export const LESSON = {
             contentHtml: "<p>Gebruik <code>console.log</code> om de tekst <code>Agent Kevin meld zich</code> te tonen, gebruik de variabele <code>agentName</code>.</p>",
             starter: { js: "let agentName = 'Kevin';\n// TODO: log met variabele\n" },
             tests: [
-                { type: "consoleContains", includes: "Agent Kevin meld zich", label: "Logtekst klopt" },
+                { type: "consoleOutputContains", includes: "Agent Kevin meld zich", label: "Logtekst klopt" },
             ],
         },
         // 4
@@ -60,7 +60,7 @@ export const LESSON = {
             contentHtml: "<p>Controleer of <code>codeLevel &gt; 5</code> en log <code>'Toegang verleend'</code> als dat zo is.</p>",
             starter: { js: "let codeLevel = 7;\n// TODO: gebruik if\n" },
             tests: [
-                { type: "consoleContains", includes: "Toegang verleend", label: "Voorwaarde klopt" },
+                { type: "consoleOutputContains", includes: "Toegang verleend", label: "Voorwaarde klopt" },
             ],
         },
         // 7
@@ -80,7 +80,7 @@ export const LESSON = {
             contentHtml: "<p>Log het eerste element van de array <code>suspects</code>.</p>",
             starter: { js: "let suspects = ['Kevin','Aisha','Daan'];\n// TODO: log eerste\n" },
             tests: [
-                { type: "consoleContains", includes: "Kevin", label: "Eerste naam gelogd" },
+                { type: "consoleOutputContains", includes: "Kevin", label: "Eerste naam gelogd" },
             ],
         },
         // 9
@@ -90,8 +90,8 @@ export const LESSON = {
             contentHtml: "<p>Gebruik een <code>for</code>-loop om alle namen in <code>suspects</code> te loggen.</p>",
             starter: { js: "let suspects = ['Kevin','Aisha','Daan'];\n// TODO: loop\n" },
             tests: [
-                { type: "consoleContains", includes: "Aisha", label: "Loop werkt" },
-                { type: "consoleContains", includes: "Daan", label: "Alle namen gelogd" },
+                { type: "consoleOutputContains", includes: "Aisha", label: "Loop werkt" },
+                { type: "consoleOutputContains", includes: "Daan", label: "Alle namen gelogd" },
             ],
         },
         // 10
@@ -102,7 +102,7 @@ export const LESSON = {
             starter: { js: "// TODO: maak functie\n" },
             tests: [
                 { type: "functionReturns", name: "greetAgent", args: ["Aisha"], value: undefined, label: "Functie bestaat" },
-                { type: "consoleContains", includes: "Welkom, Aisha", label: "Output klopt" },
+                { type: "consoleOutputContains", includes: "Welkom, Aisha", label: "Output klopt" },
             ],
         },
         // 11
@@ -132,8 +132,8 @@ export const LESSON = {
             contentHtml: "<p>Log de tekst <code>Agent Kevin heeft rang Junior</code> met behulp van het object.</p>",
             starter: { js: "let agent = { name: 'Kevin', rank: 'Junior' };\n// TODO: log tekst\n" },
             tests: [
-                { type: "consoleContains", includes: "Kevin", label: "Naam aanwezig" },
-                { type: "consoleContains", includes: "Junior", label: "Rang aanwezig" },
+                { type: "consoleOutputContains", includes: "Kevin", label: "Naam aanwezig" },
+                { type: "consoleOutputContains", includes: "Junior", label: "Rang aanwezig" },
             ],
         },
         // 14
@@ -204,7 +204,7 @@ export const LESSON = {
             contentHtml: "<p>Gebruik <code>setTimeout</code> om na 2 seconden <code>'Missie voltooid'</code> te loggen.</p>",
             starter: { js: "// TODO: gebruik setTimeout\n" },
             tests: [
-                { type: "delayedConsoleContains", includes: "Missie voltooid", delay: 2000, label: "Tijdelijke actie werkt" },
+                { type: "delayedconsoleOutputContains", includes: "Missie voltooid", delay: 2000, label: "Tijdelijke actie werkt" },
             ],
         },
     ],
