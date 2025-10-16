@@ -1,5 +1,5 @@
 export async function login({ username, password }) {
-    const response = await fetch('https://api.heijden.sd-lab.nl/api', {
+    const response = await fetch('https://api.heijden.sd-lab.nl/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
