@@ -1,5 +1,5 @@
 export async function login({ username, password }) {
-    const response = await fetch('https://api2.interpol.sd-lab.nl/api', {
+    const response = await fetch('https://api.heijden.sd-lab.nl/api', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
