@@ -13,6 +13,7 @@ export function AuthProvider({ children }) {
         })
             .then(res => res.json())
             .then(data => {
+                console.log()
                 setUser(data.user || null);
                 setLoading(false);
             })
