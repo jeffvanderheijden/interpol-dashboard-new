@@ -20,6 +20,11 @@ const LoginForm = () => {
         }
     }
 
+    const cancel = () => {
+        setUsername('');
+        setPassword('');
+    }
+
     return (
         <div className="page-container">
             <form className="form" onSubmit={handleSubmit}>
@@ -56,7 +61,7 @@ const LoginForm = () => {
                         <button className="form__button" type="submit">
                             OK
                         </button>
-                        <button className="form__button" type="button" onClick={() => navigate('/cancel')}>
+                        <button className="form__button" type="button" onClick={() => cancel()}>
                             Cancel
                         </button>
                     </div>
