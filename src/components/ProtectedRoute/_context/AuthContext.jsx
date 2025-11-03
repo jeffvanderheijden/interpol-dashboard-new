@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
         })
             .then(res => res.json())
             .then(data => {
-                console.log()
+                console.log('session check', data);
                 setUser(data.user || null);
                 setLoading(false);
             })
@@ -39,6 +39,7 @@ export function AuthProvider({ children }) {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Login mislukt");
+        console.log(data.user);
         setUser(data.user);
     };
 

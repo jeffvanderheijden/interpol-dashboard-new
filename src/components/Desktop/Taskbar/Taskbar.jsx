@@ -1,13 +1,17 @@
 import { useState, useContext, useEffect, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { GameContext } from "./../_context/GameContext";
+import { useAuth } from "./../../ProtectedRoute/_context/AuthContext";
 import "./Taskbar.scss";
 
 const Taskbar = ({ openWindows, bringToFront, openApp }) => {
     const { progress } = useContext(GameContext);
+    const { logout } = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
+    const navigate = useNavigate();
 
-    // sluit menu bij klik buiten start-menu
+    // Sluit menu bij klik buiten start-menu
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -24,7 +28,7 @@ const Taskbar = ({ openWindows, bringToFront, openApp }) => {
         return () => document.removeEventListener("pointerdown", handleClickOutside);
     }, [menuOpen]);
 
-    // Apps die beschikbaar zijn afhankelijk van progress
+    // Apps afhankelijk van progress
     const availableApps = useCallback(() => {
         const baseApps = [
             { key: "terminal", label: "Terminal", icon: "/icons/terminal.ico" },
@@ -41,6 +45,16 @@ const Taskbar = ({ openWindows, bringToFront, openApp }) => {
         }
         return baseApps;
     }, [progress]);
+
+    // Uitlogactie
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate("/"); // terug naar login
+        } catch (err) {
+            console.error("Logout mislukt:", err);
+        }
+    };
 
     return (
         <div className="taskbar">
@@ -84,6 +98,29 @@ const Taskbar = ({ openWindows, bringToFront, openApp }) => {
                                 {app.label}
                             </li>
                         ))}
+
+                        <hr className="taskbar__separator" />
+
+                        <li
+                            className="taskbar__menu-item taskbar__menu-item--logout"
+                            role="menuitem"
+                            tabIndex={0}
+                            onClick={() => {
+                                handleLogout();
+                                setMenuOpen(false);
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    handleLogout();
+                                    setMenuOpen(false);
+                                }
+                            }}
+                        >
+                            <span className="icon" aria-hidden="true">
+                                <img src="/icons/shutdown.ico" alt="" className="taskbar__menu-icon" />
+                            </span>
+                            Log out
+                        </li>
                     </ul>
                 </div>
             )}

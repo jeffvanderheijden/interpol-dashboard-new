@@ -11,16 +11,16 @@ import Javascript from './pages/Javascript';
 const App = () => {
     return (
         <GameProvider>
-             <AuthProvider>
-                <Router>
+            <Router>
+                <AuthProvider>
                     <Routes>
                         <Route path="/" element={<Login />} />
                         <Route path="/training" element={<ProtectedRoute><Training /></ProtectedRoute>} />
                         <Route path="/html-css" element={<ProtectedRoute><HtmlCss /></ProtectedRoute>} />
                         <Route path="/javascript" element={<ProtectedRoute><Javascript /></ProtectedRoute>} />
                     </Routes>
-                </Router>
-            </AuthProvider>
+                </AuthProvider>
+            </Router>
         </GameProvider>
     );
 }
