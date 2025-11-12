@@ -1,8 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
+import { useNavigate } from "react-router-dom";
 
-export function AuthProvider({ children }) {
+export const AuthProvider = ({ children }) => {
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -13,9 +15,10 @@ export function AuthProvider({ children }) {
         })
             .then(res => res.json())
             .then(data => {
-                console.log('session check', data);
                 setUser(data.user || null);
                 setLoading(false);
+                // redirect na sessiecheck
+                data.user ? navigate("/training") : navigate("/");
             })
             .catch(() => setLoading(false));
     }, []);
@@ -25,7 +28,12 @@ export function AuthProvider({ children }) {
         const interval = setInterval(() => {
             fetch("https://api.heijden.sd-lab.nl/api/session", { credentials: "include" })
                 .then(res => res.json())
-                .then(data => { if (!data.user) setUser(null); });
+                .then(data => { 
+                    if (!data.user) { 
+                        setUser(null); 
+                        navigate("/");
+                    }
+                });
         }, 5 * 60 * 1000); // elke 5 minuten
         return () => clearInterval(interval);
     }, []);
@@ -39,8 +47,8 @@ export function AuthProvider({ children }) {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Login mislukt");
-        console.log(data.user);
         setUser(data.user);
+        navigate("/training");
     };
 
     const logout = async () => {

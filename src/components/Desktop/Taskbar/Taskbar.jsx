@@ -116,9 +116,9 @@ const Taskbar = ({ openWindows, bringToFront, openApp }) => {
                                 }
                             }}
                         >
-                            <span className="icon" aria-hidden="true">
+                            {/* <span className="icon" aria-hidden="true">
                                 <img src="/icons/shutdown.ico" alt="" className="taskbar__menu-icon" />
-                            </span>
+                            </span> */}
                             Log out
                         </li>
                     </ul>
