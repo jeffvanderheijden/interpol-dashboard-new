@@ -14,7 +14,7 @@ const LoginForm = () => {
         e.preventDefault();
         setError('');
         try {
-            await login({ username, password });
+            await login(username, password);
             navigate('/training'); 
         } catch (err) {
             setError(err.message || 'Incorrect username or password.');
