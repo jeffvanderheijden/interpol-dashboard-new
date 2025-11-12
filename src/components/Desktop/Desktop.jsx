@@ -89,11 +89,14 @@ const Desktop = () => {
     }, [progress?.virusAnalyzed]);
 
     useEffect(() => {
-        (async () => {
-            await handleConditionalVirusDownload(unlockMail);
-        })();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        const params = new URLSearchParams(location.search);
+        const shouldDownload =
+            params.get("download-file") === "true" || params.get("downloadfile") === "true";
+
+        if (shouldDownload && unlockMail) {
+            handleConditionalVirusDownload(unlockMail);
+        }
+    }, [location, unlockMail]);
 
     // Volgende top z-index veilig bepalen
     const nextTopZ = () => {
@@ -145,9 +148,9 @@ const Desktop = () => {
                 return <EditorApp />;
             case "dossier":
                 return (
-                    <DossierApp 
-                        openApp={openApp} 
-                        onStepComplete={handleStepComplete} 
+                    <DossierApp
+                        openApp={openApp}
+                        onStepComplete={handleStepComplete}
                     />
                 );
             case "newteam":
