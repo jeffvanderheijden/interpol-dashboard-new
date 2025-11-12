@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from './../../api/auth'; 
+import { useAuth } from '../ProtectedRoute/_context/AuthContext';
 import "./LoginForm.scss";
 
 const LoginForm = () => {
+    const { login } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
