@@ -18,6 +18,8 @@ const App = () => {
                         <Route path="/training" element={<ProtectedRoute><Training /></ProtectedRoute>} />
                         <Route path="/html-css" element={<ProtectedRoute><HtmlCss /></ProtectedRoute>} />
                         <Route path="/javascript" element={<ProtectedRoute><Javascript /></ProtectedRoute>} />
+                        {/* TODO: Maak 404 pagina */}
+                        <Route path="*" element={<div>Pagina niet gevonden</div>} /> 
                     </Routes>
                 </AuthProvider>
             </Router>
