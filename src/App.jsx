@@ -23,7 +23,7 @@ const App = () => {
                         <Route 
                             path="/training"
                             element={
-                                <ProtectedRoute roles={["teacher", "student"]}>
+                                <ProtectedRoute roles={["docent", "student"]}>
                                     <Training />
                                 </ProtectedRoute>
                             } 
@@ -31,7 +31,7 @@ const App = () => {
                         <Route 
                             path="/html-css" 
                             element={
-                                <ProtectedRoute roles={["teacher", "student"]}>
+                                <ProtectedRoute roles={["docent", "student"]}>
                                     <HtmlCss />
                                 </ProtectedRoute>
                             } 
@@ -39,7 +39,7 @@ const App = () => {
                         <Route 
                             path="/javascript" 
                             element={
-                                <ProtectedRoute roles={["teacher", "student"]}>
+                                <ProtectedRoute roles={["docent", "student"]}>
                                     <Javascript />
                                 </ProtectedRoute>
                             } 
@@ -48,7 +48,7 @@ const App = () => {
                         <Route 
                             path="/admin" 
                             element={
-                                <ProtectedRoute roles={["teacher"]}>
+                                <ProtectedRoute roles={["docent"]}>
                                     <Javascript />
                                 </ProtectedRoute>
                             } 
