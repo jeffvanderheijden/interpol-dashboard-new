@@ -1,4 +1,4 @@
-const Unauthorized = () => {
+const NotFound = () => {
     return (
         <div
             style={{
@@ -22,14 +22,14 @@ const Unauthorized = () => {
                     fontWeight: "bold",
                 }}
             >
-                🔒 401: Unauthorized
+                ❌ 404: File not Found
             </h1>
 
             <p style={{ fontSize: "14px", marginTop: "12px" }}>
-                Je bent niet geautoriseerd om deze pagina te bekijken.
+                De pagina of het bestand dat je zoekt bestaat niet.
             </p>
         </div>
     );
 };
 
-export default Unauthorized;
+export default NotFound;

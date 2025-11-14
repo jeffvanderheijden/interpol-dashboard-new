@@ -7,7 +7,9 @@ import Login from './pages/Login';
 import Training from './pages/Training';
 import HtmlCss from './pages/HtmlCss';
 import Javascript from './pages/Javascript';
+import Admin from './pages/Admin';
 import Unauthorized from './pages/Unauthorized';
+import NotFound from './pages/NotFound';
 
 const App = () => {
     return (
@@ -49,13 +51,13 @@ const App = () => {
                             path="/admin" 
                             element={
                                 <ProtectedRoute roles={["docent"]}>
-                                    <Javascript />
+                                    <Admin />
                                 </ProtectedRoute>
                             } 
                         />
-                        {/* TODO: Maak 404 pagina */}
+                        {/* Error pages */}
                         <Route path="/unauthorized" element={<Unauthorized />} />
-                        <Route path="*" element={<div>Pagina niet gevonden</div>} /> 
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </AuthProvider>
             </Router>
