@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Training from './pages/Training';
 import HtmlCss from './pages/HtmlCss';
 import Javascript from './pages/Javascript';
+import Unauthorized from './pages/Unauthorized';
 
 const App = () => {
     return (
@@ -14,11 +15,46 @@ const App = () => {
             <Router>
                 <AuthProvider>
                     <Routes>
-                        <Route path="/" element={<Login />} />
-                        <Route path="/training" caseSensitive={false} element={<ProtectedRoute><Training /></ProtectedRoute>} />
-                        <Route path="/html-css" caseSensitive={false} element={<ProtectedRoute><HtmlCss /></ProtectedRoute>} />
-                        <Route path="/javascript" caseSensitive={false} element={<ProtectedRoute><Javascript /></ProtectedRoute>} />
+                        {/* STUDENT */}
+                        <Route 
+                            path="/" 
+                            element={<Login />} 
+                        />
+                        <Route 
+                            path="/training"
+                            element={
+                                <ProtectedRoute roles={["teacher", "student"]}>
+                                    <Training />
+                                </ProtectedRoute>
+                            } 
+                        />
+                        <Route 
+                            path="/html-css" 
+                            element={
+                                <ProtectedRoute roles={["teacher", "student"]}>
+                                    <HtmlCss />
+                                </ProtectedRoute>
+                            } 
+                        />
+                        <Route 
+                            path="/javascript" 
+                            element={
+                                <ProtectedRoute roles={["teacher", "student"]}>
+                                    <Javascript />
+                                </ProtectedRoute>
+                            } 
+                        />
+                        {/* ADMIN */}
+                        <Route 
+                            path="/admin" 
+                            element={
+                                <ProtectedRoute roles={["teacher"]}>
+                                    <Javascript />
+                                </ProtectedRoute>
+                            } 
+                        />
                         {/* TODO: Maak 404 pagina */}
+                        <Route path="/unauthorized" element={<Unauthorized />} />
                         <Route path="*" element={<div>Pagina niet gevonden</div>} /> 
                     </Routes>
                 </AuthProvider>
