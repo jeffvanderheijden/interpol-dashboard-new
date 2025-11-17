@@ -118,16 +118,17 @@ const NewTeamApp = () => {
             if (!m.name.trim() || !m.number.trim())
                 return setError("Vul voor elke student naam en studentnummer in.");
             if (!validateStudentNumber(m.number.trim()))
-                return setError("Studentnummer moet 4–6 cijfers zijn.");
+                return setError("Studentnummer moet 4-6 cijfers zijn.");
         }
 
         // ----------------------
-        // API CALL HIER!
+        // API CALL HIER
         // ----------------------
         try {
             setLoading(true);
             const data = await createGroup(teamPhoto, members);
-            navigate(`/team/${data.id}`);
+            console.log('new group created:', data)
+            // navigate(`/team/${data.id}`);
         } catch (err) {
             console.error(err);
             setError("Kon team niet opslaan. Probeer opnieuw.");

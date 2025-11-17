@@ -1,5 +1,7 @@
+import { API_BASE } from "./_config";
+
 export async function login({ username, password }) {
-    const response = await fetch('https://api.heijden.sd-lab.nl/api/login', {
+    const response = await fetch(`${API_BASE}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
