@@ -27,7 +27,7 @@ const appConfig = {
     mail: { width: 680, height: 500, title: "Inbox - E-mail Client" },
     dossier: { width: 600, height: 480, title: "Dossier Viewer" },
     editor: { width: 900, height: 500, title: "Notepad" },
-    newteam: { width: 480, height: 600, title: "Nieuw Team" },
+    newteam: { width: 480, height: 680, title: "Nieuw Team" },
 };
 
 const Desktop = () => {
