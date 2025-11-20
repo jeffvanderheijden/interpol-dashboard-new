@@ -7,7 +7,12 @@ export async function createGroup(teamPhoto, members) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ teamPhoto, members }),
+        body: JSON.stringify({
+            teamPhoto,
+            members,
+            teamName,
+            className
+        })
     });
 
     if (!res.ok) {

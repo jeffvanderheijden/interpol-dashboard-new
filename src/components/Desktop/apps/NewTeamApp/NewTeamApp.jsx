@@ -11,6 +11,9 @@ const NewTeamApp = () => {
         { name: "", number: "" },
         { name: "", number: "" },
     ]);
+    const [teamName, setTeamName] = useState("");
+    const [className, setClassName] = useState("");
+
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -113,6 +116,8 @@ const NewTeamApp = () => {
         if (!teamPhoto) return setError("Maak eerst een teamfoto.");
         if (members.length < 3) return setError("Minimaal 3 studenten vereist.");
         if (members.length > 5) return setError("Maximaal 5 studenten toegestaan.");
+        if (!teamName.trim()) return setError("Vul een teamnaam in.");
+        if (!className.trim()) return setError("Vul een klas in.");
 
         for (const m of members) {
             if (!m.name.trim() || !m.number.trim())
@@ -126,7 +131,7 @@ const NewTeamApp = () => {
         // ----------------------
         try {
             setLoading(true);
-            const data = await createGroup(teamPhoto, members);
+            const data = await createGroup(teamPhoto, members, teamName, className);
             console.log('new group created:', data)
             // navigate(`/team/${data.id}`);
         } catch (err) {
@@ -169,6 +174,23 @@ const NewTeamApp = () => {
                 </button>
 
                 <form onSubmit={handleSubmit} className="new-team__form">
+                    <div className="new-team__input-row">
+                        <input
+                            type="text"
+                            placeholder="Teamnaam (verzin iets leuks!)"
+                            value={teamName}
+                            onChange={(e) => setTeamName(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="new-team__input-row">
+                        <input
+                            type="text"
+                            placeholder="Klas (bijv. D1A)"
+                            value={className}
+                            onChange={(e) => setClassName(e.target.value)}
+                        />
+                    </div>
 
                     {members.map((m, idx) => (
                         <div key={idx} className="new-team__member-row">
