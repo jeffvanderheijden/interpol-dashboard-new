@@ -1,6 +1,6 @@
 import { API_BASE } from "./_config";
 
-export async function createGroup(teamPhoto, members) {
+export async function createGroup(teamPhoto, members, teamName, className) {
     const res = await fetch(`${API_BASE}/api/groups`, {
         method: "POST",
         credentials: "include",
