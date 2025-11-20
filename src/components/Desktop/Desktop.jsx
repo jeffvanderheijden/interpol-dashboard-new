@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { GameContext } from "./_context/GameContext";
+import { triggerHackerAnimation } from "./_helpers/dossierHelpers";
 
 import Icon from "./Icon/Icon";
 import Window from "./Window/Window";
@@ -10,6 +11,7 @@ import EditorApp from "./apps/EditorApp/EditorApp";
 import NewTeamApp from "./apps/NewTeamApp/NewTeamApp";
 import Taskbar from "./Taskbar/Taskbar";
 import Notification from "./Notification/Notification";
+
 
 import {
     ensureWindowOpen,
@@ -145,9 +147,9 @@ const Desktop = () => {
                 return <EditorApp />;
             case "dossier":
                 return (
-                    <DossierApp 
-                        openApp={openApp} 
-                        onStepComplete={handleStepComplete} 
+                    <DossierApp
+                        openApp={openApp}
+                        onStepComplete={handleStepComplete}
                     />
                 );
             case "newteam":
@@ -170,9 +172,11 @@ const Desktop = () => {
             unlockMail?.(trigger);
         }
         if (trigger === "dossierDone" && !editorUnlocked) {
+            triggerHackerAnimation();
             setEditorUnlocked(true);
             unlockMail?.(trigger);
         }
+
         if (trigger === "virusExecutionSimulated" && !newTeamUnlocked) {
             setNewTeamUnlocked(true);
             unlockMail?.(trigger);

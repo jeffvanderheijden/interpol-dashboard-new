@@ -48,8 +48,8 @@ const DossierApp = ({ onStepComplete }) => {
                             <li
                                 key={dossier.id}
                                 className={`dossier-app__item ${isSelected ? "dossier-app__item--selected" : ""}`}
-                                onClick={() => setSelected(dossier.id)}              // enkelklik = highlight
-                                onDoubleClick={() => openDetail(dossier)}             // dubbelklik = open detail
+                                onClick={() => setSelected(dossier.id)}     // enkelklik = highlight
+                                onDoubleClick={() => openDetail(dossier)}   // dubbelklik = open detail
                                 role="button"
                                 tabIndex={0}
                                 onKeyDown={(e) => {

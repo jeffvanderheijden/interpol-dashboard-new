@@ -1,11 +1,22 @@
-// helpers voor DossierApp
+import React from "react";
+import { createRoot } from "react-dom/client";
+import HackerWarning from "./../apps/DossierApp/HackerWarning";
+
+// ---------------------
+// Naam formatting
+// ---------------------
+
 export const formatName = (filename) =>
     filename
         .replace(/\.(jpg|jpeg|png)$/i, "")
         .replace(/-/g, " ");
 
+
+// ---------------------
+// Motive logic
+// ---------------------
+
 const motives = [
-    // voorbeelden; je kunt deze uitbreiden of per-achtergrond conditionals toevoegen
     "Onverklaarbare stroomkostenstijging thuis — mogelijk mining-apparatuur.",
     "Recent grote uitgaven in crypto-ruilplatformen, buiten salaris om.",
     "Werkt vaak 's nachts (logs / toegangsdata tonen ongebruikelijke uren).",
@@ -16,9 +27,43 @@ const motives = [
 ];
 
 export function generateMotive(name) {
-    // deterministic-ish keuze op basis van naam (zodat het reproduceerbaar is)
     const seed = name
         .split("")
         .reduce((s, c) => s + c.charCodeAt(0), 0);
+
     return motives[seed % motives.length];
+}
+
+
+// ---------------------
+// HACKER ANIMATION TRIGGER
+// ---------------------
+
+let activeRoot = null;
+
+export function triggerHackerAnimation() {
+    if (activeRoot) return; // prevent duplicates
+
+    const container = document.createElement("div");
+    container.id = "hacker-animation-root";
+    container.style.position = "fixed";
+    container.style.top = 0;
+    container.style.left = 0;
+    container.style.width = "100vw";
+    container.style.height = "100vh";
+    container.style.zIndex = 999999;
+    container.style.pointerEvents = "none";
+    document.body.appendChild(container);
+
+    activeRoot = createRoot(container);
+
+    const cleanup = () => {
+        activeRoot.unmount();
+        container.remove();
+        activeRoot = null;
+    };
+
+    activeRoot.render(
+        React.createElement(HackerWarning, { onFinished: cleanup })
+    );
 }
