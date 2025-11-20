@@ -5,6 +5,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import "./styles/_reset.scss";
 import Login from './pages/Login';
 import Training from './pages/Training';
+import Dashboard from './pages/Dashboard';
 import HtmlCss from './pages/HtmlCss';
 import Javascript from './pages/Javascript';
 import Admin from './pages/Admin';
@@ -27,6 +28,14 @@ const App = () => {
                             element={
                                 <ProtectedRoute roles={["docent", "student"]}>
                                     <Training />
+                                </ProtectedRoute>
+                            } 
+                        />
+                        <Route 
+                            path="/dashboard/:teamId"
+                            element={
+                                <ProtectedRoute roles={["docent", "student"]}>
+                                    <Dashboard />
                                 </ProtectedRoute>
                             } 
                         />

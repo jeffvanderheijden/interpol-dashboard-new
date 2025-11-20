@@ -132,8 +132,8 @@ const NewTeamApp = () => {
         try {
             setLoading(true);
             const data = await createGroup(teamPhoto, members, teamName, className);
-            console.log('new group created:', data)
-            // navigate(`/team/${data.id}`);
+            // Navigeren naar dashboard van nieuw team
+            navigate(`/dashboard/${data.id}`);
         } catch (err) {
             console.error(err);
             setError("Kon team niet opslaan. Probeer opnieuw.");
