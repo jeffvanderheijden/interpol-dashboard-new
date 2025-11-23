@@ -1,5 +1,8 @@
 import { API_BASE } from "./_config";
 
+// -------------------------------
+// CREATE
+// -------------------------------
 export async function createGroup(teamPhoto, members, teamName, className) {
     const res = await fetch(`${API_BASE}/api/groups`, {
         method: "POST",
@@ -23,3 +26,12 @@ export async function createGroup(teamPhoto, members, teamName, className) {
 
     return res.json();
 }
+
+// -------------------------------
+// UPDATE
+// -------------------------------
+
+
+// -------------------------------
+// DELETE
+// -------------------------------

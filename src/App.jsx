@@ -34,7 +34,7 @@ const App = () => {
                         <Route 
                             path="/dashboard/:teamId"
                             element={
-                                <ProtectedRoute roles={["docent", "student"]}>
+                                <ProtectedRoute roles={["docent", "student"]} teamProtected={true}>
                                     <Dashboard />
                                 </ProtectedRoute>
                             } 
@@ -64,7 +64,7 @@ const App = () => {
                                 </ProtectedRoute>
                             } 
                         />
-                        {/* Error pages */}
+                        {/* ERROR PAGES */}
                         <Route path="/unauthorized" element={<Unauthorized />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>

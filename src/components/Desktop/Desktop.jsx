@@ -237,7 +237,12 @@ const Desktop = () => {
                 }}
             />
 
-            <Taskbar openWindows={openWindows} bringToFront={bringToFront} openApp={openApp} />
+            <Taskbar 
+                mode="training"
+                openWindows={openWindows} 
+                bringToFront={bringToFront} 
+                openApp={openApp} 
+            />
 
             {/* Watermark */}
             <img
