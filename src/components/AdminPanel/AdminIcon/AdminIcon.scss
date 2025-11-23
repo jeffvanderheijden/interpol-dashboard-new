@@ -1,0 +1,32 @@
+@use "./../../../styles/win95" as *;
+
+.admin-icon {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    z-index: 9999;
+    text-decoration: none;
+
+    // Zorg dat klikken op het icoon voelt als de desktop-icons
+    .icon-image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 4px;
+    }
+
+    .icon-img {
+        width: 32px;
+        height: 32px;
+        image-rendering: pixelated;
+    }
+
+    .icon-label {
+        color: $border-light;
+        font-size: 12px;
+        font-family: $win95-font-stack;
+        text-align: center;
+        padding: 2px 4px;
+        user-select: none;
+    }
+}

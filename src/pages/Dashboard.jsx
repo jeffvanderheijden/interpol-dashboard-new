@@ -2,7 +2,10 @@ import StudentDashboard from "./../components/Dashboard/StudentDashboard";
 
 const Dashboard = () => {
     return (
-        <StudentDashboard />
+        <>
+            <AdminIcon />
+            <StudentDashboard />
+        </>
     );
 }
 

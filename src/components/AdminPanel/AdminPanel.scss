@@ -1,0 +1,51 @@
+.admin-panel {
+    padding: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.admin-filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.admin-filters input,
+.admin-filters select {
+    padding: 8px;
+    font-size: 14px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.admin-table th {
+    background: #f5f5f5;
+}
+
+.admin-table tr:hover {
+    background: #f0f0f0;
+}
+
+.delete-btn {
+    background: #d9534f;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+}
+
+.delete-btn:hover {
+    background: #c9302c;
+}
+
+.admin-actions button {
+    margin-right: 10px;
+}

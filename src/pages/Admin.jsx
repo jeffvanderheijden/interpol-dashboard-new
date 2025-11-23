@@ -1,8 +1,8 @@
+import AdminPanel from "../components/AdminPanel/AdminPanel";
+
 const Admin = () => {
     return (
-        <div>
-            ADMIN PANEL
-        </div>
+        <AdminPanel />
     )
 }
 
