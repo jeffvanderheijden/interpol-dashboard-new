@@ -1,41 +1,54 @@
 import { useEffect, useState } from "react";
 import { getAdminGroups, deleteAdminGroup } from "./../../api/groups";
+import AdminEditTeam from "./AdminEditTeam/AdminEditTeam";
+import AdminEditTeamImage from "./AdminEditTeam/AdminEditTeamImage";
 import "./AdminPanel.scss";
 
 export default function AdminPanel() {
     const [groups, setGroups] = useState([]);
     const [filtered, setFiltered] = useState([]);
+    const [editImage, setEditImage] = useState(null);
 
     const [search, setSearch] = useState("");
     const [classFilter, setClassFilter] = useState("all");
 
+    const [editTeam, setEditTeam] = useState(null); // ⭐ modal state
+
     // -------------------------------------------
-    // 1. Load all groups from admin API
+    // Load groups
     // -------------------------------------------
-    useEffect(() => {
+    const loadGroups = () => {
         getAdminGroups().then((data) => {
             setGroups(data);
             setFiltered(data);
         });
+    };
+
+    useEffect(() => {
+        loadGroups();
     }, []);
 
+    const refreshGroups = () => loadGroups();
+
     // -------------------------------------------
-    // 2. Filtering logic (search + class)
+    // Filtering
     // -------------------------------------------
     useEffect(() => {
         let data = [...groups];
 
-        // Search (teamnaam, klas, leden)
         if (search.trim() !== "") {
             const s = search.toLowerCase();
             data = data.filter((g) =>
-                (g.name || "").toLowerCase().includes(s) ||
-                (g.class || "").toLowerCase().includes(s) ||
-                (g.membersString || "").toLowerCase().includes(s)
+                g.name.toLowerCase().includes(s) ||
+                g.class.toLowerCase().includes(s) ||
+                (g.members || [])
+                    .some((m) =>
+                        m.name.toLowerCase().includes(s) ||
+                        m.student_number.toLowerCase().includes(s)
+                    )
             );
         }
 
-        // Filter op klas
         if (classFilter !== "all") {
             data = data.filter((g) => g.class === classFilter);
         }
@@ -44,18 +57,16 @@ export default function AdminPanel() {
     }, [search, classFilter, groups]);
 
     // -------------------------------------------
-    // 3. Delete group
+    // Delete group
     // -------------------------------------------
     const handleDelete = async (id) => {
         if (!confirm("Weet je zeker dat je dit team wilt verwijderen?")) return;
-
         await deleteAdminGroup(id);
-
         setGroups((prev) => prev.filter((g) => g.id !== id));
     };
 
     // -------------------------------------------
-    // 4. Open team dashboard (docent view)
+    // Open dashboard (docent)
     // -------------------------------------------
     const openTeamDashboard = (id) => {
         window.location.href = `/dashboard/${id}?as=docent`;
@@ -64,57 +75,80 @@ export default function AdminPanel() {
     return (
         <div className="admin-panel">
 
-            <h1>Teambeheer</h1>
+            {/* ---------------------------- */}
+            {/* HEADER + FILTERS */}
+            {/* ---------------------------- */}
+            <div className="admin-header">
+                <h1>Teambeheer</h1>
 
-            {/* ------------------------- */}
-            {/* FILTERS */}
-            {/* ------------------------- */}
-            <div className="admin-filters">
-                <input
-                    type="text"
-                    placeholder="Zoek op teamnaam / studentnaam / nummer..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
+                <div className="admin-filters">
+                    <input
+                        type="text"
+                        placeholder="Zoeken…"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
 
-                <select
-                    value={classFilter}
-                    onChange={(e) => setClassFilter(e.target.value)}
-                >
-                    <option value="all">Alle klassen</option>
-                    {[...new Set(groups.map((g) => g.class))].map((cls) => (
-                        <option key={cls} value={cls}>
-                            {cls}
-                        </option>
-                    ))}
-                </select>
+                    <select
+                        value={classFilter}
+                        onChange={(e) => setClassFilter(e.target.value)}
+                    >
+                        <option value="all">Alle klassen</option>
+                        {[...new Set(groups.map((g) => g.class))].map((cls) => (
+                            <option key={cls} value={cls}>
+                                {cls}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
-            {/* ------------------------- */}
-            {/* TABEL */}
-            {/* ------------------------- */}
-            <table className="admin-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Teamnaam</th>
-                        <th>Klas</th>
-                        <th>Leden</th>
-                        <th>Acties</th>
-                    </tr>
-                </thead>
+            {/* ---------------------------- */}
+            {/* TEAM LIST */}
+            {/* ---------------------------- */}
+            <div className="team-list">
+                {filtered.map((group) => (
+                    <div className="team-card" key={group.id}>
 
-                <tbody>
-                    {filtered.map((group) => (
-                        <tr key={group.id}>
-                            <td>{group.id}</td>
-                            <td>{group.name}</td>
-                            <td>{group.class}</td>
-                            <td>{group.memberCount}</td>
+                        {/* LEFT SIDE */}
+                        <div className="team-left">
+                            <img
+                                className="team-avatar"
+                                src={group.image_url || "/icons/default-team.png"}
+                                alt={group.name}
+                                onClick={() => setEditImage(group)}
+                                style={{ cursor: "pointer" }}
+                            />
 
-                            <td className="admin-actions">
-                                <button onClick={() => openTeamDashboard(group.id)}>
-                                    Bekijk
+                            <div className="team-info">
+                                <h2>{group.name}</h2>
+                                <p className="team-meta">
+                                    {group.class} • {group.members?.length || 0} leden
+                                </p>
+
+                                <p className="team-members">
+                                    {group.members && group.members.length > 0
+                                        ? group.members
+                                            .map((m) => `${m.name} (${m.student_number})`)
+                                            .join(", ")
+                                        : "—"}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* RIGHT SIDE */}
+                        <div className="team-right">
+                            <div className="team-score">
+                                <span>Punten</span>
+                                <strong>{group.total_points ?? 0}</strong>
+                            </div>
+
+                            <div className="team-actions">
+                                <button
+                                    className="view-btn"
+                                    onClick={() => setEditTeam(group)}
+                                >
+                                    Bewerken
                                 </button>
 
                                 <button
@@ -123,11 +157,45 @@ export default function AdminPanel() {
                                 >
                                     Verwijderen
                                 </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                            </div>
+                        </div>
+
+                    </div>
+                ))}
+            </div>
+
+            {/* ---------------------------- */}
+            {/* EDIT TEAM MODAL */}
+            {/* ---------------------------- */}
+            {editTeam && (
+                <AdminEditTeam
+                    team={editTeam}
+                    onClose={() => setEditTeam(null)}
+                    onSaved={() => {
+                        setEditTeam(null);
+                        refreshGroups();
+                    }}
+                />
+            )}
+            
+            {/* ---------------------------- */}
+            {/* EDIT TEAM IMAGE MODAL */}
+            {/* ---------------------------- */}
+            {editImage && (
+                <AdminEditTeamImage
+                    team={editImage}
+                    onClose={() => setEditImage(null)}
+                    onSaved={() => {
+                        setEditImage(null);
+                        refreshGroups();
+                    }}
+                    generateImage={async () => {
+                        // Jouw bestaande generator functie
+                        // Return de nieuwe image URL
+                    }}
+                />
+            )}
+
 
         </div>
     );

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Icon from "../Desktop/Icon/Icon";
-import Window from "../Desktop/Window/Window";
-import Taskbar from "../Desktop/Taskbar/Taskbar";
+import Window from "../_shared/Window/Window";
+import Taskbar from "../_shared/Taskbar/Taskbar";
 import TeamInfoApp from "./apps/TeamInfoApp/TeamInfoApp";
 import ChallengesApp from "./apps/ChallengesApp/ChallengesApp";
 import LeaderboardApp from "./apps/LeaderboardApp/LeaderboardApp";

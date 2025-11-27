@@ -1,0 +1,43 @@
+.webcam-capture {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.webcam-video {
+    width: 100%;
+    border-radius: 8px;
+    background: #111;
+}
+
+.webcam-canvas {
+    display: none;
+}
+
+.webcam-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    button {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        color: #fff;
+        background: #3a6df0;
+
+        &:hover {
+            background: #567fff;
+        }
+    }
+
+    button:last-child {
+        background: #444;
+
+        &:hover {
+            background: #555;
+        }
+    }
+}

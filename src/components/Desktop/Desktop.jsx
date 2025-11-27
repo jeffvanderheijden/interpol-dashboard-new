@@ -3,13 +3,13 @@ import { GameContext } from "./_context/GameContext";
 import { triggerHackerAnimation } from "./_helpers/dossierHelpers";
 
 import Icon from "./Icon/Icon";
-import Window from "./Window/Window";
+import Window from "./../_shared/Window/Window";
 import TerminalApp from "./apps/TerminalApp/TerminalApp";
 import MailApp from "./apps/MailApp/MailApp";
 import DossierApp from "./apps/DossierApp/DossierApp";
 import EditorApp from "./apps/EditorApp/EditorApp";
 import NewTeamApp from "./apps/NewTeamApp/NewTeamApp";
-import Taskbar from "./Taskbar/Taskbar";
+import Taskbar from "./../_shared/Taskbar/Taskbar";
 import Notification from "./Notification/Notification";
 
 

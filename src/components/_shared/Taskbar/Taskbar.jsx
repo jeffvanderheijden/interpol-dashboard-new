@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { GameContext } from "./../_context/GameContext"; // alleen gebruikt in training mode
+import { GameContext } from "./../../Desktop/_context/GameContext"; // alleen gebruikt in training mode
 import { useAuth } from "./../../ProtectedRoute/_context/AuthContext";
 
 import "./Taskbar.scss";

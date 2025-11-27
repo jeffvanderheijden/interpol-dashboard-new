@@ -47,7 +47,7 @@ export async function getTeam(teamId) {
 
 
 // --------------------------------------------------
-// ADMIN API
+// ADMIN GROUPS API
 // --------------------------------------------------
 
 // GET ALL GROUPS (admin)
@@ -89,14 +89,18 @@ export async function createAdminGroup(name, className) {
 
 
 // UPDATE GROUP (admin)
-export async function updateAdminGroup(id, name, className) {
+export async function updateAdminGroup(id, { name, className, image_url }) {
     const res = await fetch(`${API_BASE}/api/admin/groups/${id}`, {
         method: "PUT",
         credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ name, className })
+        body: JSON.stringify({
+            name,
+            className,
+            image_url
+        })
     });
 
     if (!res.ok) {
@@ -106,6 +110,15 @@ export async function updateAdminGroup(id, name, className) {
     }
 
     return res.json();
+}
+
+// UDATE GROUP IMAGE
+export async function updateAdminGroupImage(id, image_url) {
+    return updateAdminGroup(id, {
+        name: undefined,
+        className: undefined,
+        image_url
+    });
 }
 
 
@@ -120,6 +133,69 @@ export async function deleteAdminGroup(id) {
         const text = await res.text();
         console.error("API ERROR:", text);
         throw new Error("deleteAdminGroup failed");
+    }
+
+    return res.json();
+}
+
+
+
+// --------------------------------------------------
+// ADMIN MEMBERS API
+// --------------------------------------------------
+
+// ADD MEMBER
+export async function addAdminMember(groupId, { name, student_number }) {
+    const res = await fetch(`${API_BASE}/api/admin/groups/${groupId}/members`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, student_number })
+    });
+
+    if (!res.ok) {
+        const text = await res.text();
+        console.error("API ERROR:", text);
+        throw new Error("addAdminMember failed");
+    }
+
+    return res.json();
+}
+
+
+// UPDATE MEMBER
+export async function updateAdminMember(groupId, memberId, { name, student_number }) {
+    const res = await fetch(`${API_BASE}/api/admin/groups/${groupId}/members/${memberId}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, student_number })
+    });
+
+    if (!res.ok) {
+        const text = await res.text();
+        console.error("API ERROR:", text);
+        throw new Error("updateAdminMember failed");
+    }
+
+    return res.json();
+}
+
+// DELETE MEMBER
+export async function deleteAdminMember(groupId, memberId) {
+    const res = await fetch(`${API_BASE}/api/admin/groups/${groupId}/members/${memberId}`, {
+        method: "DELETE",
+        credentials: "include"
+    });
+
+    if (!res.ok) {
+        const text = await res.text();
+        console.error("API ERROR:", text);
+        throw new Error("deleteAdminMember failed");
     }
 
     return res.json();

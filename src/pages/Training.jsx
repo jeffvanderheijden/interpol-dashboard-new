@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../components/ProtectedRoute/_context/AuthContext";
-import AdminIcon from "../components/AdminPanel/AdminIcon/AdminIcon";
+import { useAuth } from "./../components/ProtectedRoute/_context/AuthContext";
+import AdminIcon from "./../components/AdminPanel/AdminIcon/AdminIcon";
 import Desktop from "./../components/Desktop/Desktop";
 
 const Training = () => {
