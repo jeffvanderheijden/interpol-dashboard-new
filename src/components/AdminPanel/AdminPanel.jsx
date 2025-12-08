@@ -2,17 +2,18 @@ import { useEffect, useState } from "react";
 import { getAdminGroups, deleteAdminGroup } from "./../../api/groups";
 import AdminEditTeam from "./AdminEditTeam/AdminEditTeam";
 import AdminEditTeamImage from "./AdminEditTeam/AdminEditTeamImage";
+import AdminCreateTeam from "./AdminCreateTeam/AdminCreateTeam";
 import "./AdminPanel.scss";
 
 export default function AdminPanel() {
     const [groups, setGroups] = useState([]);
     const [filtered, setFiltered] = useState([]);
     const [editImage, setEditImage] = useState(null);
+    const [editTeam, setEditTeam] = useState(null);
+    const [createTeam, setCreateTeam] = useState(false);
 
     const [search, setSearch] = useState("");
     const [classFilter, setClassFilter] = useState("all");
-
-    const [editTeam, setEditTeam] = useState(null); // ⭐ modal state
 
     // -------------------------------------------
     // Load groups
@@ -100,6 +101,13 @@ export default function AdminPanel() {
                             </option>
                         ))}
                     </select>
+
+                    <button
+                        className="new-team-btn"
+                        onClick={() => setCreateTeam(true)}
+                    >
+                        + Nieuw team
+                    </button>
                 </div>
             </div>
 
@@ -165,6 +173,19 @@ export default function AdminPanel() {
             </div>
 
             {/* ---------------------------- */}
+            {/* ADD TEAM MODAL */}
+            {/* ---------------------------- */}
+            {createTeam && (
+                <AdminCreateTeam
+                    onClose={() => setCreateTeam(false)}
+                    onSaved={() => {
+                        setCreateTeam(false);
+                        refreshGroups();
+                    }}
+                />
+            )}
+
+            {/* ---------------------------- */}
             {/* EDIT TEAM MODAL */}
             {/* ---------------------------- */}
             {editTeam && (
@@ -177,7 +198,7 @@ export default function AdminPanel() {
                     }}
                 />
             )}
-            
+
             {/* ---------------------------- */}
             {/* EDIT TEAM IMAGE MODAL */}
             {/* ---------------------------- */}

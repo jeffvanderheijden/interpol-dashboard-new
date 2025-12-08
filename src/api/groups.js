@@ -66,16 +66,20 @@ export async function getAdminGroups() {
     return data.groups || [];
 }
 
-
 // CREATE GROUP (admin)
-export async function createAdminGroup(name, className) {
+export async function createAdminGroup({ teamPhoto, teamName, className, members }) {
     const res = await fetch(`${API_BASE}/api/admin/groups`, {
         method: "POST",
         credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ name, className })
+        body: JSON.stringify({
+            teamPhoto,
+            teamName,
+            className,
+            members
+        })
     });
 
     if (!res.ok) {
@@ -86,7 +90,6 @@ export async function createAdminGroup(name, className) {
 
     return res.json();
 }
-
 
 // UPDATE GROUP (admin)
 export async function updateAdminGroup(id, { name, className, image_url }) {

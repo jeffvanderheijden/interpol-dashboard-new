@@ -37,6 +37,22 @@
     }
 }
 
+.new-team-btn {
+    padding: 6px 12px;
+    background: #3a6df0;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 14px;
+    transition: 0.2s;
+
+    &:hover {
+        background: #5a84ff;
+    }
+}
+
 .team-list {
     display: flex;
     flex-direction: column;
@@ -100,6 +116,7 @@
 
 .team-score {
     text-align: right;
+
     span {
         display: block;
         font-size: 12px;
