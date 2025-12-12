@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import { getAdminGroups, deleteAdminGroup } from "./../../api/groups";
+
 import AdminEditTeam from "./AdminEditTeam/AdminEditTeam";
 import AdminEditTeamImage from "./AdminEditTeam/AdminEditTeamImage";
 import AdminCreateTeam from "./AdminCreateTeam/AdminCreateTeam";
+import AdminChallengeControl from "./AdminChallengeControl/AdminChallengeControl";
+
 import "./AdminPanel.scss";
 
 export default function AdminPanel() {
+    const [activeTab, setActiveTab] = useState("teams"); // ⭐ tabs
+
     const [groups, setGroups] = useState([]);
     const [filtered, setFiltered] = useState([]);
+
     const [editImage, setEditImage] = useState(null);
     const [editTeam, setEditTeam] = useState(null);
     const [createTeam, setCreateTeam] = useState(false);
@@ -32,9 +38,11 @@ export default function AdminPanel() {
     const refreshGroups = () => loadGroups();
 
     // -------------------------------------------
-    // Filtering
+    // Filtering (alleen voor team-tab)
     // -------------------------------------------
     useEffect(() => {
+        if (activeTab !== "teams") return;
+
         let data = [...groups];
 
         if (search.trim() !== "") {
@@ -42,11 +50,11 @@ export default function AdminPanel() {
             data = data.filter((g) =>
                 g.name.toLowerCase().includes(s) ||
                 g.class.toLowerCase().includes(s) ||
-                (g.members || [])
-                    .some((m) =>
+                (g.members || []).some(
+                    (m) =>
                         m.name.toLowerCase().includes(s) ||
                         m.student_number.toLowerCase().includes(s)
-                    )
+                )
             );
         }
 
@@ -55,7 +63,7 @@ export default function AdminPanel() {
         }
 
         setFiltered(data);
-    }, [search, classFilter, groups]);
+    }, [search, classFilter, groups, activeTab]);
 
     // -------------------------------------------
     // Delete group
@@ -66,114 +74,149 @@ export default function AdminPanel() {
         setGroups((prev) => prev.filter((g) => g.id !== id));
     };
 
-    // -------------------------------------------
-    // Open dashboard (docent)
-    // -------------------------------------------
-    const openTeamDashboard = (id) => {
-        window.location.href = `/dashboard/${id}?as=docent`;
-    };
-
     return (
         <div className="admin-panel">
 
             {/* ---------------------------- */}
-            {/* HEADER + FILTERS */}
+            {/* TABS */}
             {/* ---------------------------- */}
-            <div className="admin-header">
-                <h1>Teambeheer</h1>
+            <div className="admin-tabs">
+                <button
+                    className={activeTab === "teams" ? "active" : ""}
+                    onClick={() => setActiveTab("teams")}
+                >
+                    Teambeheer
+                </button>
 
-                <div className="admin-filters">
-                    <input
-                        type="text"
-                        placeholder="Zoeken…"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-
-                    <select
-                        value={classFilter}
-                        onChange={(e) => setClassFilter(e.target.value)}
-                    >
-                        <option value="all">Alle klassen</option>
-                        {[...new Set(groups.map((g) => g.class))].map((cls) => (
-                            <option key={cls} value={cls}>
-                                {cls}
-                            </option>
-                        ))}
-                    </select>
-
-                    <button
-                        className="new-team-btn"
-                        onClick={() => setCreateTeam(true)}
-                    >
-                        + Nieuw team
-                    </button>
-                </div>
+                <button
+                    className={activeTab === "challenges" ? "active" : ""}
+                    onClick={() => setActiveTab("challenges")}
+                >
+                    Challengebeheer
+                </button>
             </div>
 
-            {/* ---------------------------- */}
-            {/* TEAM LIST */}
-            {/* ---------------------------- */}
-            <div className="team-list">
-                {filtered.map((group) => (
-                    <div className="team-card" key={group.id}>
+            {/* ===================================================== */}
+            {/* TAB: TEAMBEHEER */}
+            {/* ===================================================== */}
+            {activeTab === "teams" && (
+                <>
+                    {/* HEADER + FILTERS */}
+                    <div className="admin-header">
+                        <h1>Teambeheer</h1>
 
-                        {/* LEFT SIDE */}
-                        <div className="team-left">
-                            <img
-                                className="team-avatar"
-                                src={group.image_url || "/icons/default-team.png"}
-                                alt={group.name}
-                                onClick={() => setEditImage(group)}
-                                style={{ cursor: "pointer" }}
+                        <div className="admin-filters">
+                            <input
+                                type="text"
+                                placeholder="Zoeken…"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
                             />
 
-                            <div className="team-info">
-                                <h2>{group.name}</h2>
-                                <p className="team-meta">
-                                    {group.class} • {group.members?.length || 0} leden
-                                </p>
+                            <select
+                                value={classFilter}
+                                onChange={(e) =>
+                                    setClassFilter(e.target.value)
+                                }
+                            >
+                                <option value="all">Alle klassen</option>
+                                {[...new Set(groups.map((g) => g.class))].map(
+                                    (cls) => (
+                                        <option key={cls} value={cls}>
+                                            {cls}
+                                        </option>
+                                    )
+                                )}
+                            </select>
 
-                                <p className="team-members">
-                                    {group.members && group.members.length > 0
-                                        ? group.members
-                                            .map((m) => `${m.name} (${m.student_number})`)
-                                            .join(", ")
-                                        : "—"}
-                                </p>
-                            </div>
+                            <button
+                                className="new-team-btn"
+                                onClick={() => setCreateTeam(true)}
+                            >
+                                + Nieuw team
+                            </button>
                         </div>
-
-                        {/* RIGHT SIDE */}
-                        <div className="team-right">
-                            <div className="team-score">
-                                <span>Punten</span>
-                                <strong>{group.total_points ?? 0}</strong>
-                            </div>
-
-                            <div className="team-actions">
-                                <button
-                                    className="view-btn"
-                                    onClick={() => setEditTeam(group)}
-                                >
-                                    Bewerken
-                                </button>
-
-                                <button
-                                    className="delete-btn"
-                                    onClick={() => handleDelete(group.id)}
-                                >
-                                    Verwijderen
-                                </button>
-                            </div>
-                        </div>
-
                     </div>
-                ))}
-            </div>
+
+                    {/* TEAM LIST */}
+                    <div className="team-list">
+                        {filtered.map((group) => (
+                            <div className="team-card" key={group.id}>
+                                <div className="team-left">
+                                    <img
+                                        className="team-avatar"
+                                        src={
+                                            group.image_url ||
+                                            "/icons/default-team.png"
+                                        }
+                                        alt={group.name}
+                                        onClick={() => setEditImage(group)}
+                                        style={{ cursor: "pointer" }}
+                                    />
+
+                                    <div className="team-info">
+                                        <h2>{group.name}</h2>
+                                        <p className="team-meta">
+                                            {group.class} •{" "}
+                                            {group.members?.length || 0} leden
+                                        </p>
+
+                                        <p className="team-members">
+                                            {group.members?.length
+                                                ? group.members
+                                                    .map(
+                                                        (m) =>
+                                                            `${m.name} (${m.student_number})`
+                                                    )
+                                                    .join(", ")
+                                                : "—"}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="team-right">
+                                    <div className="team-score">
+                                        <span>Punten</span>
+                                        <strong>
+                                            {group.total_points ?? 0}
+                                        </strong>
+                                    </div>
+
+                                    <div className="team-actions">
+                                        <button
+                                            className="view-btn"
+                                            onClick={() =>
+                                                setEditTeam(group)
+                                            }
+                                        >
+                                            Bewerken
+                                        </button>
+
+                                        <button
+                                            className="delete-btn"
+                                            onClick={() =>
+                                                handleDelete(group.id)
+                                            }
+                                        >
+                                            Verwijderen
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
+
+            {/* ===================================================== */}
+            {/* TAB: CHALLENGEBEHEER */}
+            {/* ===================================================== */}
+            {activeTab === "challenges" && (
+                <AdminChallengeControl />
+            )}
 
             {/* ---------------------------- */}
-            {/* ADD TEAM MODAL */}
+            {/* MODALS (global) */}
             {/* ---------------------------- */}
             {createTeam && (
                 <AdminCreateTeam
@@ -185,9 +228,6 @@ export default function AdminPanel() {
                 />
             )}
 
-            {/* ---------------------------- */}
-            {/* EDIT TEAM MODAL */}
-            {/* ---------------------------- */}
             {editTeam && (
                 <AdminEditTeam
                     team={editTeam}
@@ -199,9 +239,6 @@ export default function AdminPanel() {
                 />
             )}
 
-            {/* ---------------------------- */}
-            {/* EDIT TEAM IMAGE MODAL */}
-            {/* ---------------------------- */}
             {editImage && (
                 <AdminEditTeamImage
                     team={editImage}
@@ -210,14 +247,8 @@ export default function AdminPanel() {
                         setEditImage(null);
                         refreshGroups();
                     }}
-                    generateImage={async () => {
-                        // Jouw bestaande generator functie
-                        // Return de nieuwe image URL
-                    }}
                 />
             )}
-
-
         </div>
     );
 }

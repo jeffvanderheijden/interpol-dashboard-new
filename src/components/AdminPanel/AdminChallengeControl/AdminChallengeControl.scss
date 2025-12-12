@@ -1,0 +1,50 @@
+.admin-challenges {
+    margin-top: 40px;
+    color: #f4f4f4;
+
+    h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+}
+
+.challenge-table {
+    border: 1px solid #2f2f2f;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.challenge-row {
+    display: grid;
+    grid-template-columns: 1fr repeat(auto-fit, minmax(70px, 1fr));
+    background: #1f1f1f;
+    border-bottom: 1px solid #2f2f2f;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &.header {
+        background: #262626;
+        font-weight: 600;
+    }
+}
+
+.challenge-name {
+    padding: 14px 16px;
+    border-right: 1px solid #2f2f2f;
+}
+
+.challenge-class {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+
+    input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: #3a6df0;
+    }
+}

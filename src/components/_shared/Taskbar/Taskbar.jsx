@@ -9,7 +9,7 @@ export default function Taskbar({
     openWindows,
     bringToFront,
     openApp,
-    mode = "training" // 👈 NIEUW: bepaalt welke apps zichtbaar zijn
+    mode = "training"
 }) {
     const navigate = useNavigate();
     const { logout } = useAuth();
