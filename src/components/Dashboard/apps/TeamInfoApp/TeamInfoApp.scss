@@ -1,0 +1,150 @@
+@use "sass:color";
+@use "../../../../styles/win95" as *;
+
+.teaminfo-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: $win95-bg;
+    padding: 4px;
+    gap: 4px;
+    padding-top: 0px;
+    color: $win95-window-text;
+    @include win95-font;
+
+    &__header {
+        padding: 8px 10px;
+        background: color.scale($win95-bg, $lightness: 10%);
+        border-bottom: 1px solid $border-dark;
+
+        h2 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    }
+
+    &__content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 6px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* ---------------------------------- */
+/* Blokken (jouw basis, consistent)   */
+/* ---------------------------------- */
+.teaminfo-block {
+    background: $win95-window-bg;
+    padding: 8px 10px;
+    @include win95-border("raised");
+
+    h3 {
+        margin: 0 0 6px 0;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    h4 {
+        margin: 0 0 6px 0;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    p {
+        margin: 2px 0;
+        line-height: 1.4;
+    }
+
+    &__top {
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+}
+
+/* ---------------------------------- */
+/* Teamfoto (win95-achtig)            */
+/* ---------------------------------- */
+.teaminfo-teamimage {
+    width: 96px;
+    height: 96px;
+    background: $win95-bg;
+    @include win95-border("sunken");
+    overflow: hidden;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    &__empty {
+        font-size: 12px;
+        color: $border-dark;
+    }
+}
+
+/* ---------------------------------- */
+/* Teamcode / metadata                */
+/* ---------------------------------- */
+.team-code {
+    font-family: monospace;
+    font-size: 12px;
+    color: $border-darker;
+}
+
+/* ---------------------------------- */
+/* Teamleden                          */
+/* ---------------------------------- */
+.team-members {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+        margin-bottom: 4px;
+        padding: 4px 6px;
+        background: $win95-bg;
+        @include win95-border("sunken");
+
+        strong {
+            font-weight: bold;
+        }
+    }
+}
+
+/* ---------------------------------- */
+/* Status indicator                   */
+/* ---------------------------------- */
+.team-status {
+    display: inline-block;
+    padding: 1px 6px;
+    margin-left: 4px;
+    font-size: 12px;
+    @include win95-border("sunken");
+
+    &.active {
+        background: $win95-success;
+        color: $win95-titlebar-text;
+    }
+
+    &.finished {
+        background: $win95-warning;
+        color: #000;
+    }
+
+    &.error {
+        background: $win95-danger;
+        color: $win95-titlebar-text;
+    }
+}

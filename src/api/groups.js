@@ -32,19 +32,22 @@ export async function createGroup(teamPhoto, members, teamName, className) {
 // GET TEAM (student)
 export async function getTeam(teamId) {
     const res = await fetch(`${API_BASE}/api/groups/${teamId}`, {
-        credentials: "include"
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "Accept": "application/json",
+        },
     });
 
+    const data = await res.json();
+
     if (!res.ok) {
-        const text = await res.text();
-        console.error("API ERROR:", text);
-        throw new Error("getTeam failed");
+        console.error("API ERROR:", data);
+        throw new Error(data.error || "Failed to load team");
     }
 
-    return res.json();
+    return data;
 }
-
-
 
 // --------------------------------------------------
 // ADMIN GROUPS API

@@ -1,0 +1,128 @@
+.admin-message-modal__backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: grid;
+    place-items: center;
+    z-index: 9999;
+}
+
+.admin-message-modal {
+    width: min(720px, 95vw);
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+}
+
+.admin-message-modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+    h2 {
+        margin: 0;
+        font-size: 16px;
+    }
+}
+
+.admin-message-modal__close {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.admin-message-modal__body {
+    padding: 16px;
+    display: grid;
+    gap: 12px;
+
+    label {
+        display: grid;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    input[type="text"],
+    textarea,
+    input[type="file"] {
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+}
+
+.admin-message-modal__existing {
+    font-size: 13px;
+    opacity: 0.9;
+
+    button {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}
+
+.admin-message-modal__preview {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 12px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.02);
+
+    img,
+    video {
+        width: 100%;
+        max-height: 320px;
+        object-fit: contain;
+        display: block;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        margin-top: 8px;
+    }
+
+    button {
+        margin-top: 8px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}
+
+.admin-message-modal__error {
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 0, 0, 0.25);
+    background: rgba(255, 0, 0, 0.06);
+}
+
+.admin-message-modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #111;
+    color: #fff;
+}

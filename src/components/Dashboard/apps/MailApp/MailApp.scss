@@ -1,0 +1,116 @@
+@use "sass:color";
+@use "../../../../styles/win95" as *;
+
+.mail-app {
+    display: flex;
+    height: 100%;
+    background: $win95-bg;
+    padding: 4px;
+    gap: 4px;
+    padding-top: 0px;
+
+    &__sidebar {
+        @include win95-border("sunken");
+        width: 30%;
+        min-width: 30%;
+        max-width: 30%;
+        background: $win95-window-bg;
+        overflow-y: auto;
+        padding: 1px;
+
+        .mail-item {
+            display: block; // als <button> of <li role="button">
+            width: 100%;
+            padding: 5px 8px;
+            border: none;
+            border-bottom: 1px solid $border-dark;
+            cursor: pointer;
+            user-select: none;
+            text-align: left;
+            background: transparent;
+            font-family: $win95-font-stack;
+
+            strong {
+                display: block;
+                font-size: 13px;
+                font-weight: normal;
+            }
+
+            small {
+                color: $border-dark;
+                font-size: 12px;
+            }
+
+            &--selected {
+                background: $win95-blue-titlebar;
+                color: $win95-titlebar-text;
+
+                strong,
+                small {
+                    color: $win95-titlebar-text;
+                }
+            }
+
+            &--empty {
+                padding: 8px;
+                color: $border-dark;
+                cursor: default;
+            }
+        }
+    }
+
+    &__body {
+        @include win95-border("sunken");
+        flex-grow: 1;
+        background: $win95-window-bg;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__header {
+        padding: 12px;
+        border-bottom: 1px solid $border-dark;
+        background: color.scale($win95-bg, $lightness: 10%);
+
+        h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            font-family: $win95-font-stack;
+        }
+
+        p {
+            margin: 0;
+            font-size: 13px;
+            font-family: $win95-font-stack;
+        }
+    }
+
+    &__body-content {
+        padding: 15px;
+        flex-grow: 1;
+        font-family: "Times New Roman", serif;
+        font-size: 15px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+    }
+
+    &__empty {
+        padding: 12px;
+        color: $border-dark;
+    }
+
+    .mail-app__attachment {
+        margin-top: 12px;
+        font-size: 13px;
+
+        a {
+            color: $win95-blue-titlebar;
+            text-decoration: underline;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+}

@@ -5,6 +5,7 @@ import AdminEditTeam from "./AdminEditTeam/AdminEditTeam";
 import AdminEditTeamImage from "./AdminEditTeam/AdminEditTeamImage";
 import AdminCreateTeam from "./AdminCreateTeam/AdminCreateTeam";
 import AdminChallengeControl from "./AdminChallengeControl/AdminChallengeControl";
+import AdminMessages from "./AdminMessages/AdminMessages";
 
 import "./AdminPanel.scss";
 
@@ -94,6 +95,13 @@ export default function AdminPanel() {
                 >
                     Challengebeheer
                 </button>
+                <button
+                    className={activeTab === "messages" ? "active" : ""}
+                    onClick={() => setActiveTab("messages")}
+                >
+                    Berichten
+                </button>
+
             </div>
 
             {/* ===================================================== */}
@@ -214,6 +222,14 @@ export default function AdminPanel() {
             {activeTab === "challenges" && (
                 <AdminChallengeControl />
             )}
+
+            {/* ===================================================== */}
+            {/* TAB: BERICHTEN */}
+            {/* ===================================================== */}
+            {activeTab === "messages" && (
+                <AdminMessages groups={groups} />
+            )}
+
 
             {/* ---------------------------- */}
             {/* MODALS (global) */}

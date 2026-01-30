@@ -16,6 +16,8 @@ export default function ProtectedRoute({ children, roles = [], teamProtected = f
     if (teamProtected && user.role === "student") {
         const routeTeamId = Number(params.teamId);
         const sessionTeamId = Number(user.teamId);
+        console.log(Number(user.teamId), Number(params.teamId));
+        console.log(user);
 
         if (routeTeamId !== sessionTeamId) {
             return <Navigate to="/unauthorized" replace />;

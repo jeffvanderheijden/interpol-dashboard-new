@@ -28,7 +28,7 @@ export async function toggleChallengeForClass(challengeId, className, isOpen) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                class: className,
+                class_name: className,
                 is_open: isOpen
             })
         }
