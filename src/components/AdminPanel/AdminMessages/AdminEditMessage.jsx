@@ -3,18 +3,17 @@ import { updateAdminMessage } from "../../../api/messages";
 import { API_BASE } from "./../../../api/_config";
 import "./AdminMessages.scss";
 
-export default function AdminEditMessage({ message, onClose, onSaved }) {
-    const toDatetimeLocalValue = (mysqlDateTime) => {
-        if (!mysqlDateTime) return "";
-        // mysql: "YYYY-MM-DD HH:mm:ss" -> "YYYY-MM-DDTHH:mm"
-        return String(mysqlDateTime).slice(0, 16).replace(" ", "T");
-    };
+const toDatetimeLocalValue = (mysqlDateTime) => {
+    if (!mysqlDateTime) return "";
+    return String(mysqlDateTime).slice(0, 16).replace(" ", "T");
+};
 
-    const toMysqlDatetime = (dtLocal) => {
-        if (!dtLocal) return "";
-        return dtLocal.replace("T", " ") + ":00";
-    };
-    
+const toMysqlDatetime = (dtLocal) => {
+    if (!dtLocal) return "";
+    return dtLocal.replace("T", " ") + ":00";
+};
+
+export default function AdminEditMessage({ message, onClose, onSaved }) {
     const [title, setTitle] = useState(message.title || "");
     const [body, setBody] = useState(message.body || "");
     const [media, setMedia] = useState(null);
@@ -52,7 +51,6 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
                 mediaFile: media,
                 publish_at: publishAt ? toMysqlDatetime(publishAt) : "",
             });
-
             onSaved();
         } catch (e2) {
             setError(e2.message || "Opslaan mislukt");
@@ -98,7 +96,11 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
                     <div className="admin-modal__existing">
                         <strong>Bestaande bijlage:</strong>{" "}
                         {message.media_url ? (
-                            <a href={`${API_BASE}${message.media_url}`} target="_blank" rel="noreferrer">
+                            <a
+                                href={`${API_BASE}${message.media_url}`}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
                                 open
                             </a>
                         ) : (

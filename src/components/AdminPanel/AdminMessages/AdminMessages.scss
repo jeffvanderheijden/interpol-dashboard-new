@@ -305,4 +305,30 @@
             color: #fff;
         }
     }
+
+    .message-badges {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .message-status {
+        font-size: 12px;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid;
+    }
+
+    .message-status--live {
+        border-color: #2e7d32;
+        color: #2e7d32;
+        background: #e8f5e9;
+    }
+
+    .message-status--scheduled {
+        border-color: #ef6c00;
+        color: #ef6c00;
+        background: #fff3e0;
+    }
 }

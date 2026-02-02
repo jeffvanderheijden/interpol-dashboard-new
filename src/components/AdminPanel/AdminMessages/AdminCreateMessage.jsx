@@ -2,14 +2,19 @@ import { useState } from "react";
 import { createAdminMessage } from "../../../api/messages";
 import "./AdminMessages.scss";
 
+const toMysqlDatetime = (dtLocal) => {
+    if (!dtLocal) return "";
+    return dtLocal.replace("T", " ") + ":00";
+};
+
 export default function AdminCreateMessage({ onClose, onSaved }) {
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const [media, setMedia] = useState(null);
+    const [publishAt, setPublishAt] = useState("");
 
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState(null);
-    const [publishAt, setPublishAt] = useState("");
 
     const canSave = title.trim() !== "" && body.trim() !== "" && !busy;
 
@@ -26,12 +31,6 @@ export default function AdminCreateMessage({ onClose, onSaved }) {
         setMedia(file);
     };
 
-    const toMysqlDatetime = (dtLocal) => {
-        if (!dtLocal) return "";
-        return dtLocal.replace("T", " ") + ":00";
-    };
-
-
     const onSubmit = async (e) => {
         e.preventDefault();
         if (!canSave) return;
@@ -46,7 +45,6 @@ export default function AdminCreateMessage({ onClose, onSaved }) {
                 mediaFile: media,
                 publish_at: publishAt ? toMysqlDatetime(publishAt) : "",
             });
-
             onSaved();
         } catch (e2) {
             setError(e2.message || "Opslaan mislukt");

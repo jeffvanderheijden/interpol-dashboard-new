@@ -79,18 +79,21 @@ export default function AdminMessages() {
                                         <p className="message-meta">
                                             <span>
                                                 <strong>Gemaakt:</strong>{" "}
-                                                {msg.created_at ? new Date(msg.created_at).toLocaleString("nl-NL") : "—"}
+                                                {msg.created_at
+                                                    ? new Date(msg.created_at).toLocaleString("nl-NL")
+                                                    : "—"}
                                             </span>
 
                                             <span>
                                                 {" • "}
                                                 <strong>Actief vanaf:</strong>{" "}
-                                                {msg.publish_at ? new Date(msg.publish_at).toLocaleString("nl-NL") : "—"}
+                                                {msg.publish_at
+                                                    ? new Date(msg.publish_at).toLocaleString("nl-NL")
+                                                    : "—"}
                                             </span>
 
                                             {msg.media_url ? <span>{" • bijlage"}</span> : null}
                                         </p>
-
 
                                         <p className="message-snippet">
                                             {(msg.body || "").slice(0, 180)}
