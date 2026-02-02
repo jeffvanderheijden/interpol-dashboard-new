@@ -75,7 +75,7 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
                     <div className="admin-modal__existing">
                         <strong>Bestaande bijlage:</strong>{" "}
                         {message.media_url ? (
-                            <a href={`${API_BASE}/${message.media_url}`} target="_blank" rel="noreferrer">
+                            <a href={`${API_BASE}${message.media_url}`} target="_blank" rel="noreferrer">
                                 open
                             </a>
                         ) : (
