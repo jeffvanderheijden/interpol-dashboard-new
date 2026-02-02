@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { GameContext } from "./../../_context/GameContext";
+import { GameContext } from "./../../../Desktop/_context/GameContext";
 import "./MailApp.scss";
 
 const MailApp = () => {

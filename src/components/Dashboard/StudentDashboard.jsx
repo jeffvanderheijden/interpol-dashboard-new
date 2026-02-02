@@ -2,9 +2,11 @@ import { useState } from "react";
 import Icon from "../Desktop/Icon/Icon";
 import Window from "../_shared/Window/Window";
 import Taskbar from "../_shared/Taskbar/Taskbar";
+
 import TeamInfoApp from "./apps/TeamInfoApp/TeamInfoApp";
 import ChallengesApp from "./apps/ChallengesApp/ChallengesApp";
 import LeaderboardApp from "./apps/LeaderboardApp/LeaderboardApp";
+import MailApp from "./apps/MailApp/MailApp";
 
 import "./StudentDashboard.scss";
 
@@ -12,6 +14,7 @@ const dashboardApps = {
     teaminfo: { width: 520, height: 400, title: "Team Info" },
     challenges: { width: 700, height: 500, title: "Challenges" },
     leaderboard: { width: 700, height: 500, title: "Leaderboard" },
+    mail: { width: 720, height: 520, title: "Mail" },
 };
 
 export default function StudentDashboard({ team }) {
@@ -59,14 +62,16 @@ export default function StudentDashboard({ team }) {
         setOpenWindows((prev) => prev.filter((w) => w.id !== id));
     };
 
-    const renderContent = (app) => {
-        switch (app.app) {
+    const renderContent = (win) => {
+        switch (win.app) {
             case "teaminfo":
                 return <TeamInfoApp team={team} />;
             case "challenges":
                 return <ChallengesApp team={team} />;
             case "leaderboard":
                 return <LeaderboardApp />;
+            case "mail":
+                return <MailApp />;
             default:
                 return <div>Onbekende app</div>;
         }
@@ -92,6 +97,12 @@ export default function StudentDashboard({ team }) {
                     icon="/icons/leaderboard.ico"
                     onDoubleClick={() => openApp("leaderboard")}
                 />
+
+                <Icon
+                    label="Mail"
+                    icon="/icons/email.ico"
+                    onDoubleClick={() => openApp("mail")}
+                />
             </div>
 
             {/* Windows */}
@@ -108,7 +119,9 @@ export default function StudentDashboard({ team }) {
                         onMinimize={() =>
                             setOpenWindows((prev) =>
                                 prev.map((win) =>
-                                    win.id === w.id ? { ...win, minimized: true } : win
+                                    win.id === w.id
+                                        ? { ...win, minimized: true }
+                                        : win
                                 )
                             )
                         }
