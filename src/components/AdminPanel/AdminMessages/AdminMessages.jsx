@@ -65,12 +65,25 @@ export default function AdminMessages() {
                         messages.map((msg) => (
                             <div className="message-card" key={msg.id}>
                                 <div className="message-left">
-                                    <div className="message-badge">
-                                        {msg.media_type === "image"
-                                            ? "IMG"
-                                            : msg.media_type === "video"
-                                                ? "VID"
-                                                : "—"}
+                                    <div className="message-badges">
+                                        <div className="message-badge">
+                                            {msg.media_type === "image"
+                                                ? "IMG"
+                                                : msg.media_type === "video"
+                                                    ? "VID"
+                                                    : "—"}
+                                        </div>
+
+                                        <div
+                                            className={`message-status ${msg.publish_at && new Date(msg.publish_at).getTime() > Date.now()
+                                                    ? "message-status--scheduled"
+                                                    : "message-status--live"
+                                                }`}
+                                        >
+                                            {msg.publish_at && new Date(msg.publish_at).getTime() > Date.now()
+                                                ? "INGEPLAND"
+                                                : "LIVE"}
+                                        </div>
                                     </div>
 
                                     <div className="message-info">
@@ -79,17 +92,13 @@ export default function AdminMessages() {
                                         <p className="message-meta">
                                             <span>
                                                 <strong>Gemaakt:</strong>{" "}
-                                                {msg.created_at
-                                                    ? new Date(msg.created_at).toLocaleString("nl-NL")
-                                                    : "—"}
+                                                {msg.created_at ? new Date(msg.created_at).toLocaleString("nl-NL") : "—"}
                                             </span>
 
                                             <span>
                                                 {" • "}
                                                 <strong>Actief vanaf:</strong>{" "}
-                                                {msg.publish_at
-                                                    ? new Date(msg.publish_at).toLocaleString("nl-NL")
-                                                    : "—"}
+                                                {msg.publish_at ? new Date(msg.publish_at).toLocaleString("nl-NL") : "—"}
                                             </span>
 
                                             {msg.media_url ? <span>{" • bijlage"}</span> : null}
