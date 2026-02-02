@@ -4,14 +4,6 @@ import { API_BASE } from "./../../../api/_config";
 import "./AdminMessages.scss";
 
 export default function AdminEditMessage({ message, onClose, onSaved }) {
-    const [title, setTitle] = useState(message.title || "");
-    const [body, setBody] = useState(message.body || "");
-    const [media, setMedia] = useState(null);
-    const [publishAt, setPublishAt] = useState(toDatetimeLocalValue(message.publish_at));
-
-    const [busy, setBusy] = useState(false);
-    const [error, setError] = useState(null);
-
     const toDatetimeLocalValue = (mysqlDateTime) => {
         if (!mysqlDateTime) return "";
         // mysql: "YYYY-MM-DD HH:mm:ss" -> "YYYY-MM-DDTHH:mm"
@@ -22,7 +14,14 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
         if (!dtLocal) return "";
         return dtLocal.replace("T", " ") + ":00";
     };
+    
+    const [title, setTitle] = useState(message.title || "");
+    const [body, setBody] = useState(message.body || "");
+    const [media, setMedia] = useState(null);
+    const [publishAt, setPublishAt] = useState(toDatetimeLocalValue(message.publish_at));
 
+    const [busy, setBusy] = useState(false);
+    const [error, setError] = useState(null);
 
     const canSave = title.trim() !== "" && body.trim() !== "" && !busy;
 
