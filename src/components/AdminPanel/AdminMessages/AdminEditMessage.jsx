@@ -7,9 +7,22 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
     const [title, setTitle] = useState(message.title || "");
     const [body, setBody] = useState(message.body || "");
     const [media, setMedia] = useState(null);
+    const [publishAt, setPublishAt] = useState(toDatetimeLocalValue(message.publish_at));
 
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState(null);
+
+    const toDatetimeLocalValue = (mysqlDateTime) => {
+        if (!mysqlDateTime) return "";
+        // mysql: "YYYY-MM-DD HH:mm:ss" -> "YYYY-MM-DDTHH:mm"
+        return String(mysqlDateTime).slice(0, 16).replace(" ", "T");
+    };
+
+    const toMysqlDatetime = (dtLocal) => {
+        if (!dtLocal) return "";
+        return dtLocal.replace("T", " ") + ":00";
+    };
+
 
     const canSave = title.trim() !== "" && body.trim() !== "" && !busy;
 
@@ -37,8 +50,10 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
             await updateAdminMessage(message.id, {
                 title: title.trim(),
                 body: body.trim(),
-                mediaFile: media, // optioneel: vervang bijlage
+                mediaFile: media,
+                publish_at: publishAt ? toMysqlDatetime(publishAt) : "",
             });
+
             onSaved();
         } catch (e2) {
             setError(e2.message || "Opslaan mislukt");
@@ -69,6 +84,15 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
                             rows={8}
                             value={body}
                             onChange={(e) => setBody(e.target.value)}
+                        />
+                    </label>
+
+                    <label>
+                        Tonen vanaf
+                        <input
+                            type="datetime-local"
+                            value={publishAt}
+                            onChange={(e) => setPublishAt(e.target.value)}
                         />
                     </label>
 

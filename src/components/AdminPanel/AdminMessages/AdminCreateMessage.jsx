@@ -9,6 +9,7 @@ export default function AdminCreateMessage({ onClose, onSaved }) {
 
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState(null);
+    const [publishAt, setPublishAt] = useState("");
 
     const canSave = title.trim() !== "" && body.trim() !== "" && !busy;
 
@@ -25,6 +26,12 @@ export default function AdminCreateMessage({ onClose, onSaved }) {
         setMedia(file);
     };
 
+    const toMysqlDatetime = (dtLocal) => {
+        if (!dtLocal) return "";
+        return dtLocal.replace("T", " ") + ":00";
+    };
+
+
     const onSubmit = async (e) => {
         e.preventDefault();
         if (!canSave) return;
@@ -37,7 +44,9 @@ export default function AdminCreateMessage({ onClose, onSaved }) {
                 title: title.trim(),
                 body: body.trim(),
                 mediaFile: media,
+                publish_at: publishAt ? toMysqlDatetime(publishAt) : "",
             });
+
             onSaved();
         } catch (e2) {
             setError(e2.message || "Opslaan mislukt");
@@ -68,6 +77,15 @@ export default function AdminCreateMessage({ onClose, onSaved }) {
                             rows={8}
                             value={body}
                             onChange={(e) => setBody(e.target.value)}
+                        />
+                    </label>
+
+                    <label>
+                        Tonen vanaf
+                        <input
+                            type="datetime-local"
+                            value={publishAt}
+                            onChange={(e) => setPublishAt(e.target.value)}
                         />
                     </label>
 

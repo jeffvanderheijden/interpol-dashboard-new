@@ -16,10 +16,21 @@ export async function getAdminMessages() {
     return data.messages;
 }
 
-export async function createAdminMessage({ title, body, mediaFile }) {
+export async function getStudentMessages() {
+    const res = await fetch(`${API_BASE}/api/messages`, {
+        method: "GET",
+        credentials: "include",
+        headers: { Accept: "application/json" },
+    });
+    const data = await parseJson(res);
+    return data.messages;
+}
+
+export async function createAdminMessage({ title, body, mediaFile, publish_at }) {
     const fd = new FormData();
     fd.append("title", title);
     fd.append("body", body);
+    if (publish_at) fd.append("publish_at", publish_at);
     if (mediaFile) fd.append("media", mediaFile);
 
     const res = await fetch(`${API_BASE}/api/admin/messages`, {
@@ -30,10 +41,12 @@ export async function createAdminMessage({ title, body, mediaFile }) {
     return parseJson(res);
 }
 
-export async function updateAdminMessage(id, { title, body, mediaFile }) {
+export async function updateAdminMessage(id, { title, body, mediaFile, publish_at }) {
     const fd = new FormData();
     fd.append("title", title);
     fd.append("body", body);
+    
+    if (publish_at) fd.append("publish_at", publish_at);
     if (mediaFile) fd.append("media", mediaFile);
 
     const res = await fetch(`${API_BASE}/api/admin/messages/${id}`, {
