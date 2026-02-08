@@ -1,80 +1,30 @@
-import { useState } from "react";
 import Icon from "../Desktop/Icon/Icon";
 import Window from "../_shared/Window/Window";
 import Taskbar from "../_shared/Taskbar/Taskbar";
-
-import TeamInfoApp from "./apps/TeamInfoApp/TeamInfoApp";
-import ChallengesApp from "./apps/ChallengesApp/ChallengesApp";
-import LeaderboardApp from "./apps/LeaderboardApp/LeaderboardApp";
-import MailApp from "./apps/MailApp/MailApp";
+import { useWindowManager } from "../../hooks/useWindowManager";
+import { dashboardAppConfig, getDashboardMenuApps } from "./appConfig.jsx";
 
 import "./StudentDashboard.scss";
 
-const dashboardApps = {
-    teaminfo: { width: 520, height: 400, title: "Team Info" },
-    challenges: { width: 700, height: 500, title: "Challenges" },
-    leaderboard: { width: 700, height: 500, title: "Leaderboard" },
-    mail: { width: 720, height: 520, title: "Mail" },
-};
-
 export default function StudentDashboard({ team }) {
-    const [openWindows, setOpenWindows] = useState([]);
-    const [zIndexCounter, setZIndexCounter] = useState(1);
+    const {
+        openWindows,
+        openApp,
+        bringToFront,
+        closeWindow,
+        minimizeWindow,
+    } = useWindowManager();
 
-    const nextTopZ = () => {
-        setZIndexCounter((prev) => prev + 1);
-        return zIndexCounter + 1;
-    };
-
-    const openApp = (appName) => {
-        const config = dashboardApps[appName];
+    const openDashboardApp = (appName) => {
+        const config = dashboardAppConfig[appName];
         if (!config) return;
-
-        if (!openWindows.find((w) => w.app === appName)) {
-            const topZ = nextTopZ();
-            setOpenWindows((prev) => [
-                ...prev,
-                {
-                    id: Date.now(),
-                    app: appName,
-                    title: config.title,
-                    width: config.width,
-                    height: config.height,
-                    z: topZ,
-                    minimized: false,
-                },
-            ]);
-        }
-    };
-
-    const bringToFront = (id) => {
-        const topZ = nextTopZ();
-        setOpenWindows((prev) =>
-            prev.map((w) =>
-                w.id === id
-                    ? { ...w, minimized: false, z: topZ }
-                    : w
-            )
-        );
-    };
-
-    const closeWindow = (id) => {
-        setOpenWindows((prev) => prev.filter((w) => w.id !== id));
+        openApp(appName, config);
     };
 
     const renderContent = (win) => {
-        switch (win.app) {
-            case "teaminfo":
-                return <TeamInfoApp team={team} />;
-            case "challenges":
-                return <ChallengesApp team={team} />;
-            case "leaderboard":
-                return <LeaderboardApp />;
-            case "mail":
-                return <MailApp />;
-            default:
-                return <div>Onbekende app</div>;
-        }
+        const app = dashboardAppConfig[win.app];
+        if (!app?.render) return <div>Onbekende app</div>;
+        return app.render({ team });
     };
 
     return (
@@ -83,25 +33,25 @@ export default function StudentDashboard({ team }) {
                 <Icon
                     label="Team Info"
                     icon="/icons/team.ico"
-                    onDoubleClick={() => openApp("teaminfo")}
+                    onDoubleClick={() => openDashboardApp("teaminfo")}
                 />
 
                 <Icon
                     label="Challenges"
                     icon="/icons/challenges.ico"
-                    onDoubleClick={() => openApp("challenges")}
+                    onDoubleClick={() => openDashboardApp("challenges")}
                 />
 
                 <Icon
                     label="Leaderboard"
                     icon="/icons/leaderboard.ico"
-                    onDoubleClick={() => openApp("leaderboard")}
+                    onDoubleClick={() => openDashboardApp("leaderboard")}
                 />
 
                 <Icon
                     label="Mail"
                     icon="/icons/email.ico"
-                    onDoubleClick={() => openApp("mail")}
+                    onDoubleClick={() => openDashboardApp("mail")}
                 />
             </div>
 
@@ -117,13 +67,7 @@ export default function StudentDashboard({ team }) {
                         height={w.height}
                         onClose={() => closeWindow(w.id)}
                         onMinimize={() =>
-                            setOpenWindows((prev) =>
-                                prev.map((win) =>
-                                    win.id === w.id
-                                        ? { ...win, minimized: true }
-                                        : win
-                                )
-                            )
+                            minimizeWindow(w.id)
                         }
                         onClick={() => bringToFront(w.id)}
                     >
@@ -132,10 +76,10 @@ export default function StudentDashboard({ team }) {
                 ))}
 
             <Taskbar
-                mode="dashboard"
                 openWindows={openWindows}
-                openApp={openApp}
+                openApp={openDashboardApp}
                 bringToFront={bringToFront}
+                menuApps={getDashboardMenuApps()}
             />
         </div>
     );

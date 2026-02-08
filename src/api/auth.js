@@ -1,5 +1,20 @@
 import { API_BASE } from "./_config";
 
+async function parseJson(res) {
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+        throw new Error(data.message || data.error || "Request failed");
+    }
+    return data;
+}
+
+export async function getSession() {
+    const res = await fetch(`${API_BASE}/api/session`, {
+        credentials: "include",
+    });
+    return parseJson(res);
+}
+
 export async function login({ username, password }) {
     const response = await fetch(`${API_BASE}/api/login`, {
         method: 'POST',
@@ -11,16 +26,13 @@ export async function login({ username, password }) {
         })
     });
 
-    if (!response.ok) {
-        let error = {};
-        try {
-            error = await response.json();
-        } catch (e) {
-            throw new Error('Login failed: server sent no JSON');
-        }
+    return parseJson(response);
+}
 
-        throw new Error(error.message || 'Login failed');
-    }
-
-    return response.json();
+export async function logout() {
+    const res = await fetch(`${API_BASE}/api/logout`, {
+        method: "POST",
+        credentials: "include",
+    });
+    return parseJson(res);
 }

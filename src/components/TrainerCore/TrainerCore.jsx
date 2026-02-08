@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import StepSidebar from "./Editor/StepSidebar";
 import Editor from "./Editor/Editor";
 import Preview from "./Editor/Preview";
@@ -44,12 +44,12 @@ const TrainerCore = ({ lesson }) => {
             // Nog niks voltooid → start bij stap 0
             setStepIndex(0);
         }
-    }, [lesson.id]);
+    }, [lesson.id, lesson.steps]);
 
     // -----------------------------
     // Helpers
     // -----------------------------
-    const getInitialCode = (step) => {
+    const getInitialCode = useCallback((step) => {
         if (lesson.language === "htmlcss") {
             return {
                 html: String(step?.starter?.html || ""),
@@ -60,14 +60,14 @@ const TrainerCore = ({ lesson }) => {
             return String(step?.starter?.js || step?.starter || "");
         }
         return "";
-    };
+    }, [lesson.language]);
 
     const [code, setCode] = useState(getInitialCode(step));
 
     // Reset code bij stapwissel
     useEffect(() => {
         setCode(getInitialCode(step));
-    }, [stepIndex]);
+    }, [step, getInitialCode]);
 
     // -----------------------------
     // Tests uitvoeren

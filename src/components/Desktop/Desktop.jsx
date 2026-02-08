@@ -4,33 +4,18 @@ import { triggerHackerAnimation } from "./_helpers/dossierHelpers";
 
 import Icon from "./Icon/Icon";
 import Window from "./../_shared/Window/Window";
-import TerminalApp from "./apps/TerminalApp/TerminalApp";
-import MailApp from "./apps/MailApp/MailApp";
-import DossierApp from "./apps/DossierApp/DossierApp";
-import EditorApp from "./apps/EditorApp/EditorApp";
-import NewTeamApp from "./apps/NewTeamApp/NewTeamApp";
 import Taskbar from "./../_shared/Taskbar/Taskbar";
 import Notification from "./Notification/Notification";
+import { trainingAppConfig, getTrainingMenuApps } from "./appConfig.jsx";
+import { useWindowManager } from "../../hooks/useWindowManager";
 
 
 import {
-    ensureWindowOpen,
-    removeWindowById,
-    bringToFrontById,
-    getAppTitle,
     deltaNewMails,
     handleConditionalVirusDownload,
-} from "./_helpers/desktopHelpers";
+} from "../_shared/desktopHelpers";
 
 import "./Desktop.scss";
-
-const appConfig = {
-    terminal: { width: 520, height: 340, title: "MS-DOS Prompt" },
-    mail: { width: 680, height: 500, title: "Inbox - E-mail Client" },
-    dossier: { width: 600, height: 480, title: "Dossier Viewer" },
-    editor: { width: 900, height: 500, title: "Notepad" },
-    newteam: { width: 480, height: 680, title: "Nieuw Team" },
-};
 
 const Desktop = () => {
     const {
@@ -42,8 +27,13 @@ const Desktop = () => {
         progress,
     } = useContext(GameContext);
 
-    const [openWindows, setOpenWindows] = useState([]);
-    const [zIndexCounter, setZIndexCounter] = useState(1);
+    const {
+        openWindows,
+        openApp,
+        bringToFront,
+        closeWindow,
+        minimizeWindow,
+    } = useWindowManager();
     const [unreadMails, setUnreadMails] = useState(0);
     const [puzzleStep, setPuzzleStep] = useState(0);
 
@@ -81,7 +71,7 @@ const Desktop = () => {
     // auto-open terminal en trigger autoRunVirus na virusAnalyzed
     useEffect(() => {
         if (progress?.virusAnalyzed) {
-            openApp("terminal");
+            openTrainingApp("terminal");
             if (!autoRunConsumedRef.current) {
                 setAutoRunVirusSignal(Date.now());
                 autoRunConsumedRef.current = true;
@@ -97,19 +87,12 @@ const Desktop = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Volgende top z-index veilig bepalen
-    const nextTopZ = () => {
-        setZIndexCounter((prev) => prev + 1);
-        return zIndexCounter + 1;
-    };
-
     // open single-instance app + mail badge/reset logica
-    const openApp = (appName) => {
-        const config = appConfig[appName];
+    const openTrainingApp = (appName) => {
+        const config = trainingAppConfig[appName];
         if (!config) return;
 
-        const topZ = nextTopZ();
-        setOpenWindows((prev) => ensureWindowOpen(prev, appName, config, topZ));
+        openApp(appName, config);
 
         if (appName === "mail") {
             setUnreadMails(0);
@@ -118,9 +101,8 @@ const Desktop = () => {
     };
 
     // breng venster naar voren + mail badge reset als nodig
-    const bringToFront = (id) => {
-        const topZ = nextTopZ();
-        setOpenWindows((prev) => bringToFrontById(prev, id, topZ));
+    const bringTrainingAppToFront = (id) => {
+        bringToFront(id);
 
         const win = openWindows.find((w) => w.id === id);
         if (win?.app === "mail") {
@@ -129,40 +111,16 @@ const Desktop = () => {
         }
     };
 
-    // per-app content
     const renderAppContent = (appName) => {
-        switch (appName) {
-            case "terminal":
-                return (
-                    <TerminalApp
-                        step={puzzleStep}
-                        setStep={setPuzzleStep}
-                        onStepComplete={handleStepComplete}
-                        autoRunVirusSignal={autoRunVirusSignal}
-                    />
-                );
-            case "mail":
-                return <MailApp />;
-            case "editor":
-                return <EditorApp />;
-            case "dossier":
-                return (
-                    <DossierApp
-                        openApp={openApp}
-                        onStepComplete={handleStepComplete}
-                    />
-                );
-            case "newteam":
-                return (
-                    <NewTeamApp
-                        onSubmit={(data) => {
-                            console.log("Team aangemaakt:", data);
-                        }}
-                    />
-                );
-            default:
-                return <div>App niet gevonden</div>;
-        }
+        const app = trainingAppConfig[appName];
+        if (!app?.render) return <div>App niet gevonden</div>;
+        return app.render({
+            puzzleStep,
+            setPuzzleStep,
+            handleStepComplete,
+            autoRunVirusSignal,
+            openTrainingApp,
+        });
     };
 
     // unlock flow & mail-triggers
@@ -187,21 +145,21 @@ const Desktop = () => {
         <div className="desktop-environment">
             {/* Desktop icons */}
             <div className="desktop-icons">
-                <Icon label="Terminal" icon="/icons/terminal.ico" onDoubleClick={() => openApp("terminal")} />
+                <Icon label="Terminal" icon="/icons/terminal.ico" onDoubleClick={() => openTrainingApp("terminal")} />
                 <Icon
                     label="E-mail"
                     icon="/icons/email.ico"
-                    onDoubleClick={() => openApp("mail")}
+                    onDoubleClick={() => openTrainingApp("mail")}
                     badge={unreadMails > 0}
                 />
                 {dossierUnlocked && (
-                    <Icon label="Dossiers" icon="/icons/documents.ico" onDoubleClick={() => openApp("dossier")} />
+                    <Icon label="Dossiers" icon="/icons/documents.ico" onDoubleClick={() => openTrainingApp("dossier")} />
                 )}
                 {editorUnlocked && (
-                    <Icon label="Editor" icon="/icons/notepad.ico" onDoubleClick={() => openApp("editor")} />
+                    <Icon label="Editor" icon="/icons/notepad.ico" onDoubleClick={() => openTrainingApp("editor")} />
                 )}
                 {newTeamUnlocked && (
-                    <Icon label="Nieuw Team" icon="/icons/team.ico" onDoubleClick={() => openApp("newteam")} />
+                    <Icon label="Nieuw Team" icon="/icons/team.ico" onDoubleClick={() => openTrainingApp("newteam")} />
                 )}
             </div>
 
@@ -211,17 +169,15 @@ const Desktop = () => {
                 .map((win) => (
                     <Window
                         key={win.id}
-                        title={getAppTitle(appConfig, win.app)}
+                        title={win.title}
                         zIndex={win.z}
                         width={win.width}
                         height={win.height}
-                        onClose={() => setOpenWindows((prev) => removeWindowById(prev, win.id))}
+                        onClose={() => closeWindow(win.id)}
                         onMinimize={() =>
-                            setOpenWindows((prev) =>
-                                prev.map((w) => (w.id === win.id ? { ...w, minimized: true } : w))
-                            )
+                            minimizeWindow(win.id)
                         }
-                        onClick={() => bringToFront(win.id)}
+                        onClick={() => bringTrainingAppToFront(win.id)}
                     >
                         {renderAppContent(win.app)}
                     </Window>
@@ -232,16 +188,20 @@ const Desktop = () => {
                 show={showNotification}
                 subject={lastMailSubject}
                 onClick={() => {
-                    openApp("mail");
+                    openTrainingApp("mail");
                     setShowNotification(false);
                 }}
             />
 
             <Taskbar 
-                mode="training"
                 openWindows={openWindows} 
-                bringToFront={bringToFront} 
-                openApp={openApp} 
+                bringToFront={bringTrainingAppToFront} 
+                openApp={openTrainingApp}
+                menuApps={getTrainingMenuApps({
+                    terminalDone: progress?.terminalDone,
+                    dossierDone: progress?.dossierDone,
+                    virusExecutionSimulated: progress?.virusExecutionSimulated,
+                })}
             />
 
             {/* Watermark */}

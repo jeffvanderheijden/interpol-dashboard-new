@@ -8,6 +8,7 @@ import Training from './pages/Training';
 import Dashboard from './pages/Dashboard';
 import HtmlCss from './pages/HtmlCss';
 import Javascript from './pages/Javascript';
+import CreativeCoding from './pages/CreativeCoding';
 import Admin from './pages/Admin';
 import Unauthorized from './pages/Unauthorized';
 import NotFound from './pages/NotFound';
@@ -52,6 +53,15 @@ const App = () => {
                             element={
                                 <ProtectedRoute roles={["docent", "student"]}>
                                     <Javascript />
+                                </ProtectedRoute>
+                            } 
+                        />
+
+                        <Route 
+                            path="/creative-coding" 
+                            element={
+                                <ProtectedRoute roles={["docent", "student"]}>
+                                    <CreativeCoding />
                                 </ProtectedRoute>
                             } 
                         />

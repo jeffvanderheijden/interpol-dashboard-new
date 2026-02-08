@@ -39,8 +39,14 @@ const TeamInfoApp = () => {
     }, [user?.teamId]);
 
     const team = data?.team ?? null;
-    const members = Array.isArray(data?.members) ? data.members : [];
-    const challenges = Array.isArray(data?.challenges) ? data.challenges : [];
+    const members = useMemo(
+        () => (Array.isArray(data?.members) ? data.members : []),
+        [data?.members]
+    );
+    const challenges = useMemo(
+        () => (Array.isArray(data?.challenges) ? data.challenges : []),
+        [data?.challenges]
+    );
 
     const totalPoints = useMemo(() => {
         return challenges.reduce(

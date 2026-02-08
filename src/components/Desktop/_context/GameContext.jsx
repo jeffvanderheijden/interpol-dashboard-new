@@ -1,14 +1,44 @@
-import { createContext, useState, useEffect } from "react";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useState, useEffect, useMemo } from "react";
 import questMails from "./../_data/questMails";
 import { loadProgress, updateProgress } from "./../_data/progressStorage";
 
 export const GameContext = createContext();
 
+const buildInitialMails = (progress) => {
+    const initialMails = questMails.filter((m) => m.startMail);
+
+    Object.keys(progress || {}).forEach((trigger) => {
+        if (progress[trigger]) {
+            const unlocked = questMails.filter((m) => m.trigger === trigger);
+            unlocked.forEach((um) => {
+                if (!initialMails.some((im) => im.id === um.id)) {
+                    initialMails.push(um);
+                }
+            });
+        }
+    });
+
+    return initialMails;
+};
+
 export const GameProvider = ({ children }) => {
-    const [mails, setMails] = useState([]);
-    const [progress, setProgress] = useState(() => loadProgress());
-    const [showNotification, setShowNotification] = useState(false);
-    const [lastMailSubject, setLastMailSubject] = useState("");
+    const initialProgress = useMemo(() => loadProgress(), []);
+    const initialMails = useMemo(
+        () => buildInitialMails(initialProgress),
+        [initialProgress]
+    );
+
+    const [mails, setMails] = useState(initialMails);
+    const [progress, setProgress] = useState(initialProgress);
+    const [showNotification, setShowNotification] = useState(
+        initialMails.length > 0
+    );
+    const [lastMailSubject, setLastMailSubject] = useState(
+        initialMails.length > 0
+            ? initialMails[initialMails.length - 1].subject || ""
+            : ""
+    );
 
     /**
      * Unlock mails en update progress
@@ -53,33 +83,6 @@ export const GameProvider = ({ children }) => {
         setLastMailSubject(mail.subject || "");
         setShowNotification(true);
     };
-
-    /**
-     * Initialiseer mails bij eerste load
-     * - Voeg startmails toe
-     * - Voeg mails toe voor alle reeds voltooide triggers
-     */
-    useEffect(() => {
-        let initialMails = questMails.filter((m) => m.startMail);
-
-        Object.keys(progress).forEach((trigger) => {
-            if (progress[trigger]) {
-                const unlocked = questMails.filter((m) => m.trigger === trigger);
-                unlocked.forEach((um) => {
-                    if (!initialMails.some((im) => im.id === um.id)) {
-                        initialMails.push(um);
-                    }
-                });
-            }
-        });
-
-        setMails(initialMails);
-
-        if (initialMails.length > 0) {
-            setLastMailSubject(initialMails[initialMails.length - 1].subject || "");
-            setShowNotification(true);
-        }
-    }, []); // run alleen bij eerste render
 
     // Reset met Ctrl+Shift+R
     useEffect(() => {

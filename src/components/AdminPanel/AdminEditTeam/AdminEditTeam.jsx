@@ -11,7 +11,7 @@ import "./AdminEditTeam.scss";
 export default function AdminEditTeam({ team, onClose, onSaved }) {
     const [name, setName] = useState(team.name);
     const [className, setClassName] = useState(team.class);
-    const [image, setImage] = useState(team.image_url);
+    const [image] = useState(team.image_url);
 
     const [members, setMembers] = useState(
         team.members.map(m => ({

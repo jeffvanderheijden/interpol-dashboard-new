@@ -1,4 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
+import { getSession, login as apiLogin, logout as apiLogout } from "../../../api/auth";
 
 const AuthContext = createContext();
 
@@ -8,11 +10,8 @@ export const AuthProvider = ({ children }) => {
 
     // Check sessie bij opstart
     useEffect(() => {
-        fetch("https://api.heijden.sd-lab.nl/api/session", {
-            credentials: "include",
-        })
-            .then(res => res.json())
-            .then(data => {
+        getSession()
+            .then((data) => {
                 setUser(data.user || null);
                 setLoading(false);
             })
@@ -22,10 +21,12 @@ export const AuthProvider = ({ children }) => {
     // Check elke 5 minuten of sessie verlopen is
     useEffect(() => {
         const interval = setInterval(() => {
-            fetch("https://api.heijden.sd-lab.nl/api/session", { credentials: "include" })
-                .then(res => res.json())
-                .then(data => {
+            getSession()
+                .then((data) => {
                     if (!data.user) setUser(null);
+                })
+                .catch(() => {
+                    setUser(null);
                 });
         }, 5 * 60 * 1000);
 
@@ -33,23 +34,12 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (username, password) => {
-        const res = await fetch("https://api.heijden.sd-lab.nl/api/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify({ gebruikersnaam: username, wachtwoord: password }),
-        });
-
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || "Login mislukt");
+        const data = await apiLogin({ username, password });
         setUser(data.user);
     };
 
     const logout = async () => {
-        await fetch("https://api.heijden.sd-lab.nl/api/logout", {
-            method: "POST",
-            credentials: "include",
-        });
+        await apiLogout();
         setUser(null);
     };
 

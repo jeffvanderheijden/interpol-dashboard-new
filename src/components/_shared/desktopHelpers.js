@@ -1,5 +1,4 @@
-// Pure helpers die geen component state kennen.
-// Zorgt voor herkenbare structuur en hergebruik.
+// Pure helpers for desktop-like interactions.
 
 // Unieke ID generator (module-scope counter + timestamp)
 let __winCounter = 0;
@@ -18,26 +17,6 @@ export const createWindow = (appName, config, zIndex) => ({
     height: config.height ?? 480,
     minimized: false,
 });
-
-// Zorg dat een window maar 1x open kan staan (singleton op appName)
-export const ensureWindowOpen = (prevWindows, appName, config, zIndex) => {
-    if (prevWindows.some((w) => w.app === appName)) return prevWindows;
-    return [...prevWindows, createWindow(appName, config, zIndex)];
-};
-
-// Breng een window naar voren (en de-minimize)
-export const bringToFrontById = (prevWindows, id, zIndexTop) =>
-    prevWindows.map((w) =>
-        w.id === id ? { ...w, z: zIndexTop, minimized: false } : w
-    );
-
-// Verwijder window op id
-export const removeWindowById = (prevWindows, id) =>
-    prevWindows.filter((w) => w.id !== id);
-
-// Titel ophalen uit config met fallback
-export const getAppTitle = (appConfig, appName) =>
-    appConfig?.[appName]?.title || "Application";
 
 // Bereken toename ongelezen mails t.o.v. vorige count
 export const deltaNewMails = (currentCount, previousCount) =>

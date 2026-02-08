@@ -1,6 +1,5 @@
-import { useState, useContext, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { GameContext } from "./../../Desktop/_context/GameContext"; // alleen gebruikt in training mode
 import { useAuth } from "./../../ProtectedRoute/_context/AuthContext";
 
 import "./Taskbar.scss";
@@ -9,13 +8,10 @@ export default function Taskbar({
     openWindows,
     bringToFront,
     openApp,
-    mode = "training"
+    menuApps = []
 }) {
     const navigate = useNavigate();
     const { logout } = useAuth();
-
-    // Alleen training mode gebruikt GameContext
-    const trainingProgress = mode === "training" ? useContext(GameContext)?.progress : null;
 
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef(null);
@@ -38,37 +34,6 @@ export default function Taskbar({
 
         return () => document.removeEventListener("pointerdown", handleClickOutside);
     }, [menuOpen]);
-
-    // -------------------------------
-    // App-lijst afhankelijk van MODE
-    // -------------------------------
-    const availableApps = useCallback(() => {
-        if (mode === "dashboard") {
-            return [
-                { key: "teaminfo", label: "Team Info", icon: "/icons/team.ico" },
-                { key: "challenges", label: "Challenges", icon: "/icons/challenges.ico" },
-                { key: "leaderboard", label: "Leaderboard", icon: "/icons/leaderboard.ico" },
-            ];
-        }
-
-        // Training mode apps (zoals vroeger)
-        const apps = [
-            { key: "terminal", label: "Terminal", icon: "/icons/terminal.ico" },
-            { key: "mail", label: "E-mail", icon: "/icons/email.ico" },
-        ];
-
-        if (trainingProgress?.terminalDone) {
-            apps.push({ key: "dossier", label: "Dossiers", icon: "/icons/documents.ico" });
-        }
-        if (trainingProgress?.dossierDone) {
-            apps.push({ key: "editor", label: "Editor", icon: "/icons/notepad.ico" });
-        }
-        if (trainingProgress?.virusExecutionSimulated) {
-            apps.push({ key: "newteam", label: "Nieuw Team", icon: "/icons/team.ico" });
-        }
-
-        return apps;
-    }, [mode, trainingProgress]);
 
     // -------------------------------
     // Log out actie
@@ -101,7 +66,7 @@ export default function Taskbar({
             {menuOpen && (
                 <div className="taskbar__menu" ref={menuRef} role="menu">
                     <ul>
-                        {availableApps().map((app) => (
+                        {menuApps.map((app) => (
                             <li
                                 key={app.key}
                                 className="taskbar__menu-item"

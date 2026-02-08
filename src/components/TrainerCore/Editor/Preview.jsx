@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 
 /**
  * Preview.jsx
@@ -94,7 +94,7 @@ const Preview = ({ code, lesson, iframeRef, runTests }) => {
         } else {
           showNotification("Systeem", "⚠️ Onverwacht testresultaat.");
         }
-      } catch (e) {
+      } catch {
         showNotification("Systeemfout", "⚠️ Er ging iets mis bij het uitvoeren van de tests.");
       } finally {
         loadingRef.current = false;

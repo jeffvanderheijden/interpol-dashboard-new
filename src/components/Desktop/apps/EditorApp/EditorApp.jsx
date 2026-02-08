@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useRef, useState, useContext, useCallback } from "react";
 import Editor from "@monaco-editor/react";
 import "./EditorApp.scss";
 import { GameContext } from "./../../_context/GameContext";
@@ -26,6 +26,41 @@ const EditorApp = () => {
     const [status, setStatus] = useState("idle"); // "idle" | "saved" | "match"
     const saveTimer = useRef(null);
 
+    const showStatus = useCallback((state) => {
+        setStatus(state);
+        clearTimeout(saveTimer.current);
+        if (state !== "idle") {
+            saveTimer.current = setTimeout(() => setStatus("idle"), 1400);
+        }
+    }, []);
+
+    const createNewFile = () => {
+        const name = `virus.txt`;
+        const next = { ...files, [name]: "" };
+        setFiles(next);
+        setActive(name);
+    };
+
+    const handleSave = useCallback(async () => {
+        saveFilesToStorage(files, STORAGE_KEY);
+        showStatus("saved");
+
+        try {
+            const res = await fetch("/downloads/virus.txt");
+            if (!res.ok) return console.error("Kon virus.txt niet ophalen:", res.status);
+
+            const officialText = (await res.text()).trim();
+            const studentText = (files[active] ?? "").trim();
+
+            if (studentText === officialText) {
+                unlockMail?.("virusAnalyzed");
+                showStatus("match");
+            }
+        } catch (err) {
+            console.error("Fout bij vergelijken virus.txt:", err);
+        }
+    }, [files, active, showStatus, unlockMail]);
+
     // persist files whenever they change
     useEffect(() => {
         saveFilesToStorage(files, STORAGE_KEY);
@@ -46,47 +81,12 @@ const EditorApp = () => {
         };
         window.addEventListener("keydown", onKey);
         return () => window.removeEventListener("keydown", onKey);
-    }, [files, active]);
+    }, [handleSave]);
 
     const value = files[active] ?? "";
 
     const updateActiveFile = (nextValue) => {
         setFiles((prev) => ({ ...prev, [active]: nextValue }));
-    };
-
-    const showStatus = (state) => {
-        setStatus(state);
-        clearTimeout(saveTimer.current);
-        if (state !== "idle") {
-            saveTimer.current = setTimeout(() => setStatus("idle"), 1400);
-        }
-    };
-
-    const createNewFile = () => {
-        const name = `virus.txt`;
-        const next = { ...files, [name]: "" };
-        setFiles(next);
-        setActive(name);
-    };
-
-    const handleSave = async () => {
-        saveFilesToStorage(files, STORAGE_KEY);
-        showStatus("saved");
-
-        try {
-            const res = await fetch("/downloads/virus.txt");
-            if (!res.ok) return console.error("Kon virus.txt niet ophalen:", res.status);
-
-            const officialText = (await res.text()).trim();
-            const studentText = (files[active] ?? "").trim();
-
-            if (studentText === officialText) {
-                unlockMail?.("virusAnalyzed");
-                showStatus("match");
-            }
-        } catch (err) {
-            console.error("Fout bij vergelijken virus.txt:", err);
-        }
     };
 
     return (
