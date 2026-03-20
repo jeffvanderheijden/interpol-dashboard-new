@@ -1,17 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GameProvider } from "./components/Desktop/_context/GameContext";
 import { AuthProvider } from "./components/ProtectedRoute/_context/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import "./styles/_reset.scss";
-import Login from './pages/Login';
-import Training from './pages/Training';
-import Dashboard from './pages/Dashboard';
-import HtmlCss from './pages/HtmlCss';
-import Javascript from './pages/Javascript';
-import CreativeCoding from './pages/CreativeCoding';
-import Admin from './pages/Admin';
-import Unauthorized from './pages/Unauthorized';
-import NotFound from './pages/NotFound';
+import {
+    publicRoutes,
+    protectedRoutes,
+    renderRouteElement,
+} from "./routes/routeDefinitions";
 
 const App = () => {
     return (
@@ -19,64 +14,20 @@ const App = () => {
             <Router>
                 <AuthProvider>
                     <Routes>
-                        {/* STUDENT */}
-                        <Route 
-                            path="/" 
-                            element={<Login />} 
-                        />
-                        <Route 
-                            path="/training"
-                            element={
-                                <ProtectedRoute roles={["docent", "student"]}>
-                                    <Training />
-                                </ProtectedRoute>
-                            } 
-                        />
-                        <Route 
-                            path="/dashboard/:teamId"
-                            element={
-                                <ProtectedRoute roles={["docent", "student"]} teamProtected={true}>
-                                    <Dashboard />
-                                </ProtectedRoute>
-                            } 
-                        />
-                        <Route 
-                            path="/html-css" 
-                            element={
-                                <ProtectedRoute roles={["docent", "student"]}>
-                                    <HtmlCss />
-                                </ProtectedRoute>
-                            } 
-                        />
-                        <Route 
-                            path="/javascript" 
-                            element={
-                                <ProtectedRoute roles={["docent", "student"]}>
-                                    <Javascript />
-                                </ProtectedRoute>
-                            } 
-                        />
-
-                        <Route 
-                            path="/creative-coding" 
-                            element={
-                                <ProtectedRoute roles={["docent", "student"]}>
-                                    <CreativeCoding />
-                                </ProtectedRoute>
-                            } 
-                        />
-                        {/* ADMIN */}
-                        <Route 
-                            path="/admin" 
-                            element={
-                                <ProtectedRoute roles={["docent"]}>
-                                    <Admin />
-                                </ProtectedRoute>
-                            } 
-                        />
-                        {/* ERROR PAGES */}
-                        <Route path="/unauthorized" element={<Unauthorized />} />
-                        <Route path="*" element={<NotFound />} />
+                        {protectedRoutes.map((route) => (
+                            <Route
+                                key={route.path}
+                                path={route.path}
+                                element={renderRouteElement(route)}
+                            />
+                        ))}
+                        {publicRoutes.map((route) => (
+                            <Route
+                                key={route.path}
+                                path={route.path}
+                                element={route.element}
+                            />
+                        ))}
                     </Routes>
                 </AuthProvider>
             </Router>

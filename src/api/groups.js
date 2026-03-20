@@ -1,4 +1,4 @@
-import { API_BASE } from "./_config";
+import { apiRequest, withJsonBody } from "./request";
 
 // --------------------------------------------------
 // STUDENT API
@@ -6,47 +6,20 @@ import { API_BASE } from "./_config";
 
 // CREATE GROUP (student)
 export async function createGroup(teamPhoto, members, teamName, className) {
-    const res = await fetch(`${API_BASE}/api/groups`, {
+    return apiRequest("/api/groups", {
         method: "POST",
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
+        ...withJsonBody({
             teamPhoto,
             members,
             teamName,
-            className
-        })
+            className,
+        }),
     });
-
-    if (!res.ok) {
-        const text = await res.text();
-        console.error("API ERROR:", text);
-        throw new Error("CreateGroup failed");
-    }
-
-    return res.json();
 }
 
 // GET TEAM (student)
 export async function getTeam(teamId) {
-    const res = await fetch(`${API_BASE}/api/groups/${teamId}`, {
-        method: "GET",
-        credentials: "include",
-        headers: {
-            "Accept": "application/json",
-        },
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-        console.error("API ERROR:", data);
-        throw new Error(data.error || "Failed to load team");
-    }
-
-    return data;
+    return apiRequest(`/api/groups/${teamId}`);
 }
 
 // --------------------------------------------------
@@ -55,67 +28,33 @@ export async function getTeam(teamId) {
 
 // GET ALL GROUPS (admin)
 export async function getAdminGroups() {
-    const res = await fetch(`${API_BASE}/api/admin/groups`, {
-        credentials: "include"
-    });
-
-    if (!res.ok) {
-        const text = await res.text();
-        console.error("API ERROR:", text);
-        throw new Error("getAdminGroups failed");
-    }
-
-    const data = await res.json();
+    const data = await apiRequest("/api/admin/groups");
     return data.groups || [];
 }
 
 // CREATE GROUP (admin)
 export async function createAdminGroup({ teamPhoto, teamName, className, members }) {
-    const res = await fetch(`${API_BASE}/api/admin/groups`, {
+    return apiRequest("/api/admin/groups", {
         method: "POST",
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
+        ...withJsonBody({
             teamPhoto,
             teamName,
             className,
-            members
-        })
+            members,
+        }),
     });
-
-    if (!res.ok) {
-        const text = await res.text();
-        console.error("API ERROR:", text);
-        throw new Error("createAdminGroup failed");
-    }
-
-    return res.json();
 }
 
 // UPDATE GROUP (admin)
 export async function updateAdminGroup(id, { name, className, image_url }) {
-    const res = await fetch(`${API_BASE}/api/admin/groups/${id}`, {
+    return apiRequest(`/api/admin/groups/${id}`, {
         method: "PUT",
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
+        ...withJsonBody({
             name,
             className,
-            image_url
-        })
+            image_url,
+        }),
     });
-
-    if (!res.ok) {
-        const text = await res.text();
-        console.error("API ERROR:", text);
-        throw new Error("updateAdminGroup failed");
-    }
-
-    return res.json();
 }
 
 // UDATE GROUP IMAGE
@@ -130,18 +69,9 @@ export async function updateAdminGroupImage(id, image_url) {
 
 // DELETE GROUP (admin)
 export async function deleteAdminGroup(id) {
-    const res = await fetch(`${API_BASE}/api/admin/groups/${id}`, {
+    return apiRequest(`/api/admin/groups/${id}`, {
         method: "DELETE",
-        credentials: "include"
     });
-
-    if (!res.ok) {
-        const text = await res.text();
-        console.error("API ERROR:", text);
-        throw new Error("deleteAdminGroup failed");
-    }
-
-    return res.json();
 }
 
 
@@ -152,57 +82,24 @@ export async function deleteAdminGroup(id) {
 
 // ADD MEMBER
 export async function addAdminMember(groupId, { name, student_number }) {
-    const res = await fetch(`${API_BASE}/api/admin/groups/${groupId}/members`, {
+    return apiRequest(`/api/admin/groups/${groupId}/members`, {
         method: "POST",
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, student_number })
+        ...withJsonBody({ name, student_number }),
     });
-
-    if (!res.ok) {
-        const text = await res.text();
-        console.error("API ERROR:", text);
-        throw new Error("addAdminMember failed");
-    }
-
-    return res.json();
 }
 
 
 // UPDATE MEMBER
 export async function updateAdminMember(groupId, memberId, { name, student_number }) {
-    const res = await fetch(`${API_BASE}/api/admin/groups/${groupId}/members/${memberId}`, {
+    return apiRequest(`/api/admin/groups/${groupId}/members/${memberId}`, {
         method: "PUT",
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, student_number })
+        ...withJsonBody({ name, student_number }),
     });
-
-    if (!res.ok) {
-        const text = await res.text();
-        console.error("API ERROR:", text);
-        throw new Error("updateAdminMember failed");
-    }
-
-    return res.json();
 }
 
 // DELETE MEMBER
 export async function deleteAdminMember(groupId, memberId) {
-    const res = await fetch(`${API_BASE}/api/admin/groups/${groupId}/members/${memberId}`, {
+    return apiRequest(`/api/admin/groups/${groupId}/members/${memberId}`, {
         method: "DELETE",
-        credentials: "include"
     });
-
-    if (!res.ok) {
-        const text = await res.text();
-        console.error("API ERROR:", text);
-        throw new Error("deleteAdminMember failed");
-    }
-
-    return res.json();
 }

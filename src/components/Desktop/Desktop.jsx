@@ -1,14 +1,15 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { GameContext } from "./_context/GameContext";
 import { triggerHackerAnimation } from "./_helpers/dossierHelpers";
-
-import Icon from "./Icon/Icon";
-import Window from "./../_shared/Window/Window";
-import Taskbar from "./../_shared/Taskbar/Taskbar";
+import AppDesktopShell from "../_shared/AppDesktopShell/AppDesktopShell";
 import Notification from "./Notification/Notification";
-import { trainingAppConfig, getTrainingMenuApps } from "./appConfig.jsx";
+import { buildDesktopIcons, renderConfiguredApp } from "../_shared/appConfig";
+import {
+    trainingAppConfig,
+    trainingAppOrder,
+    getTrainingMenuApps,
+} from "./appConfig.jsx";
 import { useWindowManager } from "../../hooks/useWindowManager";
-
 
 import {
     deltaNewMails,
@@ -111,17 +112,14 @@ const Desktop = () => {
         }
     };
 
-    const renderAppContent = (appName) => {
-        const app = trainingAppConfig[appName];
-        if (!app?.render) return <div>App niet gevonden</div>;
-        return app.render({
+    const renderAppContent = (appName) =>
+        renderConfiguredApp(trainingAppConfig, appName, {
             puzzleStep,
             setPuzzleStep,
             handleStepComplete,
             autoRunVirusSignal,
             openTrainingApp,
         });
-    };
 
     // unlock flow & mail-triggers
     function handleStepComplete(trigger) {
@@ -141,49 +139,38 @@ const Desktop = () => {
         }
     }
 
+    const trainingProgress = {
+        terminalDone: progress?.terminalDone || dossierUnlocked,
+        dossierDone: progress?.dossierDone || editorUnlocked,
+        virusExecutionSimulated:
+            progress?.virusExecutionSimulated || newTeamUnlocked,
+    };
+
+    const menuApps = getTrainingMenuApps(trainingProgress);
+
+    const desktopIcons = buildDesktopIcons(trainingAppConfig, trainingAppOrder, {
+        isVisible: (app) => menuApps.some((menuApp) => menuApp.key === app.key),
+        getBadge: (app) => app.key === "mail" && unreadMails > 0,
+    });
+
     return (
-        <div className="desktop-environment">
-            {/* Desktop icons */}
-            <div className="desktop-icons">
-                <Icon label="Terminal" icon="/icons/terminal.ico" onDoubleClick={() => openTrainingApp("terminal")} />
-                <Icon
-                    label="E-mail"
-                    icon="/icons/email.ico"
-                    onDoubleClick={() => openTrainingApp("mail")}
-                    badge={unreadMails > 0}
-                />
-                {dossierUnlocked && (
-                    <Icon label="Dossiers" icon="/icons/documents.ico" onDoubleClick={() => openTrainingApp("dossier")} />
-                )}
-                {editorUnlocked && (
-                    <Icon label="Editor" icon="/icons/notepad.ico" onDoubleClick={() => openTrainingApp("editor")} />
-                )}
-                {newTeamUnlocked && (
-                    <Icon label="Nieuw Team" icon="/icons/team.ico" onDoubleClick={() => openTrainingApp("newteam")} />
-                )}
-            </div>
-
-            {/* Windows */}
-            {openWindows
-                .filter((win) => !win.minimized)
-                .map((win) => (
-                    <Window
-                        key={win.id}
-                        title={win.title}
-                        zIndex={win.z}
-                        width={win.width}
-                        height={win.height}
-                        onClose={() => closeWindow(win.id)}
-                        onMinimize={() =>
-                            minimizeWindow(win.id)
-                        }
-                        onClick={() => bringTrainingAppToFront(win.id)}
-                    >
-                        {renderAppContent(win.app)}
-                    </Window>
-                ))
-            }
-
+        <AppDesktopShell
+            className="desktop-environment"
+            iconsClassName="desktop-icons"
+            icons={desktopIcons}
+            openWindows={openWindows}
+            openApp={openTrainingApp}
+            bringToFront={bringTrainingAppToFront}
+            closeWindow={closeWindow}
+            minimizeWindow={minimizeWindow}
+            renderWindowContent={(windowItem) => renderAppContent(windowItem.app)}
+            menuApps={menuApps}
+            watermark={{
+                src: "/svgs/interpol-logo.svg",
+                className: "desktop-watermark",
+                alt: "Interpol Watermark",
+            }}
+        >
             <Notification
                 show={showNotification}
                 subject={lastMailSubject}
@@ -192,25 +179,7 @@ const Desktop = () => {
                     setShowNotification(false);
                 }}
             />
-
-            <Taskbar 
-                openWindows={openWindows} 
-                bringToFront={bringTrainingAppToFront} 
-                openApp={openTrainingApp}
-                menuApps={getTrainingMenuApps({
-                    terminalDone: progress?.terminalDone,
-                    dossierDone: progress?.dossierDone,
-                    virusExecutionSimulated: progress?.virusExecutionSimulated,
-                })}
-            />
-
-            {/* Watermark */}
-            <img
-                src="/svgs/interpol-logo.svg"
-                className="desktop-watermark"
-                alt="Interpol Watermark"
-            />
-        </div>
+        </AppDesktopShell>
     );
 };
 

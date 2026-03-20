@@ -54,7 +54,7 @@ const TrainerCore = ({ lesson }) => {
             return {
                 html: String(step?.starter?.html || ""),
                 css: String(step?.starter?.css || "")
-            };
+            }; 
         }
         if (lesson.language === "javascript") {
             return String(step?.starter?.js || step?.starter || "");

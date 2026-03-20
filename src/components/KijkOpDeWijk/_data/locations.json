@@ -1,0 +1,115 @@
+[
+  {
+    "id": 1,
+    "title": "Kubuswoningen",
+    "hint": "Kantelende huizen die eruitzien als kubussen.",
+    "lat": 51.9176,
+    "lng": 4.4886,
+    "question": {
+      "type": "multiple",
+      "text": "Welke architect ontwierp de Kubuswoningen?",
+      "options": [
+        "Rem Koolhaas",
+        "Piet Blom",
+        "Ben van Berkel"
+      ],
+      "answer": "Piet Blom"
+    }
+  },
+  {
+    "id": 2,
+    "title": "Markthal",
+    "hint": "Een grote boog met een kleurrijk plafond.",
+    "lat": 51.9207,
+    "lng": 4.4810,
+    "question": {
+      "type": "multiple",
+      "text": "Wat zie je op het plafond van de Markthal?",
+      "options": [
+        "Fruit en groente",
+        "Auto's",
+        "Mensen"
+      ],
+      "answer": "Fruit en groente"
+    }
+  },
+  {
+    "id": 3,
+    "title": "Station Blaak",
+    "hint": "Een station met een gebogen dak als een tunnel.",
+    "lat": 51.9189,
+    "lng": 4.4885,
+    "question": {
+      "type": "multiple",
+      "text": "Welk vervoermiddel stopt hier onder de grond?",
+      "options": [
+        "Metro",
+        "Vliegtuig",
+        "Boot"
+      ],
+      "answer": "Metro"
+    }
+  },
+  {
+    "id": 4,
+    "title": "Oude Haven",
+    "hint": "Oude boten en terrassen aan het water.",
+    "lat": 51.9186,
+    "lng": 4.4898,
+    "question": {
+      "type": "multiple",
+      "text": "Welke combinatie past het best bij deze plek?",
+      "options": [
+        "Schepen en terrassen",
+        "Treinen en perrons",
+        "Kassen en akkers"
+      ],
+      "answer": "Schepen en terrassen"
+    }
+  },
+  {
+    "id": 5,
+    "title": "Witte de Withstraat",
+    "hint": "Straat vol kunst en cafés.",
+    "lat": 51.9147,
+    "lng": 4.4796,
+    "question": {
+      "type": "multiple",
+      "text": "Wat zie je hier het meest?",
+      "options": [
+        "Street-art",
+        "Skiliften",
+        "Windmolens"
+      ],
+      "answer": "Street-art"
+    }
+  },
+  {
+    "id": 6,
+    "title": "Erasmusbrug",
+    "hint": "Een iconische brug die lijkt op een zwaan.",
+    "lat": 51.9090,
+    "lng": 4.4840,
+    "question": {
+      "type": "multiple",
+      "text": "Welke bijnaam heeft deze brug?",
+      "options": [
+        "De Zwaan",
+        "De Pijl",
+        "De Boog"
+      ],
+      "answer": "De Zwaan"
+    }
+  },
+  {
+    "id": 7,
+    "title": "Eindpunt - Interpol",
+    "hint": "Ga terug naar het Grafisch Lyceum.",
+    "lat": 51.9163,
+    "lng": 4.4818,
+    "question": {
+      "type": "end",
+      "text": "Voer de eindcode in"
+    }
+  }
+]

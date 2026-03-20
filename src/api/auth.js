@@ -1,38 +1,21 @@
-import { API_BASE } from "./_config";
-
-async function parseJson(res) {
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-        throw new Error(data.message || data.error || "Request failed");
-    }
-    return data;
-}
+import { apiRequest, withJsonBody } from "./request";
 
 export async function getSession() {
-    const res = await fetch(`${API_BASE}/api/session`, {
-        credentials: "include",
-    });
-    return parseJson(res);
+    return apiRequest("/api/session");
 }
 
 export async function login({ username, password }) {
-    const response = await fetch(`${API_BASE}/api/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
+    return apiRequest("/api/login", {
+        method: "POST",
+        ...withJsonBody({
             gebruikersnaam: username,
-            wachtwoord: password
-        })
+            wachtwoord: password,
+        }),
     });
-
-    return parseJson(response);
 }
 
 export async function logout() {
-    const res = await fetch(`${API_BASE}/api/logout`, {
+    return apiRequest("/api/logout", {
         method: "POST",
-        credentials: "include",
     });
-    return parseJson(res);
 }

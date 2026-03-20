@@ -3,11 +3,13 @@ import MailApp from "./apps/MailApp/MailApp";
 import DossierApp from "./apps/DossierApp/DossierApp";
 import EditorApp from "./apps/EditorApp/EditorApp";
 import NewTeamApp from "./apps/NewTeamApp/NewTeamApp";
+import { buildMenuApps } from "../_shared/appConfig";
 
 export const trainingAppConfig = {
     terminal: {
         key: "terminal",
         title: "MS-DOS Prompt",
+        desktopLabel: "Terminal",
         icon: "/icons/terminal.ico",
         width: 520,
         height: 340,
@@ -23,6 +25,8 @@ export const trainingAppConfig = {
     mail: {
         key: "mail",
         title: "Inbox - E-mail Client",
+        desktopLabel: "E-mail",
+        menuLabel: "E-mail",
         icon: "/icons/email.ico",
         width: 680,
         height: 500,
@@ -31,6 +35,7 @@ export const trainingAppConfig = {
     dossier: {
         key: "dossier",
         title: "Dossier Viewer",
+        desktopLabel: "Dossiers",
         icon: "/icons/documents.ico",
         width: 600,
         height: 480,
@@ -44,6 +49,7 @@ export const trainingAppConfig = {
     editor: {
         key: "editor",
         title: "Notepad",
+        desktopLabel: "Editor",
         icon: "/icons/notepad.ico",
         width: 900,
         height: 500,
@@ -52,6 +58,7 @@ export const trainingAppConfig = {
     newteam: {
         key: "newteam",
         title: "Nieuw Team",
+        desktopLabel: "Nieuw Team",
         icon: "/icons/team.ico",
         width: 480,
         height: 680,
@@ -65,7 +72,7 @@ export const trainingAppConfig = {
     },
 };
 
-const trainingMenuOrder = ["terminal", "mail", "dossier", "editor", "newteam"];
+export const trainingAppOrder = ["terminal", "mail", "dossier", "editor", "newteam"];
 
 const trainingUnlocks = {
     dossier: (p) => !!p.terminalDone,
@@ -74,16 +81,8 @@ const trainingUnlocks = {
 };
 
 export function getTrainingMenuApps(progress = {}) {
-    return trainingMenuOrder
-        .filter((key) => {
-            const gate = trainingUnlocks[key];
-            return gate ? gate(progress) : true;
-        })
-        .map((key) => trainingAppConfig[key])
-        .filter(Boolean)
-        .map((app) => ({
-            key: app.key,
-            label: app.key === "mail" ? "E-mail" : app.title,
-            icon: app.icon,
-        }));
+    return buildMenuApps(trainingAppConfig, trainingAppOrder, (app) => {
+        const gate = trainingUnlocks[app.key];
+        return gate ? gate(progress) : true;
+    });
 }
