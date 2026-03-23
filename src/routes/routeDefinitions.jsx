@@ -9,6 +9,7 @@ import HtmlCss from "../pages/HtmlCss";
 import Javascript from "../pages/Javascript";
 import CreativeCoding from "../pages/CreativeCoding";
 import Admin from "../pages/Admin";
+import LeaderboardScreen from "../pages/LeaderboardScreen";
 import Unauthorized from "../pages/Unauthorized";
 import NotFound from "../pages/NotFound";
 
@@ -16,6 +17,7 @@ const studentRoles = ["docent", "student"];
 
 export const publicRoutes = [
     { path: "/", element: <Login /> },
+    { path: "/leaderboard", element: <LeaderboardScreen /> },
     { path: "/unauthorized", element: <Unauthorized /> },
     { path: "*", element: <NotFound /> },
 ];

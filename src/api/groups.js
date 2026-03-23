@@ -24,7 +24,7 @@ export async function getTeam(teamId) {
 
 // GET LEADERBOARD (student/docent)
 export async function getLeaderboardGroups() {
-    const data = await apiRequest("/api/groups/leaderboard");
+    const data = await apiRequest("/api/leaderboard");
     return data.groups || [];
 }
 
