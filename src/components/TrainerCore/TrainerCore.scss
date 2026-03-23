@@ -1,260 +1,467 @@
-@use "sass:color";
 @use "../../styles/win95" as *;
 
 .trainer-core {
+    @include win95-font;
+    background: $win95-teal-desktop;
+    min-height: 100vh;
+    padding: 14px;
+}
+
+.trainer-window {
+    @include win95-border("raised");
+    background: $win95-bg;
+    color: $win95-window-text;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.28);
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: calc(100vh - 28px);
+    margin: 0 auto;
+    max-width: 1380px;
+    overflow: hidden;
+}
+
+.trainer-window__titlebar {
+    background: $win95-blue-titlebar;
+    color: $win95-titlebar-text;
+    font-weight: bold;
+    padding: 4px 8px;
+}
+
+.trainer-window__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 0;
+    padding: 8px;
+}
+
+.trainer-progressbar {
+    @include win95-border("sunken");
     background: $win95-window-bg;
-    color: $win95-window-text;
-
-    /* ===== Body layout ===== */
-    .trainer-body {
-        display: flex;
-        flex: 1;
-        min-height: 0;
-        overflow: hidden;
-    }
-
-    /* ===== Sidebar ===== */
-    .step-sidebar {
-        flex: 0 0 200px;
-        background: $win95-bg;
-        border-right: 2px solid $border-dark;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        font-size: 0.85rem;
-        overflow-y: auto;
-
-        li {
-            padding: 6px 8px;
-            cursor: pointer;
-
-            &.active {
-                background: $win95-blue-titlebar;
-                color: $win95-titlebar-text;
-            }
-
-            &:hover:not(.active) {
-                background: color.scale($win95-bg, $lightness: -8%);
-            }
-        }
-    }
-
-    /* ===== Main content ===== */
-    .trainer-main {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        min-height: 0;
-        overflow: hidden;
-        background: $win95-bg;
-    }
-
-    /* Explanation panel */
-    .trainer-explanation {
-        @include win95-border("sunken");
-        background: $win95-bg;
-        padding: 8px;
-        font-size: 0.9rem;
-        line-height: 1.4;
-        max-height: clamp(100px, 25%, 200px);
-        overflow-y: auto;
-
-        h4 {
-            margin-top: 0;
-            font-size: 1rem;
-        }
-    }
-
-    /* Editors */
-    .trainer-editors {
-        flex: 1;
-        min-height: 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-        gap: 6px;
-        padding: 6px;
-        background: $win95-bg;
-
-        .editor-pane {
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-            font-size: 0.85rem;
-            @include win95-border("sunken");
-
-            section {
-                height: 100% !important;
-            }
-
-            .editor-label {
-                background: $win95-bg;
-                color: $win95-window-text;
-                font-size: 0.75rem;
-                font-weight: bold;
-                padding: 4px 6px;
-                border-bottom: 1px solid $border-dark;
-            }
-
-            .editor-wrapper {
-                position: relative;
-                flex: 1;
-                min-height: 0;
-                overflow: hidden;
-            }
-
-            /* Force Monaco to fill and match styling */
-            .monaco-editor,
-            .monaco-editor .overflow-guard,
-            .monaco-scrollable-element {
-                height: 100% !important;
-                width: 100% !important;
-                background: #1e1e1e !important;
-                color: #fff !important;
-            }
-        }
-    }
-
-    /* Preview area */
-    .preview {
-        @include win95-border("sunken");
-        background: $win95-bg;
-        flex: 0 0 clamp(160px, 35%, 40vh);
-        display: flex;
-        flex-direction: column;
-        min-height: 0;
-
-        .preview-label {
-            background: $win95-bg;
-            color: $win95-window-text;
-            font-weight: bold;
-            font-size: 0.75rem;
-            padding: 4px 6px;
-            border-bottom: 1px solid $border-dark;
-        }
-
-        iframe {
-            flex: 1;
-            border: none;
-            background: #fff;
-            min-height: 0;
-        }
-
-        .tests {
-            border-top: 1px solid $border-light;
-            padding: 6px;
-            font-size: 0.8rem;
-            overflow-y: auto;
-            max-height: 100px;
-
-            li {
-                margin: 2px 0;
-            }
-
-            .pass {
-                color: lightgreen;
-            }
-
-            .fail {
-                color: red;
-            }
-        }
-
-        button {
-            @include win95-button;
-            margin: 6px;
-            font-size: 0.8rem;
-            align-self: flex-start;
-        }
-    }
-}
-
-@keyframes slideInUp {
-    from {
-        transform: translateY(100%);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideInUp {
-    from {
-        transform: translateY(100%);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideOutDown {
-    from {
-        transform: translateY(0);
-        opacity: 1;
-    }
-
-    to {
-        transform: translateY(100%);
-        opacity: 0;
-    }
-}
-
-@keyframes slideInUp {
-    from {
-        transform: translateY(100%);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideOutDown {
-    from {
-        transform: translateY(0);
-        opacity: 1;
-    }
-
-    to {
-        transform: translateY(100%);
-        opacity: 0;
-    }
-}
-
-/* Zelfde styling als desktop, alleen position fixed zodat hij los werkt */
-.desktop-notification {
-    @include win95-border("raised");
-    position: fixed;
-    /* ← zodat het niet afhankelijk is van relative parents */
-    bottom: 40px;
-    right: 10px;
-    background: $win95-notification-bg;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 16px;
-    z-index: 9999;
+    height: 14px;
+    overflow: hidden;
 
     span {
-        display: inline-block;
-        margin-bottom: 6px;
+        background: $win95-blue-titlebar;
+        display: block;
+        height: 100%;
+    }
+}
+
+.trainer-body {
+    display: grid;
+    flex: 1;
+    gap: 8px;
+    grid-template-columns: 220px minmax(0, 1fr);
+    min-height: 0;
+}
+
+.step-sidebar {
+    @include win95-border("sunken");
+    background: #d1cdc5;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 8px;
+}
+
+.step-sidebar__header {
+    margin-bottom: 8px;
+
+    h2 {
+        font-size: 15px;
+        font-weight: bold;
+        margin-bottom: 4px;
+    }
+
+    p:last-child {
+        line-height: 1.4;
+    }
+}
+
+.step-sidebar__eyebrow {
+    color: $win95-blue-titlebar;
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.step-sidebar__list {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 0;
+    overflow: auto;
+}
+
+.step-sidebar__item {
+    @include win95-border("raised");
+    background: $win95-window-bg;
+    color: $win95-window-text;
+    cursor: pointer;
+    display: flex;
+    gap: 8px;
+    padding: 6px;
+    text-align: left;
+    width: 100%;
+
+    &:disabled {
+        color: #777;
+        cursor: not-allowed;
+    }
+
+    &.is-active {
+        @include win95-border("sunken");
+        background: #e7e7e7;
+    }
+}
+
+.step-sidebar__marker {
+    @include win95-border("sunken");
+    align-items: center;
+    background: #efefef;
+    display: inline-flex;
+    font-size: 11px;
+    font-weight: bold;
+    justify-content: center;
+    min-width: 30px;
+    padding: 3px 0;
+}
+
+.step-sidebar__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.step-sidebar__title {
+    font-weight: bold;
+    line-height: 1.3;
+}
+
+.step-sidebar__status {
+    color: #666;
+    font-size: 11px;
+}
+
+.trainer-main {
+    display: grid;
+    gap: 8px;
+    grid-template-rows: auto minmax(0, 1fr);
+    min-height: 0;
+    min-width: 0;
+}
+
+.trainer-briefing {
+    @include win95-border("sunken");
+    background: #d1cdc5;
+    padding: 8px;
+}
+
+.trainer-briefing__topline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.trainer-briefing__tag {
+    @include win95-border("raised");
+    background: #ece9e3;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 7px;
+    text-transform: uppercase;
+}
+
+.trainer-briefing__header {
+    align-items: flex-start;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 8px;
+
+    h2 {
+        font-size: 17px;
+        font-weight: bold;
+        margin-bottom: 3px;
+    }
+}
+
+.trainer-briefing__objective {
+    line-height: 1.4;
+}
+
+.trainer-briefing__success {
+    @include win95-border("raised");
+    background: #ece9e3;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 5px 8px;
+    white-space: nowrap;
+}
+
+.trainer-briefing__content {
+    @include win95-border("sunken");
+    background: $win95-window-bg;
+    line-height: 1.5;
+    padding: 10px 11px;
+
+    p + p,
+    p + ul,
+    ul + p,
+    pre + p {
+        margin-top: 8px;
+    }
+
+    ul {
+        list-style: square;
+        margin-left: 20px;
+    }
+
+    code {
+        background: #f3f3f3;
+        border: 1px solid #c7c7c7;
+        padding: 1px 4px;
+    }
+
+    pre {
+        @include win95-border("sunken");
+        background: #f3f3f3;
+        margin-top: 8px;
+        overflow-x: auto;
+        padding: 8px;
+    }
+
+    pre code {
+        background: transparent;
+        border: 0;
+        padding: 0;
+    }
+}
+
+.trainer-briefing__lead {
+    font-weight: bold;
+}
+
+.trainer-briefing__hint {
+    margin-top: 10px;
+}
+
+.trainer-briefing__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+
+    button {
+        @include win95-button;
+        min-width: 104px;
+
+        &:disabled {
+            color: #777;
+            cursor: not-allowed;
+        }
+    }
+}
+
+.trainer-workbench {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+    min-height: 0;
+}
+
+.trainer-editors {
+    @include win95-border("sunken");
+    background: #d1cdc5;
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    min-height: 0;
+    padding: 8px;
+    overflow: hidden;
+}
+
+.editor-pane {
+    @include win95-border("sunken");
+    background: #1e1e1e;
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
+    overflow: hidden;
+}
+
+.editor-label {
+    background: #d9d5ce;
+    border-bottom: 1px solid $border-dark;
+    color: #000;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 5px 8px;
+}
+
+.editor-wrapper {
+    flex: 1;
+    min-height: 0;
+}
+
+.preview {
+    @include win95-border("sunken");
+    background: #d1cdc5;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 0;
+    overflow: hidden;
+    padding: 8px;
+}
+
+.preview__header {
+    align-items: flex-start;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    min-width: 0;
+
+    h3 {
+        font-size: 15px;
+        font-weight: bold;
+    }
+}
+
+.preview__eyebrow {
+    color: $win95-blue-titlebar;
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.preview__run-button {
+    @include win95-button;
+
+    &:disabled {
+        color: #777;
+        cursor: progress;
+    }
+}
+
+.preview iframe {
+    @include win95-border("sunken");
+    background: #fff;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+}
+
+.preview__results {
+    @include win95-border("sunken");
+    background: $win95-window-bg;
+    flex: 0 0 auto;
+    max-height: 190px;
+    overflow: auto;
+    padding: 8px;
+}
+
+.preview__results-header {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 6px;
+
+    h4 {
         font-weight: bold;
     }
 
-    &--enter {
-        animation: slideInUp 0.3s ease-out forwards;
+    span {
+        font-weight: bold;
+    }
+}
+
+.preview__placeholder {
+    color: #666;
+    line-height: 1.4;
+}
+
+.preview__result-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.preview__result {
+    @include win95-border("raised");
+    align-items: flex-start;
+    background: #f3f3f3;
+    display: flex;
+    gap: 6px;
+    min-width: 0;
+    padding: 5px 7px;
+}
+
+.preview__result-indicator {
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 40px;
+}
+
+.preview__result span:last-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.trainer-notification {
+    @include win95-border("raised");
+    background: #ffffe1;
+    flex: 0 0 auto;
+    padding: 8px;
+
+    strong {
+        display: block;
+        margin-bottom: 6px;
     }
 
-    &--exit {
-        animation: slideOutDown 0.3s ease-out forwards;
+    pre {
+        white-space: pre-wrap;
+    }
+}
+
+@media (max-width: 1100px) {
+    .trainer-body {
+        grid-template-columns: 1fr;
+    }
+
+    .trainer-workbench {
+        grid-template-columns: 1fr;
+    }
+
+    .preview__results {
+        max-height: 170px;
+    }
+}
+
+@media (max-width: 720px) {
+    .trainer-core {
+        padding: 10px;
+    }
+
+    .trainer-window {
+        height: calc(100vh - 20px);
+    }
+
+    .trainer-window__body {
+        padding: 8px;
+    }
+
+    .trainer-briefing__header,
+    .preview__header {
+        flex-direction: column;
     }
 }

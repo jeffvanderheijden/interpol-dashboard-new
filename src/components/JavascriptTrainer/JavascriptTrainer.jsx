@@ -1,9 +1,15 @@
 import React from "react";
 import TrainerCore from "../TrainerCore/TrainerCore";
-import { LESSON as JavascriptLesson } from "./_data/lessons.js";
+import { LESSON as JavascriptLesson } from "./_data/lessons";
+import "./JavascriptTrainer.scss";
 
-const JavascriptTrainer = ({ onClose }) => {
-    return <TrainerCore lesson={JavascriptLesson} onClose={onClose} />;
+const JavascriptTrainer = () => {
+    return (
+        <TrainerCore
+            lesson={JavascriptLesson}
+            className="trainer-core--javascript"
+        />
+    );
 };
 
 export default JavascriptTrainer;

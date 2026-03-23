@@ -1,226 +1,385 @@
+const baseHtml = `<main class="dossier">
+  <header class="mission-header">
+    <p class="mission-kicker">Interpol Cyber Division</p>
+    <h1>Casefile: Ghost Relay</h1>
+    <p class="mission-status">Status: Monitoring active relay traffic</p>
+  </header>
+
+  <section class="intel-grid">
+    <article class="suspect-card">
+      <p class="suspect-card__label">Prime suspect</p>
+      <h2>Mila Voss</h2>
+      <p class="suspect-card__alias">Alias: Ghost Relay</p>
+      <ul class="evidence-list">
+        <li>Remote access beacon detected in the design lab.</li>
+        <li class="is-critical">Encrypted USB drop found near workstation B12.</li>
+        <li>Badge scans match the intrusion window.</li>
+      </ul>
+    </article>
+  </section>
+</main>`;
+
+const baseCss = `body {
+  margin: 0;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+}`;
+
 export const LESSON = {
-    id: "htmlcss-intro",
-    title: "HTML & CSS Trainer",
+    id: "htmlcss-dossier-rebuild",
+    badge: "Frontend Recon",
+    title: "HTML & CSS Field Lab",
+    subtitle:
+        "Herbouw een beschadigd Interpol-dossier zodat het team weer veilig briefingmateriaal kan bekijken.",
+    briefing:
+        "Een corrupte interface heeft de visuele laag van een suspect dossier onbruikbaar gemaakt. Herstel de markup en styling zonder de inhoudelijke briefing kwijt te raken.",
+    statusLabel: "Open dossier",
+    outcomeLabel: "Werkende casefile",
     language: "htmlcss",
     steps: [
-        // 1
         {
-            id: "html1",
-            title: "Maak een heading",
-            contentHtml: "<p>Maak een &lt;h1&gt; met de tekst 'Interpol dossier'.</p>",
-            starter: { html: "<body>\n<!-- TODO: voeg h1 toe -->\n</body>", css: "" },
-            tests: [
-                { type: "selectorExists", selector: "h1", label: "<h1> bestaat" },
-                { type: "textContains", selector: "h1", includes: "Interpol dossier", label: "Tekst is juist" },
-            ],
-        },
-        // 2
-        {
-            id: "html2",
-            title: "Voeg een paragraaf toe",
-            contentHtml: "<p>Voeg een &lt;p&gt; toe met de tekst: 'Geheim project – alleen voor Interpol agenten.'</p>",
-            starter: { html: "<body>\n<h1>Interpol dossier</h1>\n<!-- TODO: voeg p toe -->\n</body>", css: "" },
-            tests: [
-                { type: "selectorExists", selector: "p", label: "<p> bestaat" },
-                { type: "textContains", selector: "p", includes: "Geheim project", label: "Tekst is juist" },
-            ],
-        },
-        // 3
-        {
-            id: "html3",
-            title: "Voeg een afbeelding toe",
-            contentHtml: "<p>Voeg een &lt;img&gt; toe met <code>src='agent.png'</code> en <code>alt='Interpol agent'</code>.</p>",
-            starter: { html: "<body>\n<h1>Interpol dossier</h1>\n<p>Geheim project – alleen voor Interpol agenten.</p>\n<!-- TODO: voeg afbeelding toe -->\n</body>", css: "" },
-            tests: [
-                { type: "selectorExists", selector: "img", label: "<img> bestaat" },
-                { type: "attributeEquals", selector: "img", attribute: "src", value: "agent.png", label: "Bron is juist" },
-                { type: "attributeEquals", selector: "img", attribute: "alt", value: "Interpol agent", label: "Alt-tekst is juist" },
-            ],
-        },
-        // 4
-        {
-            id: "html4",
-            title: "Maak een lijst van verdachten",
-            contentHtml: "<p>Voeg een &lt;ul&gt; toe met drie namen: Kevin, Aisha en Daan.</p>",
-            starter: { html: "<body>\n<h1>Interpol dossier</h1>\n<!-- TODO: voeg ul toe -->\n</body>", css: "" },
-            tests: [
-                { type: "selectorExists", selector: "ul", label: "<ul> bestaat" },
-                { type: "elementCount", selector: "ul li", value: 3, label: "Drie namen aanwezig" },
-            ],
-        },
-        // 5
-        {
-            id: "html5",
-            title: "Voeg een link toe",
-            contentHtml: "<p>Voeg een link toe naar <code>https://www.interpol.int</code> met de tekst 'Officiële Interpol website'.</p>",
-            starter: { html: "<body>\n<h1>Interpol dossier</h1>\n<!-- TODO: voeg link toe -->\n</body>", css: "" },
-            tests: [
-                { type: "selectorExists", selector: "a", label: "<a> bestaat" },
-                { type: "attributeEquals", selector: "a", attribute: "href", value: "https://www.interpol.int", label: "Link correct" },
-            ],
-        },
-        // 6
-        {
-            id: "html6",
-            title: "Voeg een subkop toe",
-            contentHtml: "<p>Voeg een &lt;h2&gt; toe met de tekst 'Verdachtenlijst'.</p>",
-            starter: { html: "<body>\n<h1>Interpol dossier</h1>\n<!-- TODO: voeg h2 toe -->\n</body>", css: "" },
-            tests: [
-                { type: "selectorExists", selector: "h2", label: "<h2> bestaat" },
-                { type: "textContains", selector: "h2", includes: "Verdachtenlijst", label: "Tekst klopt" },
-            ],
-        },
-        // 7
-        {
-            id: "css1",
-            title: "Maak de achtergrond donker",
-            contentHtml: "<p>Gebruik <code>background-color: #222;</code> op de <code>body</code>.</p>",
-            starter: { html: "<body>\n<h1>Interpol dossier</h1>\n</body>", css: "/* TODO */" },
-            tests: [
-                { type: "cssPropertyEquals", selector: "body", property: "background-color", value: "#222", label: "Achtergrond is donker" },
-            ],
-        },
-        // 8
-        {
-            id: "css2",
-            title: "Kleur de tekst wit",
-            contentHtml: "<p>Gebruik <code>color: white;</code> voor de tekst in <code>body</code>.</p>",
-            starter: { html: "<body>\n<h1>Interpol dossier</h1>\n</body>", css: "body { background-color: #222; /* TODO */ }" },
-            tests: [
-                { type: "cssPropertyEquals", selector: "body", property: "color", value: "white", label: "Tekst is wit" },
-            ],
-        },
-        // 9
-        {
-            id: "css3",
-            title: "Maak de afbeelding rond",
-            contentHtml: "<p>Gebruik <code>border-radius: 50%;</code> op de afbeelding.</p>",
-            starter: { html: "<body>\n<img src='agent.png' alt='Interpol agent'>\n</body>", css: "/* TODO */" },
-            tests: [
-                { type: "cssPropertyEquals", selector: "img", property: "border-radius", value: "50%", label: "Afbeelding is rond" },
-            ],
-        },
-        // 10
-        {
-            id: "css4",
-            title: "Centrale uitlijning",
-            contentHtml: "<p>Zorg dat alle tekst in het midden staat met <code>text-align: center;</code> op <code>body</code>.</p>",
-            starter: { html: "<body>\n<h1>Interpol dossier</h1>\n<p>Geheim project...</p>\n</body>", css: "/* TODO */" },
-            tests: [
-                { type: "cssPropertyEquals", selector: "body", property: "text-align", value: "center", label: "Tekst gecentreerd" },
-            ],
-        },
-        // 11
-        {
-            id: "css5",
-            title: "Voeg een blauwe accentkleur toe",
-            contentHtml: "<p>Geef de &lt;h1&gt; een blauwe kleur (#0099ff).</p>",
-            starter: { html: "<body>\n<h1>Interpol dossier</h1>\n</body>", css: "/* TODO */" },
-            tests: [
-                { type: "cssPropertyEquals", selector: "h1", property: "color", value: "#0099ff", label: "Titel is blauw" },
-            ],
-        },
-        // 12
-        {
-            id: "css6",
-            title: "Maak de lijst zonder bullets",
-            contentHtml: "<p>Verwijder lijstpunten met <code>list-style: none;</code>.</p>",
-            starter: { html: "<body>\n<ul><li>Kevin</li><li>Aisha</li><li>Daan</li></ul>\n</body>", css: "/* TODO */" },
-            tests: [
-                { type: "cssPropertyEquals", selector: "ul", property: "list-style", value: "none", label: "Geen bullets" },
-            ],
-        },
-        // 13
-        {
-            id: "css7",
-            title: "Maak de afbeelding kleiner",
-            contentHtml: "<p>Stel de breedte van de afbeelding in op 150px.</p>",
-            starter: { html: "<body>\n<img src='agent.png'>\n</body>", css: "/* TODO */" },
-            tests: [
-                { type: "cssPropertyEquals", selector: "img", property: "width", value: "150px", label: "Afbeelding 150px breed" },
-            ],
-        },
-        // 14
-        {
-            id: "css8",
-            title: "Voeg een rand toe aan de afbeelding",
-            contentHtml: "<p>Gebruik <code>border: 2px solid white;</code>.</p>",
-            starter: { html: "<body>\n<img src='agent.png'>\n</body>", css: "/* TODO */" },
-            tests: [
-                { type: "cssPropertyEquals", selector: "img", property: "border", value: "2px solid white", label: "Rand toegevoegd" },
-            ],
-        },
-        // 15
-        {
-            id: "html7",
-            title: "Voeg een knop toe",
-            contentHtml: "<p>Voeg een &lt;button&gt; toe met de tekst 'Bekijk dossier'.</p>",
-            starter: { html: "<body>\n<!-- TODO -->\n</body>", css: "" },
-            tests: [
-                { type: "selectorExists", selector: "button", label: "Knop bestaat" },
-                { type: "textContains", selector: "button", includes: "Bekijk dossier", label: "Tekst klopt" },
-            ],
-        },
-        // 16
-        {
-            id: "css9",
-            title: "Style de knop",
-            contentHtml: "<p>Geef de knop een blauwe achtergrond (#0078d7) en witte tekst.</p>",
-            starter: { html: "<body>\n<button>Bekijk dossier</button>\n</body>", css: "/* TODO */" },
-            tests: [
-                { type: "cssPropertyEquals", selector: "button", property: "background-color", value: "#0078d7", label: "Knop is blauw" },
-                { type: "cssPropertyEquals", selector: "button", property: "color", value: "white", label: "Tekst wit" },
-            ],
-        },
-        // 17
-        {
-            id: "css10",
-            title: "Hover-effect op de knop",
-            contentHtml: "<p>Laat de knop van kleur veranderen met <code>button:hover { background-color: #1490ff; }</code>.</p>",
-            starter: { html: "<body>\n<button>Bekijk dossier</button>\n</body>", css: "button { background-color: #0078d7; color: white; }\n/* TODO: hover */" },
-            tests: [
-                { type: "cssPropertyEquals", selector: "button:hover", property: "background-color", value: "#1490ff", label: "Hoverkleur klopt" },
-            ],
-        },
-        // 18
-        {
-            id: "css11",
-            title: "Gebruik flexbox voor lay-out",
-            contentHtml: "<p>Plaats afbeelding en lijst naast elkaar met <code>display: flex;</code> op een container.</p>",
+            id: "mission-header",
+            title: "Herstel de missie-header",
+            objective:
+                "Zet een duidelijke header neer voor het onderschepte dossier.",
+            contentHtml: `
+                <p>Maak in <code>&lt;main class="dossier"&gt;</code> een header met precies deze onderdelen:</p>
+                <ul>
+                    <li>een <code>&lt;header class="mission-header"&gt;</code></li>
+                    <li>een <code>&lt;h1&gt;</code> met de tekst <code>Casefile: Ghost Relay</code></li>
+                    <li>een statusregel met class <code>mission-status</code> en de tekst <code>Status: Monitoring active relay traffic</code></li>
+                </ul>
+            `,
+            hint: "Gebruik een <code>&lt;header&gt;</code>, daarna een <code>&lt;h1&gt;</code> en een <code>&lt;p class=\"mission-status\"&gt;</code>.",
             starter: {
-                html: "<body>\n<div class='dossier-container'>\n  <img src='agent.png'>\n  <ul><li>Kevin</li><li>Aisha</li><li>Daan</li></ul>\n</div>\n</body>",
-                css: "/* TODO */",
+                html: `<main class="dossier">
+  <!-- Voeg hier de missie-header toe -->
+</main>`,
+                css: baseCss,
             },
             tests: [
-                { type: "cssPropertyEquals", selector: ".dossier-container", property: "display", value: "flex", label: "Flexbox actief" },
+                {
+                    type: "selectorExists",
+                    selector: ".mission-header",
+                    label: "Mission header bestaat",
+                },
+                {
+                    type: "textIncludes",
+                    selector: ".mission-header h1",
+                    includes: "Casefile: Ghost Relay",
+                    label: "Casefile-titel klopt",
+                },
+                {
+                    type: "textIncludes",
+                    selector: ".mission-status",
+                    includes: "Status: Monitoring active relay traffic",
+                    label: "Statusregel klopt",
+                },
             ],
         },
-        // 19
         {
-            id: "css12",
-            title: "Voeg ruimte toe tussen items",
-            contentHtml: "<p>Gebruik <code>gap: 20px;</code> binnen de flex-container.</p>",
+            id: "suspect-card",
+            title: "Bouw de suspect card",
+            objective:
+                "Voeg de hoofdverdachte en drie bewijsregels toe aan het dossier.",
+            contentHtml: `
+                <p>Maak binnen <code>.intel-grid</code> een <code>&lt;article class="suspect-card"&gt;</code> met precies dit:</p>
+                <ul>
+                    <li>een kop <code>Mila Voss</code></li>
+                    <li>een aliasregel met <code>Alias: Ghost Relay</code></li>
+                    <li>een <code>&lt;ul class="evidence-list"&gt;</code> met precies drie items</li>
+                    <li>een kritisch item met class <code>is-critical</code></li>
+                </ul>
+            `,
+            hint: "Gebruik voor de alias bijvoorbeeld een apart <code>&lt;p&gt;</code>-element.",
             starter: {
-                html: "<body>\n<div class='dossier-container'>\n  <img src='agent.png'>\n  <ul><li>Kevin</li><li>Aisha</li><li>Daan</li></ul>\n</div>\n</body>",
-                css: ".dossier-container { display: flex; /* TODO */ }",
+                html: `<main class="dossier">
+  <header class="mission-header">
+    <p class="mission-kicker">Interpol Cyber Division</p>
+    <h1>Casefile: Ghost Relay</h1>
+    <p class="mission-status">Status: Monitoring active relay traffic</p>
+  </header>
+
+  <section class="intel-grid">
+    <!-- Voeg hier de suspect card toe -->
+  </section>
+</main>`,
+                css: baseCss,
             },
             tests: [
-                { type: "cssPropertyEquals", selector: ".dossier-container", property: "gap", value: "20px", label: "Ruimte toegevoegd" },
+                {
+                    type: "selectorExists",
+                    selector: ".suspect-card",
+                    label: "Suspect card bestaat",
+                },
+                {
+                    type: "textIncludes",
+                    selector: ".suspect-card h2",
+                    includes: "Mila Voss",
+                    label: "Verdachtennaam klopt",
+                },
+                {
+                    type: "textIncludes",
+                    selector: ".suspect-card",
+                    includes: "Alias: Ghost Relay",
+                    label: "Aliasregel klopt",
+                },
+                {
+                    type: "elementCount",
+                    selector: ".evidence-list li",
+                    value: 3,
+                    label: "Drie bewijsregels aanwezig",
+                },
+                {
+                    type: "selectorExists",
+                    selector: ".evidence-list .is-critical",
+                    label: "Kritiek bewijs gemarkeerd",
+                },
             ],
         },
-        // 20
         {
-            id: "css13",
-            title: "Rond de training af",
-            contentHtml: "<p>Voeg een afsluitende regel toe onderaan de pagina: &lt;p&gt;Training voltooid, agent.&lt;/p&gt; en geef deze tekst een groene kleur (#00ff99).</p>",
+            id: "dossier-surface",
+            title: "Breng de dossierstijl terug",
+            objective:
+                "Geef de pagina weer het donkere Interpol-surface en de juiste spacing.",
+            contentHtml: `
+                <p>Werk de basisstijl bij zodat het dossier direct leesbaar wordt.</p>
+                <ul>
+                    <li>Geef <code>body</code> de achtergrondkleur <code>#08141f</code></li>
+                    <li>Geef <code>body</code> een tekstkleur van <code>#e5f3ff</code></li>
+                    <li>Geef <code>.dossier</code> links exact <code>32px</code> padding</li>
+                </ul>
+            `,
+            hint: "Schrijf dus bijvoorbeeld <code>padding-left: 32px;</code> op <code>.dossier</code>.",
             starter: {
-                html: "<body>\n<h1>Interpol dossier</h1>\n<!-- TODO: afsluitende regel -->\n</body>",
-                css: "/* TODO: kleur voor afsluiter */",
+                html: baseHtml,
+                css: baseCss,
             },
             tests: [
-                { type: "selectorExists", selector: "p", label: "Paragraaf bestaat" },
-                { type: "textContains", selector: "p", includes: "Training voltooid", label: "Tekst klopt" },
-                { type: "cssPropertyEquals", selector: "p", property: "color", value: "#00ff99", label: "Kleur juist" },
+                {
+                    type: "computedStyleEquals",
+                    selector: "body",
+                    property: "background-color",
+                    value: "#08141f",
+                    label: "Body heeft donkere achtergrond",
+                },
+                {
+                    type: "computedStyleEquals",
+                    selector: "body",
+                    property: "color",
+                    value: "#e5f3ff",
+                    label: "Body-tekstkleur klopt",
+                },
+                {
+                    type: "computedStyleEquals",
+                    selector: ".dossier",
+                    property: "padding-left",
+                    value: "32px",
+                    label: "Dossier-padding ingesteld",
+                },
+            ],
+        },
+        {
+            id: "card-layout",
+            title: "Maak er een stevige intel card van",
+            objective:
+                "Geef de card een duidelijke lay-out en visuele hiërarchie.",
+            contentHtml: `
+                <p>Voeg deze drie stijlen toe:</p>
+                <ul>
+                    <li><code>.intel-grid { display: grid; }</code></li>
+                    <li><code>.suspect-card { border-radius: 18px; }</code></li>
+                    <li>Geef <code>.suspect-card</code> bovenaan een rand in kleur <code>#2ee6a6</code></li>
+                </ul>
+            `,
+            hint: "De kleurcheck kijkt naar de bovenrand van <code>.suspect-card</code>.",
+            starter: {
+                html: baseHtml,
+                css: `${baseCss}
+
+body {
+  background: #08141f;
+  color: #e5f3ff;
+}
+
+.dossier {
+  padding: 32px;
+}`,
+            },
+            tests: [
+                {
+                    type: "computedStyleEquals",
+                    selector: ".intel-grid",
+                    property: "display",
+                    value: "grid",
+                    label: "Intel-grid gebruikt grid",
+                },
+                {
+                    type: "computedStyleEquals",
+                    selector: ".suspect-card",
+                    property: "border-radius",
+                    value: "18px",
+                    label: "Cardradius klopt",
+                },
+                {
+                    type: "computedStyleEquals",
+                    selector: ".suspect-card",
+                    property: "border-top-color",
+                    value: "#2ee6a6",
+                    label: "Accentkleur op card aanwezig",
+                },
+            ],
+        },
+        {
+            id: "intel-highlights",
+            title: "Markeer belangrijke signalen",
+            objective:
+                "Maak status en kritisch bewijs direct scanbaar voor het team.",
+            contentHtml: `
+                <p>Geef de belangrijkste tekst extra nadruk met precies deze stijlen:</p>
+                <ul>
+                    <li>Geef <code>.mission-status</code> de tekstkleur <code>#7ef7cf</code></li>
+                    <li>Geef <code>.is-critical</code> de tekstkleur <code>#ff6b6b</code></li>
+                    <li>Maak <code>.is-critical</code> vet met <code>font-weight: 700</code></li>
+                </ul>
+            `,
+            hint: "Gebruik classes uit de markup; je hoeft geen nieuwe elementen toe te voegen.",
+            starter: {
+                html: baseHtml,
+                css: `${baseCss}
+
+body {
+  background: #08141f;
+  color: #e5f3ff;
+}
+
+.dossier {
+  padding: 32px;
+}
+
+.intel-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.suspect-card {
+  background: #0d2130;
+  border: 1px solid rgba(126, 247, 207, 0.3);
+  border-top: 4px solid #2ee6a6;
+  border-radius: 18px;
+  padding: 24px;
+}`,
+            },
+            tests: [
+                {
+                    type: "computedStyleEquals",
+                    selector: ".mission-status",
+                    property: "color",
+                    value: "#7ef7cf",
+                    label: "Statuskleur klopt",
+                },
+                {
+                    type: "computedStyleEquals",
+                    selector: ".is-critical",
+                    property: "color",
+                    value: "#ff6b6b",
+                    label: "Kritiek bewijs valt op",
+                },
+                {
+                    type: "computedStyleEquals",
+                    selector: ".is-critical",
+                    property: "font-weight",
+                    value: "700",
+                    label: "Kritiek bewijs is vetgedrukt",
+                },
+            ],
+        },
+        {
+            id: "action-button",
+            title: "Voeg de dispatch-knop toe",
+            objective:
+                "Maak de briefing af met een duidelijke call to action voor het veldteam.",
+            contentHtml: `
+                <p>Voeg een knop toe met:</p>
+                <ul>
+                    <li>class <code>launch-btn</code></li>
+                    <li>tekst <code>Send to field team</code></li>
+                    <li>achtergrondkleur <code>#2ee6a6</code></li>
+                    <li>tekstkleur <code>#041019</code></li>
+                    <li>hoverkleur <code>#7ef7cf</code></li>
+                </ul>
+            `,
+            hint: "Gebruik voor hover een aparte regel: <code>.launch-btn:hover</code>.",
+            starter: {
+                html: `${baseHtml}
+
+<!-- Voeg hieronder de knop toe -->
+`,
+                css: `${baseCss}
+
+body {
+  background: #08141f;
+  color: #e5f3ff;
+}
+
+.dossier {
+  padding: 32px;
+}
+
+.intel-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.suspect-card {
+  background: #0d2130;
+  border: 1px solid rgba(126, 247, 207, 0.3);
+  border-top: 4px solid #2ee6a6;
+  border-radius: 18px;
+  padding: 24px;
+}
+
+.mission-status {
+  color: #7ef7cf;
+}
+
+.is-critical {
+  color: #ff6b6b;
+  font-weight: 700;
+}`,
+            },
+            tests: [
+                {
+                    type: "selectorExists",
+                    selector: ".launch-btn",
+                    label: "Dispatch-knop bestaat",
+                },
+                {
+                    type: "textIncludes",
+                    selector: ".launch-btn",
+                    includes: "Send to field team",
+                    label: "Knoptekst klopt",
+                },
+                {
+                    type: "computedStyleEquals",
+                    selector: ".launch-btn",
+                    property: "background-color",
+                    value: "#2ee6a6",
+                    label: "Knopkleur klopt",
+                },
+                {
+                    type: "computedStyleEquals",
+                    selector: ".launch-btn",
+                    property: "color",
+                    value: "#041019",
+                    label: "Tekstkleur van knop klopt",
+                },
+                {
+                    type: "cssRuleEquals",
+                    selector: ".launch-btn:hover",
+                    property: "background-color",
+                    value: "#7ef7cf",
+                    label: "Hoverkleur ingesteld",
+                },
             ],
         },
     ],

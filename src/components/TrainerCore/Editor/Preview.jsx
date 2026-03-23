@@ -1,137 +1,318 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-/**
- * Preview.jsx
- * ------------
- * Toont een live preview van studentcode, maar herlaadt het iframe
- * alleen bij "Run tests" om race conditions met console.log te voorkomen.
- */
+function buildJavascriptDocument() {
+    return `<!doctype html>
+<html lang="nl">
+    <head>
+        <meta charset="UTF-8" />
+        <style>
+            body {
+                margin: 0;
+                padding: 16px;
+                background: #09131c;
+                color: #d7f4ff;
+                font-family: "Courier New", monospace;
+                min-height: 100vh;
+            }
 
-const Preview = ({ code, lesson, iframeRef, runTests }) => {
-  const [notification, setNotification] = useState(null);
-  const [animClass, setAnimClass] = useState("desktop-notification--enter");
-  const [srcDoc, setSrcDoc] = useState("");
-  const loadingRef = useRef(false);
+            .console-shell {
+                border: 1px solid #2e4a60;
+                background: linear-gradient(180deg, #071019 0%, #0c1b28 100%);
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: inset 0 0 0 1px rgba(126, 247, 207, 0.12);
+            }
 
-  /** Bouw veilig srcDoc voor HTML/CSS of JS lessen */
-  const generateSrcDoc = (code, lesson) => {
-    const safeHtml = lesson.language === "htmlcss" ? String(code?.html || "") : "";
-    const safeCss = lesson.language === "htmlcss" ? String(code?.css || "") : "";
-    const safeJs = lesson.language === "javascript" ? String(code || "") : "";
+            .console-titlebar {
+                padding: 10px 14px;
+                background: #102231;
+                border-bottom: 1px solid #2e4a60;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: #7ef7cf;
+            }
 
-    if (lesson.language === "javascript") {
-      return `
-<!doctype html>
-<html>
-  <body>
-    <script>
-      // intercept console output
-      (function() {
-        window.loggedMessages = [];
-        const originalLog = console.log;
-        console.log = function(...args) {
-          const msg = args.map(a => String(a)).join(" ");
-          window.loggedMessages.push(msg);
-          if (originalLog) originalLog.apply(console, args);
-        };
-        window.__getLogs = () => window.loggedMessages;
-      })();
-    </script>
-    <script>
-      try {
-        ${safeJs}
-      } catch (err) {
-        console.error(err);
-        document.body.innerHTML =
-          '<pre style="color:red;font-family:monospace;">' +
-          err.toString().replace(/</g, '&lt;') +
-          '</pre>';
-      }
-    </script>
-  </body>
-</html>`;
-    }
+            #console-output {
+                margin: 0;
+                padding: 16px;
+                min-height: 220px;
+                white-space: pre-wrap;
+                line-height: 1.6;
+            }
 
-    if (lesson.language === "htmlcss") {
-      return `
-<!doctype html>
-<html>
-  <head><style>${safeCss}</style></head>
-  <body>${safeHtml}</body>
-</html>`;
-    }
+            .placeholder {
+                color: #86a5bc;
+            }
 
-    return "";
-  };
-
-  /** Toont notificatie zoals in Windows 95 */
-  const showNotification = (title, message) => {
-    setNotification({ title, message });
-    setAnimClass("desktop-notification--enter");
-  };
-
-  /** Run tests — bouwt iframe opnieuw en test na laden */
-  const handleRunTests = async () => {
-    if (loadingRef.current) return; // voorkom dubbele klik
-    loadingRef.current = true;
-
-    // 1️⃣ Bouw nieuw document
-    const newSrc = generateSrcDoc(code, lesson);
-    setSrcDoc(newSrc);
-
-    // 2️⃣ Wacht tot iframe geladen is
-    setTimeout(async () => {
-      try {
-        const result = await runTests();
-        if (Array.isArray(result) && result.every(t => t.pass)) {
-          showNotification("Interpol Training", "✅ Alle tests geslaagd! Goed gedaan, agent.");
-        } else if (Array.isArray(result)) {
-          const failed = result.filter(t => !t.pass).map(t => t.label);
-          showNotification(
-            "Interpol Code Training",
-            failed.map(f => `❌ ${f}`).join("\n")
-          );
-        } else {
-          showNotification("Systeem", "⚠️ Onverwacht testresultaat.");
-        }
-      } catch {
-        showNotification("Systeemfout", "⚠️ Er ging iets mis bij het uitvoeren van de tests.");
-      } finally {
-        loadingRef.current = false;
-      }
-    }, 250);
-  };
-
-  return (
-    <div className="preview">
-      <div className="preview-label">LIVE PREVIEW</div>
-
-      <iframe
-        ref={iframeRef}
-        srcDoc={srcDoc}
-        sandbox="allow-scripts allow-same-origin"
-        title="trainer-preview"
-      />
-
-      <div className="preview-actions">
-        <button onClick={handleRunTests}>
-          {loadingRef.current ? "Even geduld..." : "Run tests"}
-        </button>
-      </div>
-
-      {notification && (
-        <div
-          className={`desktop-notification ${animClass}`}
-          onClick={() => setNotification(null)}
-        >
-          <span>{notification.title}</span>
-          <div className="desktop-notification__body">
-            {notification.message}
-          </div>
+            .error {
+                color: #ff8080;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="console-shell">
+            <div class="console-titlebar">Interpol JS Console</div>
+            <pre id="console-output"><span class="placeholder">Klik op "Valideer missie" om de console-uitvoer te genereren.</span></pre>
         </div>
-      )}
-    </div>
-  );
+
+        <script>
+            (function initializeTrainerConsole() {
+                const output = document.getElementById("console-output");
+                const logs = [];
+                const errors = [];
+
+                function renderLine(message, className) {
+                    const line = document.createElement("div");
+                    if (className) {
+                        line.className = className;
+                    }
+                    line.textContent = message;
+                    output.appendChild(line);
+                }
+
+                function clearOutput() {
+                    output.textContent = "";
+                }
+
+                function format(args) {
+                    return args
+                        .map((value) => {
+                            if (typeof value === "string") {
+                                return value;
+                            }
+
+                            try {
+                                return JSON.stringify(value);
+                            } catch {
+                                return String(value);
+                            }
+                        })
+                        .join(" ");
+                }
+
+                const originalLog = console.log.bind(console);
+                const originalError = console.error.bind(console);
+
+                console.log = (...args) => {
+                    const message = format(args);
+                    logs.push(message);
+                    renderLine(message);
+                    originalLog(...args);
+                };
+
+                console.error = (...args) => {
+                    const message = format(args);
+                    errors.push(message);
+                    renderLine(message, "error");
+                    originalError(...args);
+                };
+
+                window.__trainerResetConsole = () => {
+                    logs.length = 0;
+                    errors.length = 0;
+                    clearOutput();
+                };
+
+                window.__trainerPushError = (message) => {
+                    errors.push(String(message));
+                    renderLine(String(message), "error");
+                };
+
+                window.__trainerGetLogs = () => [...logs];
+                window.__trainerGetErrors = () => [...errors];
+            })();
+        </script>
+    </body>
+</html>`;
+}
+
+function buildHtmlCssDocument(code) {
+    const html = String(code?.html ?? "");
+    const css = String(code?.css ?? "");
+
+    return `<!doctype html>
+<html lang="nl">
+    <head>
+        <meta charset="UTF-8" />
+        <style>
+            html, body {
+                margin: 0;
+                min-height: 100%;
+            }
+
+            body {
+                background: #ffffff;
+            }
+
+            ${css}
+        </style>
+    </head>
+    <body>${html}</body>
+</html>`;
+}
+
+function buildPreviewDocument(lesson, code, revision) {
+    const documentSource =
+        lesson.language === "javascript"
+            ? buildJavascriptDocument()
+            : buildHtmlCssDocument(code);
+
+    return `${documentSource}\n<!-- revision:${revision} -->`;
+}
+
+function buildNotificationMessage(results) {
+    if (!Array.isArray(results) || results.length === 0) {
+        return {
+            title: "Trainer",
+            body: "Geen testresultaten ontvangen.",
+            tone: "warning",
+        };
+    }
+
+    if (results.every((result) => result.pass)) {
+        return {
+            title: "Mission accomplished",
+            body: "Alle controles zijn geslaagd. Deze stap is vrijgegeven.",
+            tone: "success",
+        };
+    }
+
+    const failed = results
+        .filter((result) => !result.pass)
+        .map((result) => `- ${result.label}`)
+        .join("\n");
+
+    return {
+        title: "Nog niet compleet",
+        body: `Deze controles missen nog:\n${failed}`,
+        tone: "danger",
+    };
+}
+
+const Preview = ({ code, lesson, iframeRef, runTests, results = [] }) => {
+    const [srcDoc, setSrcDoc] = useState(() =>
+        buildPreviewDocument(lesson, code, 0)
+    );
+    const [isRunning, setIsRunning] = useState(false);
+    const [notification, setNotification] = useState(null);
+    const [revision, setRevision] = useState(0);
+
+    const pendingRunRef = useRef(false);
+
+    useEffect(() => {
+        setSrcDoc(buildPreviewDocument(lesson, code, revision));
+    }, [lesson, code, revision]);
+
+    useEffect(() => {
+        setNotification(null);
+    }, [lesson.id]);
+
+    const handleRunClick = () => {
+        if (isRunning) {
+            return;
+        }
+
+        pendingRunRef.current = true;
+        setIsRunning(true);
+        setNotification(null);
+        setRevision((current) => current + 1);
+    };
+
+    const handleFrameLoad = async () => {
+        if (!pendingRunRef.current) {
+            return;
+        }
+
+        pendingRunRef.current = false;
+
+        try {
+            const nextResults = await runTests();
+            setNotification(buildNotificationMessage(nextResults));
+        } catch (error) {
+            setNotification({
+                title: "Systeemfout",
+                body: error instanceof Error ? error.message : "Valideren mislukt.",
+                tone: "danger",
+            });
+        } finally {
+            setIsRunning(false);
+        }
+    };
+
+    return (
+        <section className="preview" aria-label="Preview en testresultaten">
+            <div className="preview__header">
+                <div>
+                    <p className="preview__eyebrow">Field Monitor</p>
+                    <h3>
+                        {lesson.language === "javascript"
+                            ? "Console output"
+                            : "Live preview"}
+                    </h3>
+                </div>
+
+                <button
+                    type="button"
+                    className="preview__run-button"
+                    onClick={handleRunClick}
+                    disabled={isRunning}
+                >
+                    {isRunning ? "Valideren..." : "Valideer missie"}
+                </button>
+            </div>
+
+            <iframe
+                ref={iframeRef}
+                srcDoc={srcDoc}
+                sandbox="allow-scripts allow-same-origin"
+                title="trainer-preview"
+                onLoad={handleFrameLoad}
+            />
+
+            <div className="preview__results">
+                <div className="preview__results-header">
+                    <h4>Controles</h4>
+                    <span>{results.filter((result) => result.pass).length}/{results.length || 0}</span>
+                </div>
+
+                {results.length === 0 ? (
+                    <p className="preview__placeholder">
+                        Nog geen controles uitgevoerd voor deze stap.
+                    </p>
+                ) : (
+                    <ul className="preview__result-list">
+                        {results.map((result) => (
+                            <li
+                                key={result.label}
+                                className={
+                                    result.pass
+                                        ? "preview__result is-pass"
+                                        : "preview__result is-fail"
+                                }
+                            >
+                                <span className="preview__result-indicator">
+                                    {result.pass ? "PASS" : "MISS"}
+                                </span>
+                                <span>{result.label}</span>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
+
+            {notification ? (
+                <div
+                    className={`trainer-notification is-${notification.tone}`}
+                    role="status"
+                    aria-live="polite"
+                >
+                    <strong>{notification.title}</strong>
+                    <pre>{notification.body}</pre>
+                </div>
+            ) : null}
+        </section>
+    );
 };
 
 export default Preview;

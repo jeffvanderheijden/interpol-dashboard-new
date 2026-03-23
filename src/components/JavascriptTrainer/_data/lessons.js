@@ -1,366 +1,194 @@
 export const LESSON = {
-    id: "js-intro",
-    title: "JavaScript Trainer",
+    id: "javascript-signal-analysis",
+    badge: "Signal Analysis",
+    title: "JavaScript Ops Console",
+    subtitle:
+        "Een rustige eerste kennismaking met code binnen de Interpol trainingsomgeving.",
+    briefing:
+        "Je werkt als trainee in een veilige oefenconsole. De opdrachten beginnen heel klein: eerst tekst tonen, daarna variabelen gebruiken en pas aan het eind een eerste simpele functie schrijven.",
+    statusLabel: "Basistraining",
+    outcomeLabel: "Eerste console-briefing",
     language: "javascript",
     steps: [
         {
-            id: "js1",
-            title: "Gebruik console.log",
-            contentHtml: "<p>Log de tekst <code>'Interpol training gestart'</code> naar de console.</p>",
-            starter: { js: "// Log de juiste tekst naar de console\n" },
+            id: "boot-sequence",
+            title: "Schrijf een eerste bericht",
+            objective:
+                "Laat de console zien dat de training is gestart.",
+            contentHtml: `
+                <p>Gebruik <code>console.log()</code> om exact deze tekst te tonen:</p>
+                <pre><code>Training gestart</code></pre>
+            `,
+            hint: "Typ bijvoorbeeld <code>console.log(\"...\")</code>.",
+            starter: {
+                js: `// Schrijf hier je eerste console.log\n`,
+            },
             tests: [
                 {
-                    type: "consoleOutputContains",
-                    includes: "Interpol training gestart",
-                    label: "Tekst wordt gelogd",
+                    type: "consoleIncludes",
+                    includes: "Training gestart",
+                    label: "De juiste tekst wordt gelogd",
                 },
             ],
         },
-
         {
-            id: "js2",
+            id: "agent-name",
             title: "Maak een variabele",
-            contentHtml: "<p>Maak een variabele <code>agentName</code> met de waarde <code>'Kevin'</code>.</p>",
-            starter: { js: "// Maak hier de variabele agentName\n" },
+            objective:
+                "Sla een naam op in een variabele.",
+            contentHtml: `
+                <p>Maak een variabele <code>agentName</code> met de waarde <code>"Sam"</code>.</p>
+            `,
+            hint: "Gebruik <code>let</code> of <code>const</code>.",
+            starter: {
+                js: `// Maak hier de variabele agentName\n`,
+            },
             tests: [
                 {
                     type: "variableEquals",
                     name: "agentName",
-                    value: "Kevin",
-                    label: "Variabele bestaat en heeft de juiste waarde",
+                    value: "Sam",
+                    label: "Variabele agentName klopt",
                 },
             ],
         },
-
         {
-            id: "js3",
-            title: "Gebruik een variabele in console.log",
-            contentHtml: "<p>Gebruik <code>console.log</code> om de tekst <code>Agent Kevin meldt zich</code> te tonen. Gebruik hierbij de variabele <code>agentName</code>.</p>",
-            starter: { js: "let agentName = 'Kevin';\n// Log hier de juiste zin met agentName\n" },
+            id: "agent-log",
+            title: "Gebruik een variabele in de console",
+            objective:
+                "Toon een bericht met behulp van de variabele.",
+            contentHtml: `
+                <p>Gebruik de variabele <code>agentName</code> en log deze tekst:</p>
+                <pre><code>Agent Sam meldt zich</code></pre>
+            `,
+            hint: "Je mag tekst en een variabele samen in <code>console.log()</code> gebruiken.",
+            starter: {
+                js: `let agentName = "Sam";
+
+// Log hier de zin met agentName
+`,
+            },
             tests: [
                 {
-                    type: "consoleOutputContains",
-                    includes: "Agent Kevin meldt zich",
-                    label: "Logtekst klopt",
+                    type: "consoleIncludes",
+                    includes: "Agent Sam meldt zich",
+                    label: "De zin met agentName klopt",
                 },
             ],
         },
-
         {
-            id: "js4",
-            title: "Maak een getalvariabele",
-            contentHtml: "<p>Maak een variabele <code>codeLevel</code> met de waarde <code>7</code>.</p>",
-            starter: { js: "// Maak hier de variabele codeLevel\n" },
+            id: "score-number",
+            title: "Werk met een getal",
+            objective:
+                "Sla een score op en maak daarna een nieuwe score.",
+            contentHtml: `
+                <p>Maak eerst een variabele <code>score</code> met waarde <code>5</code>.</p>
+                <p>Maak daarna een variabele <code>nextScore</code> met waarde <code>score + 1</code>.</p>
+            `,
+            hint: "De tweede variabele moet dus uitkomen op <code>6</code>.",
+            starter: {
+                js: `// Maak hier score
+// Maak hier nextScore
+`,
+            },
             tests: [
                 {
                     type: "variableEquals",
-                    name: "codeLevel",
-                    value: 7,
-                    label: "Getalvariabele klopt",
+                    name: "score",
+                    value: 5,
+                    label: "score is juist",
                 },
-            ],
-        },
-
-        {
-            id: "js5",
-            title: "Reken met variabelen",
-            contentHtml: "<p>Maak een nieuwe variabele <code>nextLevel</code> die gelijk is aan <code>codeLevel + 1</code>.</p>",
-            starter: { js: "let codeLevel = 7;\n// Maak hier nextLevel\n" },
-            tests: [
                 {
                     type: "variableEquals",
-                    name: "nextLevel",
-                    value: 8,
-                    label: "Optelling is juist",
+                    name: "nextScore",
+                    value: 6,
+                    label: "nextScore is juist",
                 },
             ],
         },
-
         {
-            id: "js6",
-            title: "Gebruik een if-statement",
-            contentHtml: "<p>Controleer of <code>codeLevel &gt; 5</code>. Log dan <code>'Toegang verleend'</code>.</p>",
-            starter: { js: "let codeLevel = 7;\n// Gebruik hier een if-statement\n" },
+            id: "if-check",
+            title: "Maak een simpele if",
+            objective:
+                "Controleer of een score hoog genoeg is en toon dan een bericht.",
+            contentHtml: `
+                <p>Gebruik een <code>if</code>-statement.</p>
+                <p>Als <code>score</code> groter is dan <code>4</code>, log dan:</p>
+                <pre><code>Toegang toegestaan</code></pre>
+            `,
+            hint: "De meegeleverde score is al hoog genoeg.",
+            starter: {
+                js: `let score = 5;
+
+// Schrijf hier een if-statement
+`,
+            },
             tests: [
                 {
-                    type: "consoleOutputContains",
-                    includes: "Toegang verleend",
-                    label: "Voorwaarde werkt",
+                    type: "consoleIncludes",
+                    includes: "Toegang toegestaan",
+                    label: "Het if-statement werkt",
                 },
             ],
         },
-
         {
-            id: "js7",
-            title: "Werk met een array",
-            contentHtml: "<p>Maak een array <code>suspects</code> met de namen <code>'Kevin'</code>, <code>'Aisha'</code> en <code>'Daan'</code>.</p>",
-            starter: { js: "// Maak hier de array suspects\n" },
-            tests: [
-                {
-                    type: "arrayIncludes",
-                    name: "suspects",
-                    value: "Kevin",
-                    label: "Array bevat Kevin",
-                },
-                {
-                    type: "arrayIncludes",
-                    name: "suspects",
-                    value: "Aisha",
-                    label: "Array bevat Aisha",
-                },
-                {
-                    type: "arrayIncludes",
-                    name: "suspects",
-                    value: "Daan",
-                    label: "Array bevat Daan",
-                },
-            ],
-        },
-
-        {
-            id: "js8",
-            title: "Lees een array-item uit",
-            contentHtml: "<p>Log het eerste element uit de array <code>suspects</code>.</p>",
-            starter: { js: "let suspects = ['Kevin', 'Aisha', 'Daan'];\n// Log hier het eerste element\n" },
-            tests: [
-                {
-                    type: "consoleOutputContains",
-                    includes: "Kevin",
-                    label: "Eerste array-item wordt gelogd",
-                },
-            ],
-        },
-
-        {
-            id: "js9",
-            title: "Gebruik een for-loop",
-            contentHtml: "<p>Gebruik een <code>for</code>-loop om alle namen uit <code>suspects</code> te loggen.</p>",
-            starter: { js: "let suspects = ['Kevin', 'Aisha', 'Daan'];\n// Gebruik hier een for-loop\n" },
-            tests: [
-                {
-                    type: "consoleOutputContains",
-                    includes: "Kevin",
-                    label: "Kevin wordt gelogd",
-                },
-                {
-                    type: "consoleOutputContains",
-                    includes: "Aisha",
-                    label: "Aisha wordt gelogd",
-                },
-                {
-                    type: "consoleOutputContains",
-                    includes: "Daan",
-                    label: "Daan wordt gelogd",
-                },
-            ],
-        },
-
-        {
-            id: "js10",
-            title: "Maak een functie",
-            contentHtml: "<p>Maak een functie <code>greetAgent(name)</code> die <code>'Welkom, ' + name</code> retourneert.</p>",
-            starter: { js: "// Maak hier de functie greetAgent\n" },
+            id: "first-function",
+            title: "Schrijf je eerste functie",
+            objective:
+                "Maak een functie die een welkomstzin teruggeeft.",
+            contentHtml: `
+                <p>Maak een functie <code>sayHello(name)</code>.</p>
+                <p>De functie moet deze tekst teruggeven:</p>
+                <pre><code>Welkom agent Sam</code></pre>
+                <p>Als de functie wordt aangeroepen met <code>"Sam"</code>.</p>
+            `,
+            hint: "Gebruik <code>return</code> en zet <code>name</code> in de zin.",
+            starter: {
+                js: `function sayHello(name) {
+  // Geef hier een tekst terug
+}
+`,
+            },
             tests: [
                 {
                     type: "functionReturns",
-                    name: "greetAgent",
-                    args: ["Aisha"],
-                    value: "Welkom, Aisha",
-                    label: "Functie retourneert de juiste tekst",
+                    name: "sayHello",
+                    args: ["Sam"],
+                    value: "Welkom agent Sam",
+                    label: "De functie geeft de juiste tekst terug",
                 },
             ],
         },
-
         {
-            id: "js11",
-            title: "Gebruik een functie",
-            contentHtml: "<p>Roep de functie <code>greetAgent</code> aan met de naam <code>'Kevin'</code> en log het resultaat.</p>",
+            id: "final-briefing",
+            title: "Rond de briefing af",
+            objective:
+                "Gebruik je functie en log het eindbericht in de console.",
+            contentHtml: `
+                <p>Gebruik de functie <code>sayHello</code> met de naam <code>"Sam"</code>.</p>
+                <p>Log daarna ook nog deze tweede regel:</p>
+                <pre><code>Einde basistraining</code></pre>
+            `,
+            hint: "Je moet dus twee berichten in de console krijgen.",
             starter: {
-                js: "function greetAgent(name) {\n  return 'Welkom, ' + name;\n}\n\n// Roep de functie aan en log het resultaat\n",
+                js: `function sayHello(name) {
+  return "Welkom agent " + name;
+}
+
+// Log hier eerst de uitkomst van sayHello("Sam")
+// Log daarna de tweede regel
+`,
             },
             tests: [
                 {
-                    type: "consoleOutputContains",
-                    includes: "Welkom, Kevin",
-                    label: "Functie wordt correct gebruikt",
-                },
-            ],
-        },
-
-        {
-            id: "js12",
-            title: "Werk met een object",
-            contentHtml: "<p>Maak een object <code>agent</code> met de eigenschappen <code>name: 'Kevin'</code> en <code>rank: 'Junior'</code>.</p>",
-            starter: { js: "// Maak hier het object agent\n" },
-            tests: [
-                {
-                    type: "objectPropertyEquals",
-                    name: "agent",
-                    property: "name",
-                    value: "Kevin",
-                    label: "Naam in object klopt",
+                    type: "consoleIncludes",
+                    includes: "Welkom agent Sam",
+                    label: "Welkomstbericht gelogd",
                 },
                 {
-                    type: "objectPropertyEquals",
-                    name: "agent",
-                    property: "rank",
-                    value: "Junior",
-                    label: "Rang in object klopt",
-                },
-            ],
-        },
-
-        {
-            id: "js13",
-            title: "Lees objecteigenschappen uit",
-            contentHtml: "<p>Log de tekst <code>Agent Kevin heeft rang Junior</code> met behulp van het object <code>agent</code>.</p>",
-            starter: {
-                js: "let agent = { name: 'Kevin', rank: 'Junior' };\n// Log hier de juiste zin met het object\n",
-            },
-            tests: [
-                {
-                    type: "consoleOutputContains",
-                    includes: "Agent Kevin heeft rang Junior",
-                    label: "Objecteigenschappen correct gebruikt",
-                },
-            ],
-        },
-
-        {
-            id: "js14",
-            title: "Gebruik return in een functie",
-            contentHtml: "<p>Maak een functie <code>double(x)</code> die het dubbele van een getal retourneert.</p>",
-            starter: { js: "// Maak hier de functie double\n" },
-            tests: [
-                {
-                    type: "functionReturns",
-                    name: "double",
-                    args: [4],
-                    value: 8,
-                    label: "double(4) geeft 8 terug",
-                },
-                {
-                    type: "functionReturns",
-                    name: "double",
-                    args: [10],
-                    value: 20,
-                    label: "double(10) geeft 20 terug",
-                },
-            ],
-        },
-
-        {
-            id: "js15",
-            title: "Gebruik Math.random",
-            contentHtml: "<p>Maak een variabele <code>randomCode</code> met een willekeurig getal uit <code>Math.random()</code>.</p>",
-            starter: { js: "// Maak hier randomCode met Math.random()\n" },
-            tests: [
-                {
-                    type: "variableBetween",
-                    name: "randomCode",
-                    min: 0,
-                    max: 1,
-                    label: "Willekeurig getal is aangemaakt",
-                },
-            ],
-        },
-
-        {
-            id: "js16",
-            title: "Pas tekst aan in de DOM",
-            contentHtml: "<p>Verander met JavaScript de tekst van het <code>&lt;h1&gt;</code>-element naar <code>'Interpol actief'</code>.</p>",
-            starter: {
-                html: "<h1>Placeholder</h1>",
-                js: "// Pas hier de tekst van de h1 aan\n",
-            },
-            tests: [
-                {
-                    type: "textContains",
-                    selector: "h1",
-                    includes: "Interpol actief",
-                    label: "Tekst van h1 is aangepast",
-                },
-            ],
-        },
-
-        {
-            id: "js17",
-            title: "Voeg een nieuw element toe",
-            contentHtml: "<p>Maak met JavaScript een nieuw <code>&lt;p&gt;</code>-element met de tekst <code>'Agent online'</code> en voeg het toe aan de pagina.</p>",
-            starter: {
-                html: "<main></main>",
-                js: "// Maak hier een p-element en voeg het toe aan de pagina\n",
-            },
-            tests: [
-                {
-                    type: "selectorExists",
-                    selector: "p",
-                    label: "Er is een p-element toegevoegd",
-                },
-                {
-                    type: "textContains",
-                    selector: "p",
-                    includes: "Agent online",
-                    label: "Tekst van p-element klopt",
-                },
-            ],
-        },
-
-        {
-            id: "js18",
-            title: "Gebruik een click event",
-            contentHtml: "<p>Voeg een click-event toe aan de knop die <code>'Knop geklikt'</code> logt in de console.</p>",
-            starter: {
-                html: "<button id='btn'>Klik mij</button>",
-                js: "// Voeg hier een click-event toe aan de knop\n",
-            },
-            tests: [
-                {
-                    type: "eventTriggered",
-                    selector: "#btn",
-                    event: "click",
-                    consoleIncludes: "Knop geklikt",
-                    label: "Click-event werkt",
-                },
-            ],
-        },
-
-        {
-            id: "js19",
-            title: "Verander stijl met JavaScript",
-            contentHtml: "<p>Laat bij het klikken op de knop de achtergrondkleur van <code>body</code> veranderen naar <code>black</code>.</p>",
-            starter: {
-                html: "<button id='btn'>Verander kleur</button>",
-                js: "// Verander bij een klik de achtergrondkleur van de body\n",
-            },
-            tests: [
-                {
-                    type: "eventTriggered",
-                    selector: "#btn",
-                    event: "click",
-                    styleEquals: {
-                        selector: "body",
-                        property: "background-color",
-                        value: "black",
-                    },
-                    label: "Achtergrondkleur verandert na klik",
-                },
-            ],
-        },
-
-        {
-            id: "js20",
-            title: "Gebruik setTimeout",
-            contentHtml: "<p>Gebruik <code>setTimeout</code> om na 2 seconden <code>'Missie voltooid'</code> te loggen.</p>",
-            starter: {
-                js: "// Gebruik hier setTimeout\n",
-            },
-            tests: [
-                {
-                    type: "delayedConsoleOutputContains",
-                    includes: "Missie voltooid",
-                    delay: 2000,
-                    label: "Bericht verschijnt na vertraging",
+                    type: "consoleIncludes",
+                    includes: "Einde basistraining",
+                    label: "Eindregel gelogd",
                 },
             ],
         },
