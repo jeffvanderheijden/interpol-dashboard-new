@@ -1,0 +1,243 @@
+@use "sass:color";
+@use "../../../styles/win95" as *;
+
+.chat-ui {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 69px);
+  margin-bottom: 69px;
+  padding: 6px;
+  gap: 6px;
+  box-sizing: border-box;
+  background: $win95-bg;
+  color: $win95-window-text;
+  @include win95-font;
+
+  &__header {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+  }
+
+  &__messages {
+    @include win95-border("sunken");
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    padding: 8px;
+    background: $win95-window-bg;
+  }
+
+  &__message {
+    max-width: min(560px, 100%);
+    padding: 6px 8px;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+    word-break: break-word;
+    @include win95-border("raised");
+
+    &--hacker {
+      align-self: flex-start;
+      background: color.scale($win95-bg, $lightness: 8%);
+    }
+
+    &--user {
+      align-self: flex-end;
+      background: #dbe9ff;
+    }
+  }
+
+  &__message-label {
+    margin-bottom: 4px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid $border-dark;
+    color: $win95-blue-titlebar;
+    font-weight: bold;
+  }
+
+  &__message-body {
+    line-height: 1.45;
+  }
+
+  &__input {
+    @include win95-border("raised");
+    position: sticky;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 6px;
+    background: $win95-bg;
+
+    input {
+      @include win95-font;
+      @include win95-border("sunken");
+      min-width: 0;
+      padding: 6px 8px;
+      background: $win95-window-bg;
+      color: $win95-window-text;
+      outline: none;
+
+      &::placeholder {
+        color: $border-dark;
+      }
+
+      &:focus {
+        outline: 1px dotted $border-darker;
+        outline-offset: -4px;
+      }
+    }
+
+    button {
+      @include win95-button;
+      min-width: 104px;
+      font-weight: bold;
+    }
+  }
+}
+
+.route-debugger {
+  @include win95-border("raised");
+  background: $win95-bg;
+  color: $win95-window-text;
+
+  &__toggle {
+    @include win95-font;
+    width: 100%;
+    padding: 6px 8px;
+    border: 0;
+    background: $win95-blue-titlebar;
+    color: $win95-titlebar-text;
+    text-align: left;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  &__panel {
+    display: grid;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  &__summary {
+    display: grid;
+    gap: 8px;
+  }
+
+  &__card {
+    @include win95-border("sunken");
+    display: grid;
+    gap: 4px;
+    padding: 8px;
+    background: $win95-window-bg;
+  }
+
+  &__label {
+    color: $border-dark;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  &__status {
+    margin: 0;
+    padding: 8px;
+    @include win95-border("sunken");
+
+    &--error {
+      background: #ffe1e1;
+      color: $win95-danger;
+    }
+
+    &--info {
+      background: #e7f6e7;
+      color: $win95-success;
+    }
+  }
+
+  &__route-note {
+    padding: 0 2px;
+  }
+
+  &__list {
+    display: grid;
+    gap: 8px;
+  }
+
+  &__item {
+    @include win95-border("raised");
+    display: grid;
+    gap: 8px;
+    padding: 8px;
+    background: color.scale($win95-bg, $lightness: 3%);
+
+    &.is-active {
+      background: #dbe9ff;
+    }
+  }
+
+  &__item-main {
+    display: grid;
+    gap: 6px;
+  }
+
+  &__item-title {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+
+  &__badge {
+    @include win95-border("raised");
+    padding: 1px 6px;
+    background: $win95-bg;
+    font-size: 12px;
+    font-weight: bold;
+
+    &--muted {
+      color: $border-dark;
+    }
+  }
+
+  &__meta {
+    display: grid;
+    gap: 4px;
+    color: color.scale($win95-window-text, $lightness: 20%);
+    font-size: 12px;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &__action {
+    @include win95-button;
+    text-decoration: none;
+    color: $win95-window-text;
+
+    &--link {
+      color: $win95-window-text;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .chat-ui {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .route-debugger__summary {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .route-debugger__item {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+}

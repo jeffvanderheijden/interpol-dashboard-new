@@ -1,8 +1,9 @@
 import React from "react";
-import "./ChatUI.css";
+import "./ChatUI.scss";
 
-export default function ChatUI({ messages, onSend }) {
+export default function ChatUI({ messages, onSend, header }) {
   const [input, setInput] = React.useState("");
+  const messagesRef = React.useRef(null);
 
   const handleSend = (e) => {
     e.preventDefault();
@@ -13,22 +14,25 @@ export default function ChatUI({ messages, onSend }) {
   };
 
   React.useEffect(() => {
-    const chatMessages = document.querySelector(".chat-messages");
-    if (chatMessages) {
-      chatMessages.scrollTop = chatMessages.scrollHeight;
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
     }
   }, [messages]);
 
   return (
-    <div className="chat-container">
-      <div className="chat-messages">
+    <div className="chat-ui">
+      {header ? <div className="chat-ui__header">{header}</div> : null}
+      <div className="chat-ui__messages" ref={messagesRef}>
         {messages.map((msg, i) => (
-          <div key={i} className={`chat-bubble ${msg.sender}`}>
-            {msg.text}
-          </div>
+          <article key={i} className={`chat-ui__message chat-ui__message--${msg.sender}`}>
+            <div className="chat-ui__message-label">
+              {msg.sender === "hacker" ? "Interpol" : "Jij"}
+            </div>
+            <div className="chat-ui__message-body">{msg.text}</div>
+          </article>
         ))}
       </div>
-      <form className="chat-input" onSubmit={handleSend}>
+      <form className="chat-ui__input" onSubmit={handleSend}>
         <input
           type="text"
           value={input}
