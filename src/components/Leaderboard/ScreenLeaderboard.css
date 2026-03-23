@@ -1,319 +1,308 @@
 .hallway-screen {
     position: relative;
+    width: 100vw;
     min-height: 100vh;
     overflow: hidden;
-    background: #020907;
+    background: #000;
 }
 
 .hallway-screen__background {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(circle at top center, rgba(149, 255, 29, 0.18), transparent 28%),
-        radial-gradient(circle at center, rgba(0, 128, 255, 0.12), transparent 40%),
-        linear-gradient(180deg, #051113 0%, #020907 58%, #010403 100%);
+        radial-gradient(circle at center 22%, rgba(173, 255, 47, 0.12), transparent 28%),
+        linear-gradient(180deg, #030606 0%, #000 100%);
 }
 
-.hallway-screen__grid {
+.hallway-screen__visual {
     position: absolute;
     inset: 0;
-    background-image:
-        linear-gradient(rgba(149, 255, 29, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(149, 255, 29, 0.08) 1px, transparent 1px);
-    background-size: 80px 80px;
-    mask-image: radial-gradient(circle at center, black, transparent 86%);
-    opacity: 0.3;
 }
 
-.hallway-screen__signal-stack {
+.globe-comp {
     position: absolute;
-    top: 128px;
-    left: 40px;
-    z-index: 4;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    top: 8vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    width: min(100vw, 860px);
+    height: 56vh;
+    opacity: 0.9;
 }
 
-.hallway-screen__signal-card {
-    min-width: 220px;
-    padding: 12px 14px;
-    border: 1px solid rgba(149, 255, 29, 0.28);
-    background: rgba(4, 15, 18, 0.72);
-    color: #f4ffd5;
+.hallway-podium {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    color: #fff;
+    padding: 0 24px 24px;
     font-family: "Tahoma", "Geneva", sans-serif;
-    backdrop-filter: blur(8px);
 }
 
-.hallway-screen__signal-card span {
-    display: block;
-    margin-bottom: 4px;
-    color: rgba(244, 255, 213, 0.62);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.hallway-screen__signal-card strong {
-    color: #95ff1d;
-    font-size: 18px;
-}
-
-.screen-leaderboard {
-    position: relative;
-    z-index: 4;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 360px;
-    grid-template-rows: auto 1fr;
-    gap: 24px;
-    width: 100%;
-    min-height: 100vh;
-    padding: 40px;
-    color: #f4ffd5;
-    font-family: "Tahoma", "Geneva", sans-serif;
-    box-sizing: border-box;
-}
-
-.screen-leaderboard__header {
-    grid-column: 1 / -1;
+.hallway-podium--state {
+    top: auto;
     display: flex;
-    justify-content: space-between;
-    gap: 24px;
-    align-items: start;
-}
-
-.screen-leaderboard__eyebrow {
-    margin: 0 0 8px;
-    color: #95ff1d;
-    font-size: 13px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-}
-
-.screen-leaderboard__header h1 {
-    margin: 0;
-    font-size: clamp(36px, 4vw, 68px);
-    line-height: 0.98;
-    text-transform: uppercase;
-}
-
-.screen-leaderboard__stats {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(140px, 1fr));
-    gap: 12px;
-}
-
-.screen-leaderboard__stats > div {
-    padding: 16px 18px;
-    border: 1px solid rgba(149, 255, 29, 0.35);
-    background: rgba(4, 15, 18, 0.72);
-    backdrop-filter: blur(8px);
-    box-shadow: inset 0 0 24px rgba(149, 255, 29, 0.06);
-}
-
-.screen-leaderboard__stats span {
-    display: block;
-    margin-bottom: 6px;
-    color: rgba(244, 255, 213, 0.65);
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-}
-
-.screen-leaderboard__stats strong {
-    font-size: 28px;
-}
-
-.screen-leaderboard__stage {
-    align-self: end;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-    align-items: end;
-    min-height: 520px;
-}
-
-.screen-leaderboard__podium {
-    position: relative;
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    gap: 18px;
-    padding: 28px 20px 28px;
-    border: 1px solid rgba(149, 255, 29, 0.35);
-    background:
-        linear-gradient(180deg, rgba(149, 255, 29, 0.1), rgba(0, 0, 0, 0.4)),
-        rgba(0, 0, 0, 0.48);
-    backdrop-filter: blur(10px);
+    justify-content: center;
+    min-height: 160px;
+    font-size: 28px;
     text-align: center;
-    overflow: hidden;
 }
 
-.screen-leaderboard__podium::before {
-    content: "";
+.hallway-podium--error {
+    color: #ff8b8b;
+}
+
+.hallway-podium__title {
+    margin-bottom: 24px;
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.hallway-podium__title p {
+    margin: 0 0 6px;
+    color: #adff2f;
+    font-size: 14px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+}
+
+.hallway-podium__title h1 {
+    margin: 0;
+    font-size: clamp(38px, 5vw, 58px);
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.hallway-podium__stage {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 14px;
+}
+
+.hallway-podium__card {
+    position: relative;
+    width: 30%;
+    max-width: 240px;
+    min-width: 0;
+    padding: 92px 14px 22px;
+    background: rgba(17, 17, 17, 0.82);
+    border: 1px solid #333;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    text-align: center;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.hallway-podium__card--first {
+    min-height: 240px;
+}
+
+.hallway-podium__card--second {
+    min-height: 208px;
+}
+
+.hallway-podium__card--third {
+    min-height: 190px;
+}
+
+.hallway-podium__avatar-frame {
     position: absolute;
-    inset: auto 0 0 0;
-    height: 10px;
-    background: linear-gradient(90deg, transparent, #95ff1d, transparent);
-    opacity: 0.7;
-}
-
-.screen-leaderboard__podium--first {
-    min-height: 430px;
-}
-
-.screen-leaderboard__podium--second {
-    min-height: 350px;
-}
-
-.screen-leaderboard__podium--third {
-    min-height: 310px;
-}
-
-.screen-leaderboard__podium--empty {
-    visibility: hidden;
-}
-
-.screen-leaderboard__rank-badge {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-    color: #95ff1d;
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.screen-leaderboard__avatar {
-    width: 140px;
-    height: 140px;
-    border: 2px solid rgba(149, 255, 29, 0.6);
+    top: -56px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 112px;
+    height: 112px;
     border-radius: 50%;
+    background: #000;
     overflow: hidden;
-    background: rgba(149, 255, 29, 0.08);
-    box-shadow: 0 0 45px rgba(149, 255, 29, 0.14);
 }
 
-.screen-leaderboard__avatar-image {
+.hallway-podium__card--first .hallway-podium__avatar-frame {
+    border: 4px solid gold;
+}
+
+.hallway-podium__card--second .hallway-podium__avatar-frame {
+    border: 4px solid silver;
+}
+
+.hallway-podium__card--third .hallway-podium__avatar-frame {
+    border: 4px solid #cd7f32;
+}
+
+.hallway-podium__avatar-frame img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.screen-leaderboard__avatar-fallback {
+.hallway-podium__avatar-fallback {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 42px;
+    color: #fff;
+    font-size: 34px;
     font-weight: 700;
 }
 
-.screen-leaderboard__podium-copy h2 {
-    margin: 0 0 8px;
-    font-size: clamp(22px, 2vw, 34px);
-}
-
-.screen-leaderboard__podium-copy p {
-    margin: 0 0 12px;
-    color: rgba(244, 255, 213, 0.72);
-}
-
-.screen-leaderboard__podium-copy strong {
-    font-size: clamp(30px, 2.4vw, 48px);
-    color: #95ff1d;
-}
-
-.screen-leaderboard__rail {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(149, 255, 29, 0.35);
-    background: rgba(0, 0, 0, 0.56);
-    backdrop-filter: blur(10px);
-    overflow: hidden;
-}
-
-.screen-leaderboard__rail-header {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 18px 20px;
-    border-bottom: 1px solid rgba(149, 255, 29, 0.2);
-    color: rgba(244, 255, 213, 0.72);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 12px;
-}
-
-.screen-leaderboard__rail-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.screen-leaderboard__rail-row {
-    display: grid;
-    grid-template-columns: 52px minmax(0, 1fr) auto;
-    gap: 14px;
-    align-items: center;
-    padding: 16px 20px;
-    border-top: 1px solid rgba(149, 255, 29, 0.08);
-}
-
-.screen-leaderboard__rail-rank {
-    color: #95ff1d;
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.screen-leaderboard__rail-team strong,
-.screen-leaderboard__rail-team span {
-    display: block;
-}
-
-.screen-leaderboard__rail-team strong {
-    font-size: 17px;
-}
-
-.screen-leaderboard__rail-team span {
-    margin-top: 3px;
-    color: rgba(244, 255, 213, 0.6);
-    font-size: 13px;
-}
-
-.screen-leaderboard__rail-score {
-    color: #95ff1d;
-    font-size: 18px;
-    white-space: nowrap;
-}
-
-.screen-leaderboard__state {
-    position: relative;
-    z-index: 4;
-    min-height: 100vh;
+.hallway-podium__place {
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    transform: translateX(-50%);
+    width: 34px;
+    height: 34px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #f4ffd5;
-    font-family: "Tahoma", "Geneva", sans-serif;
-    font-size: 28px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
 }
 
-.screen-leaderboard__state--error {
-    color: #ff8b8b;
+.hallway-podium__place::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 4px;
+    transform: rotate(45deg);
+    background: #000;
 }
 
-@media (max-width: 1200px) {
-    .hallway-screen__signal-stack {
-        display: none;
+.hallway-podium__card--first .hallway-podium__place::after {
+    background: gold;
+}
+
+.hallway-podium__card--second .hallway-podium__place::after {
+    background: silver;
+}
+
+.hallway-podium__card--third .hallway-podium__place::after {
+    background: #cd7f32;
+}
+
+.hallway-podium__crown {
+    position: absolute;
+    top: -102px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: gold;
+    font-size: 34px;
+    line-height: 1;
+    filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.6));
+}
+
+.hallway-podium__name {
+    margin: 0;
+    font-size: clamp(18px, 2.3vw, 28px);
+    line-height: 1.1;
+}
+
+.hallway-podium__class {
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 15px;
+}
+
+.hallway-podium__score {
+    margin: 16px 0 0;
+    font-size: clamp(26px, 3vw, 38px);
+    line-height: 1;
+}
+
+.hallway-podium__card--first .hallway-podium__score {
+    color: gold;
+}
+
+.hallway-podium__card--second .hallway-podium__score {
+    color: silver;
+}
+
+.hallway-podium__card--third .hallway-podium__score {
+    color: #cd7f32;
+}
+
+@media (orientation: portrait) {
+    .globe-comp {
+        top: 11vh;
+        width: 100vw;
+        height: 52vh;
     }
 
-    .screen-leaderboard {
-        grid-template-columns: 1fr;
+    .hallway-podium {
+        padding: 0 12px 16px;
     }
 
-    .screen-leaderboard__stage {
-        min-height: 0;
+    .hallway-podium__title {
+        margin-bottom: 18px;
+    }
+
+    .hallway-podium__title p {
+        font-size: 11px;
+        letter-spacing: 0.18em;
+    }
+
+    .hallway-podium__title h1 {
+        font-size: clamp(28px, 5vw, 40px);
+    }
+
+    .hallway-podium__stage {
+        gap: 8px;
+    }
+
+    .hallway-podium__card {
+        width: calc(33.333% - 6px);
+        padding: 78px 8px 16px;
+    }
+
+    .hallway-podium__card--first {
+        min-height: 192px;
+    }
+
+    .hallway-podium__card--second {
+        min-height: 168px;
+    }
+
+    .hallway-podium__card--third {
+        min-height: 154px;
+    }
+
+    .hallway-podium__avatar-frame {
+        top: -44px;
+        width: 88px;
+        height: 88px;
+    }
+
+    .hallway-podium__crown {
+        top: -84px;
+        font-size: 26px;
+    }
+
+    .hallway-podium__place {
+        width: 28px;
+        height: 28px;
+        font-size: 15px;
+    }
+
+    .hallway-podium__name {
+        font-size: 16px;
+    }
+
+    .hallway-podium__class {
+        font-size: 12px;
+    }
+
+    .hallway-podium__score {
+        margin-top: 10px;
+        font-size: 22px;
     }
 }

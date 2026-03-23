@@ -1,10 +1,25 @@
 import "./ScreenLeaderboard.css";
 
-function formatPoints(points) {
-    return `${Number(points) || 0} pt`;
+function getTopThree(topThreeGroups = []) {
+    const sortedGroups = [...topThreeGroups].sort((a, b) => {
+        const pointsDifference =
+            Number(b.total_points || 0) - Number(a.total_points || 0);
+
+        if (pointsDifference !== 0) {
+            return pointsDifference;
+        }
+
+        return Number(b.id || 0) - Number(a.id || 0);
+    });
+
+    return {
+        first: sortedGroups[0] || null,
+        second: sortedGroups[1] || null,
+        third: sortedGroups[2] || null,
+    };
 }
 
-function getTeamInitials(name = "") {
+function getInitials(name = "") {
     const parts = String(name)
         .trim()
         .split(/\s+/)
@@ -18,134 +33,74 @@ function getTeamInitials(name = "") {
     return parts.map((part) => part[0]?.toUpperCase() || "").join("");
 }
 
-function TeamAvatar({ group }) {
-    if (group.image_url) {
-        return (
-            <img
-                className="screen-leaderboard__avatar-image"
-                src={group.image_url}
-                alt={group.name}
-                loading="lazy"
-            />
-        );
-    }
-
+function TeamAvatar({ team, place }) {
     return (
-        <span className="screen-leaderboard__avatar-fallback">
-            {getTeamInitials(group.name)}
-        </span>
+        <div className="hallway-podium__avatar-frame">
+            {team.image_url ? (
+                <img src={team.image_url} alt={team.name} />
+            ) : (
+                <span className="hallway-podium__avatar-fallback">
+                    {getInitials(team.name)}
+                </span>
+            )}
+            <span className="hallway-podium__place">{place}</span>
+        </div>
     );
 }
 
-function PodiumCard({ group, position }) {
-    if (!group) {
-        return (
-            <div className="screen-leaderboard__podium screen-leaderboard__podium--empty" />
-        );
-    }
-
-    const positionClass = ["first", "second", "third"][position - 1] || "";
+function PodiumCard({ team, place, variant }) {
+    if (!team) return null;
 
     return (
-        <article
-            className={`screen-leaderboard__podium screen-leaderboard__podium--${positionClass}`}
-        >
-            <div className="screen-leaderboard__rank-badge">#{position}</div>
-            <div className="screen-leaderboard__avatar">
-                <TeamAvatar group={group} />
-            </div>
-            <div className="screen-leaderboard__podium-copy">
-                <h2>{group.name}</h2>
-                <p>{group.class || "Onbekende klas"}</p>
-                <strong>{formatPoints(group.total_points)}</strong>
-            </div>
+        <article className={`hallway-podium__card hallway-podium__card--${variant}`}>
+            {variant === "first" ? (
+                <div className="hallway-podium__crown" aria-hidden="true">
+                    ♛
+                </div>
+            ) : null}
+            <TeamAvatar team={team} place={place} />
+            <h2 className="hallway-podium__name">{team.name}</h2>
+            <div className="hallway-podium__class">{team.class || "Onbekende klas"}</div>
+            <h3 className="hallway-podium__score">{Number(team.total_points) || 0}</h3>
         </article>
     );
 }
 
 export default function ScreenLeaderboard({
-    groups = [],
+    topThreeGroups = [],
     loading = false,
     error = null,
 }) {
-    const sortedGroups = [...groups].sort((a, b) => {
-        const pointsDifference =
-            Number(b.total_points || 0) - Number(a.total_points || 0);
-
-        if (pointsDifference !== 0) {
-            return pointsDifference;
-        }
-
-        return Number(b.id || 0) - Number(a.id || 0);
-    });
-
-    const podium = sortedGroups.slice(0, 3);
-    const rankingList = sortedGroups.slice(0, 8);
+    const { first, second, third } = getTopThree(topThreeGroups);
 
     if (loading) {
-        return <div className="screen-leaderboard__state">Leaderboard laden...</div>;
+        return <div className="hallway-podium hallway-podium--state">Leaderboard laden...</div>;
     }
 
     if (error) {
         return (
-            <div className="screen-leaderboard__state screen-leaderboard__state--error">
+            <div className="hallway-podium hallway-podium--state hallway-podium--error">
                 <strong>Fout:</strong> {error}
             </div>
         );
     }
 
-    if (sortedGroups.length === 0) {
-        return <div className="screen-leaderboard__state">Nog geen teams gevonden.</div>;
+    if (!first && !second && !third) {
+        return <div className="hallway-podium hallway-podium--state">Nog geen teams gevonden.</div>;
     }
 
     return (
-        <div className="screen-leaderboard">
-            <header className="screen-leaderboard__header">
-                <div>
-                    <p className="screen-leaderboard__eyebrow">Interpol Network</p>
-                    <h1>Hallway Leaderboard</h1>
-                </div>
-                <div className="screen-leaderboard__stats">
-                    <div>
-                        <span>Teams online</span>
-                        <strong>{sortedGroups.length}</strong>
-                    </div>
-                    <div>
-                        <span>Hoogste score</span>
-                        <strong>{formatPoints(podium[0]?.total_points)}</strong>
-                    </div>
-                </div>
-            </header>
+        <div className="hallway-podium">
+            <div className="hallway-podium__title">
+                <p>Interpol Global Threat Monitor</p>
+                <h1>Leaderboard</h1>
+            </div>
 
-            <section className="screen-leaderboard__stage">
-                <PodiumCard group={podium[1]} position={2} />
-                <PodiumCard group={podium[0]} position={1} />
-                <PodiumCard group={podium[2]} position={3} />
-            </section>
-
-            <aside className="screen-leaderboard__rail">
-                <div className="screen-leaderboard__rail-header">
-                    <span>Live standings</span>
-                    <span>Top {rankingList.length}</span>
-                </div>
-
-                <div className="screen-leaderboard__rail-list">
-                    {rankingList.map((group, index) => (
-                        <div key={group.id} className="screen-leaderboard__rail-row">
-                            <span className="screen-leaderboard__rail-rank">
-                                #{group.rank || index + 1}
-                            </span>
-                            <div className="screen-leaderboard__rail-team">
-                                <strong>{group.name}</strong>
-                                <span>{group.class || "Onbekende klas"}</span>
-                            </div>
-                            <strong className="screen-leaderboard__rail-score">
-                                {formatPoints(group.total_points)}
-                            </strong>
-                        </div>
-                    ))}
-                </div>
-            </aside>
+            <div className="hallway-podium__stage">
+                <PodiumCard team={third} place={3} variant="third" />
+                <PodiumCard team={first} place={1} variant="first" />
+                <PodiumCard team={second} place={2} variant="second" />
+            </div>
         </div>
     );
 }

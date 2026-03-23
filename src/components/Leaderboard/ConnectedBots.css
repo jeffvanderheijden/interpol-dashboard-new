@@ -2,11 +2,11 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 40px;
+    top: 22px;
     z-index: 6;
     color: #FFF;    
     text-align: center;
-    padding: 20px;
+    padding: 14px 18px;
     background: rgba(17,17,17,0.8);
     border: 1px solid #333;
     border-radius: 10px;
@@ -15,13 +15,15 @@
 
 .connectedBots h1 {
     text-transform: uppercase;
-    font-size: 30px;
-    margin-bottom: 30px;
+    font-size: 24px;
+    margin-bottom: 16px;
     font-weight: 700;
+    letter-spacing: 0.14em;
 }
 
 .connectedBots p {
     margin-bottom: 6px;
+    font-size: 15px;
 }
 
 .connectedBots span.positive {
@@ -29,4 +31,22 @@
 }
 .connectedBots span.negative {
     color: red;
+}
+
+@media (orientation: portrait) {
+    .connectedBots {
+        width: calc(100vw - 48px);
+        max-width: 320px;
+        top: 16px;
+        padding: 12px 14px;
+    }
+
+    .connectedBots h1 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .connectedBots p {
+        font-size: 13px;
+    }
 }
