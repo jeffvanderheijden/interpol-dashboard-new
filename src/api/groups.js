@@ -22,6 +22,12 @@ export async function getTeam(teamId) {
     return apiRequest(`/api/groups/${teamId}`);
 }
 
+// GET LEADERBOARD (student/docent)
+export async function getLeaderboardGroups() {
+    const data = await apiRequest("/api/groups/leaderboard");
+    return data.groups || [];
+}
+
 // --------------------------------------------------
 // ADMIN GROUPS API
 // --------------------------------------------------
