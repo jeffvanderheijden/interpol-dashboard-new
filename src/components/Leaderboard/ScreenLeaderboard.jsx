@@ -1,7 +1,8 @@
+import Crown from "./crown.svg";
 import "./ScreenLeaderboard.css";
 
-function getTopThree(topThreeGroups = []) {
-    const sortedGroups = [...topThreeGroups].sort((a, b) => {
+function sortTopThree(topThreeGroups = []) {
+    return [...topThreeGroups].sort((a, b) => {
         const pointsDifference =
             Number(b.total_points || 0) - Number(a.total_points || 0);
 
@@ -11,58 +12,25 @@ function getTopThree(topThreeGroups = []) {
 
         return Number(b.id || 0) - Number(a.id || 0);
     });
-
-    return {
-        first: sortedGroups[0] || null,
-        second: sortedGroups[1] || null,
-        third: sortedGroups[2] || null,
-    };
 }
 
-function getInitials(name = "") {
-    const parts = String(name)
+function renderAvatar(team, alt) {
+    if (team.image_url) {
+        return <img src={team.image_url} alt={alt} />;
+    }
+
+    const initials = String(team.name || "")
         .trim()
         .split(/\s+/)
         .filter(Boolean)
-        .slice(0, 2);
+        .slice(0, 2)
+        .map((part) => part[0]?.toUpperCase() || "")
+        .join("");
 
-    if (parts.length === 0) {
-        return "??";
-    }
-
-    return parts.map((part) => part[0]?.toUpperCase() || "").join("");
-}
-
-function TeamAvatar({ team, place }) {
     return (
-        <div className="hallway-podium__avatar-frame">
-            {team.image_url ? (
-                <img src={team.image_url} alt={team.name} />
-            ) : (
-                <span className="hallway-podium__avatar-fallback">
-                    {getInitials(team.name)}
-                </span>
-            )}
-            <span className="hallway-podium__place">{place}</span>
+        <div className="imgFallback" aria-hidden="true">
+            {initials || "??"}
         </div>
-    );
-}
-
-function PodiumCard({ team, place, variant }) {
-    if (!team) return null;
-
-    return (
-        <article className={`hallway-podium__card hallway-podium__card--${variant}`}>
-            {variant === "first" ? (
-                <div className="hallway-podium__crown" aria-hidden="true">
-                    ♛
-                </div>
-            ) : null}
-            <TeamAvatar team={team} place={place} />
-            <h2 className="hallway-podium__name">{team.name}</h2>
-            <div className="hallway-podium__class">{team.class || "Onbekende klas"}</div>
-            <h3 className="hallway-podium__score">{Number(team.total_points) || 0}</h3>
-        </article>
     );
 }
 
@@ -71,35 +39,70 @@ export default function ScreenLeaderboard({
     loading = false,
     error = null,
 }) {
-    const { first, second, third } = getTopThree(topThreeGroups);
+    const sortedGroups = sortTopThree(topThreeGroups);
+    const highestPoints = sortedGroups[0] || null;
+    const secondHighestPoints = sortedGroups[1] || null;
+    const lowestPoints = sortedGroups[2] || null;
 
     if (loading) {
-        return <div className="hallway-podium hallway-podium--state">Leaderboard laden...</div>;
+        return <div className="leaderBoardState">Leaderboard laden...</div>;
     }
 
     if (error) {
         return (
-            <div className="hallway-podium hallway-podium--state hallway-podium--error">
+            <div className="leaderBoardState leaderBoardState--error">
                 <strong>Fout:</strong> {error}
             </div>
         );
     }
 
-    if (!first && !second && !third) {
-        return <div className="hallway-podium hallway-podium--state">Nog geen teams gevonden.</div>;
+    if (!highestPoints && !secondHighestPoints && !lowestPoints) {
+        return <div className="leaderBoardState">Nog geen teams gevonden.</div>;
     }
 
     return (
-        <div className="hallway-podium">
-            <div className="hallway-podium__title">
-                <p>Interpol Global Threat Monitor</p>
-                <h1>Leaderboard</h1>
-            </div>
-
-            <div className="hallway-podium__stage">
-                <PodiumCard team={third} place={3} variant="third" />
-                <PodiumCard team={first} place={1} variant="first" />
-                <PodiumCard team={second} place={2} variant="second" />
+        <div className="leaderBoard leaderBoard--hallway">
+            <div className="leaderStage">
+                {lowestPoints && (
+                    <div className="podium third">
+                        <div className="avatar">
+                            <div className="imgWrapper">
+                                {renderAvatar(lowestPoints, "third")}
+                            </div>
+                            <span>3</span>
+                        </div>
+                        <h1 className="teamName">{lowestPoints.name}</h1>
+                        <div className="teamClass">{lowestPoints.class}</div>
+                        <h1 className="score">{Number(lowestPoints.total_points) || 0}</h1>
+                    </div>
+                )}
+                {highestPoints && (
+                    <div className="podium first">
+                        <div className="avatar">
+                            <img className="crown" src={Crown} alt="Leader" />
+                            <div className="imgWrapper">
+                                {renderAvatar(highestPoints, "first")}
+                            </div>
+                            <span>1</span>
+                        </div>
+                        <h1 className="teamName">{highestPoints.name}</h1>
+                        <div className="teamClass">{highestPoints.class}</div>
+                        <h1 className="score">{Number(highestPoints.total_points) || 0}</h1>
+                    </div>
+                )}
+                {secondHighestPoints && (
+                    <div className="podium second">
+                        <div className="avatar">
+                            <div className="imgWrapper">
+                                {renderAvatar(secondHighestPoints, "second")}
+                            </div>
+                            <span>2</span>
+                        </div>
+                        <h1 className="teamName">{secondHighestPoints.name}</h1>
+                        <div className="teamClass">{secondHighestPoints.class}</div>
+                        <h1 className="score">{Number(secondHighestPoints.total_points) || 0}</h1>
+                    </div>
+                )}
             </div>
         </div>
     );

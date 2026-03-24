@@ -2,7 +2,7 @@ import GlobeComp from "./GlobeComp";
 import data from "./data";
 import Polygon from "./Polygon";
 import RingAnimation from "./RingAnimation";
-import ConnectedBots from "./ConnectedBots";
+// import ConnectedBots from "./ConnectedBots";
 import ScreenLeaderboard from "./ScreenLeaderboard";
 import { useLeaderboardData } from "./useLeaderboardData";
 import "./ScreenLeaderboard.css";
@@ -16,7 +16,7 @@ const LeaderboardApp = () => {
     return (
         <div className="hallway-screen">
             <div className="hallway-screen__background" />
-            <ConnectedBots initialConnectedAmount={connectedAmount} />
+            {/* <ConnectedBots initialConnectedAmount={connectedAmount} /> */}
 
             <div className="hallway-screen__visual">
                 <Polygon />

@@ -10,8 +10,8 @@
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(circle at center 22%, rgba(173, 255, 47, 0.12), transparent 28%),
-        linear-gradient(180deg, #030606 0%, #000 100%);
+        radial-gradient(circle at center 24%, rgba(173, 255, 47, 0.08), transparent 30%),
+        linear-gradient(180deg, #020505 0%, #000 100%);
 }
 
 .hallway-screen__visual {
@@ -21,288 +21,282 @@
 
 .globe-comp {
     position: absolute;
-    top: 8vh;
+    top: 20vh;
     left: 50%;
     transform: translateX(-50%);
     z-index: 3;
-    width: min(100vw, 860px);
-    height: 56vh;
-    opacity: 0.9;
+    width: min(92vw, 860px);
+    height: 58vh;
+    opacity: 0.92;
 }
 
-.hallway-podium {
+.leaderBoardState {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 32px;
     z-index: 5;
-    color: #fff;
-    padding: 0 24px 24px;
-    font-family: "Tahoma", "Geneva", sans-serif;
-}
-
-.hallway-podium--state {
-    top: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 160px;
+    min-height: 140px;
+    color: #fff;
+    font-family: "Tahoma", "Geneva", sans-serif;
     font-size: 28px;
     text-align: center;
 }
 
-.hallway-podium--error {
+.leaderBoardState--error {
     color: #ff8b8b;
 }
 
-.hallway-podium__title {
-    margin-bottom: 24px;
-    text-align: center;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+.leaderBoard--hallway {
+    position: absolute;
+    z-index: 5;
+    color: #fff;
+    width: 100%;
+    bottom: 0;
+    padding: 0 12px 22px;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+    font-family: "Tahoma", "Geneva", sans-serif;
 }
 
-.hallway-podium__title p {
-    margin: 0 0 6px;
-    color: #adff2f;
-    font-size: 14px;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-}
-
-.hallway-podium__title h1 {
-    margin: 0;
-    font-size: clamp(38px, 5vw, 58px);
-    line-height: 1;
-    text-transform: uppercase;
-}
-
-.hallway-podium__stage {
+.leaderBoard--hallway .leaderStage {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    gap: 14px;
+    gap: 10px;
 }
 
-.hallway-podium__card {
+.leaderBoard--hallway .avatar {
+    width: 112px;
+    height: 112px;
+    top: -56px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background-color: #000;
+    position: absolute;
+}
+
+.leaderBoard--hallway .avatar .crown {
+    position: absolute;
+    top: -38px;
+    left: 50%;
+    width: 62px;
+    transform: translateX(-50%);
+}
+
+.leaderBoard--hallway .podium {
+    display: inline-block;
     position: relative;
-    width: 30%;
-    max-width: 240px;
-    min-width: 0;
-    padding: 92px 14px 22px;
-    background: rgba(17, 17, 17, 0.82);
+    text-align: center;
+    margin: 0;
+    padding: 76px 16px 22px;
+    background-color: rgba(17, 17, 17, 0.8);
     border: 1px solid #333;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    text-align: center;
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    max-width: 220px;
+    width: 31%;
+    min-width: 0;
 }
 
-.hallway-podium__card--first {
-    min-height: 240px;
+.leaderBoard--hallway .first {
+    min-height: 238px;
 }
 
-.hallway-podium__card--second {
-    min-height: 208px;
+.leaderBoard--hallway .second {
+    min-height: 210px;
 }
 
-.hallway-podium__card--third {
-    min-height: 190px;
+.leaderBoard--hallway .third {
+    min-height: 194px;
 }
 
-.hallway-podium__avatar-frame {
-    position: absolute;
-    top: -56px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 112px;
-    height: 112px;
-    border-radius: 50%;
-    background: #000;
+.leaderBoard--hallway .podium .imgWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    border-radius: 9999px;
     overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    background: #111;
 }
 
-.hallway-podium__card--first .hallway-podium__avatar-frame {
-    border: 4px solid gold;
-}
-
-.hallway-podium__card--second .hallway-podium__avatar-frame {
-    border: 4px solid silver;
-}
-
-.hallway-podium__card--third .hallway-podium__avatar-frame {
-    border: 4px solid #cd7f32;
-}
-
-.hallway-podium__avatar-frame img {
+.leaderBoard--hallway .podium .imgWrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.hallway-podium__avatar-fallback {
+.leaderBoard--hallway .imgFallback {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
-    font-size: 34px;
+    font-size: 32px;
     font-weight: 700;
 }
 
-.hallway-podium__place {
+.leaderBoard--hallway .teamName,
+.leaderBoard--hallway .score {
+    font-size: 24px;
+    line-height: 1.1;
+}
+
+.leaderBoard--hallway .teamName {
+    padding: 34px 0 10px;
+    word-break: break-word;
+}
+
+.leaderBoard--hallway .teamClass {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 15px;
+}
+
+.leaderBoard--hallway .score {
+    padding: 14px 0 0;
+}
+
+.leaderBoard--hallway .first .score {
+    color: gold;
+    font-size: 30px;
+}
+
+.leaderBoard--hallway .second .score {
+    color: silver;
+}
+
+.leaderBoard--hallway .third .score {
+    color: #cd7f32;
+}
+
+.leaderBoard--hallway .first .avatar {
+    border: 4px solid gold;
+}
+
+.leaderBoard--hallway .second .avatar {
+    border: 4px solid silver;
+}
+
+.leaderBoard--hallway .third .avatar {
+    border: 4px solid #cd7f32;
+}
+
+.leaderBoard--hallway .avatar span {
     position: absolute;
-    left: 50%;
-    bottom: -10px;
-    transform: translateX(-50%);
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    z-index: 2;
+    left: 50%;
+    top: 90px;
+    transform: translateX(-50%);
+    font-size: 20px;
     font-weight: 700;
-    color: #fff;
-    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
 }
 
-.hallway-podium__place::after {
+.leaderBoard--hallway .avatar span::after {
     content: "";
     position: absolute;
     inset: 0;
     z-index: -1;
     border-radius: 4px;
+    background-color: black;
     transform: rotate(45deg);
-    background: #000;
 }
 
-.hallway-podium__card--first .hallway-podium__place::after {
-    background: gold;
+.leaderBoard--hallway .first .avatar span::after {
+    background-color: gold;
 }
 
-.hallway-podium__card--second .hallway-podium__place::after {
-    background: silver;
+.leaderBoard--hallway .second .avatar span::after {
+    background-color: silver;
 }
 
-.hallway-podium__card--third .hallway-podium__place::after {
-    background: #cd7f32;
-}
-
-.hallway-podium__crown {
-    position: absolute;
-    top: -102px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: gold;
-    font-size: 34px;
-    line-height: 1;
-    filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.6));
-}
-
-.hallway-podium__name {
-    margin: 0;
-    font-size: clamp(18px, 2.3vw, 28px);
-    line-height: 1.1;
-}
-
-.hallway-podium__class {
-    margin-top: 10px;
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 15px;
-}
-
-.hallway-podium__score {
-    margin: 16px 0 0;
-    font-size: clamp(26px, 3vw, 38px);
-    line-height: 1;
-}
-
-.hallway-podium__card--first .hallway-podium__score {
-    color: gold;
-}
-
-.hallway-podium__card--second .hallway-podium__score {
-    color: silver;
-}
-
-.hallway-podium__card--third .hallway-podium__score {
-    color: #cd7f32;
+.leaderBoard--hallway .third .avatar span::after {
+    background-color: #cd7f32;
 }
 
 @media (orientation: portrait) {
     .globe-comp {
         top: 11vh;
         width: 100vw;
-        height: 52vh;
+        height: 46vh;
     }
 
-    .hallway-podium {
-        padding: 0 12px 16px;
+    .leaderBoard--hallway {
+        padding: 0 8px 16px;
     }
 
-    .hallway-podium__title {
-        margin-bottom: 18px;
+    .leaderBoard--hallway .leaderStage {
+        gap: 6px;
     }
 
-    .hallway-podium__title p {
+    .leaderBoard--hallway .avatar {
+        width: 86px;
+        height: 86px;
+        top: -43px;
+    }
+
+    .leaderBoard--hallway .avatar .crown {
+        top: -30px;
+        width: 48px;
+    }
+
+    .leaderBoard--hallway .podium {
+        width: 32%;
+        padding: 58px 8px 14px;
+    }
+
+    .leaderBoard--hallway .first {
+        min-height: 188px;
+    }
+
+    .leaderBoard--hallway .second {
+        min-height: 164px;
+    }
+
+    .leaderBoard--hallway .third {
+        min-height: 150px;
+    }
+
+    .leaderBoard--hallway .teamName,
+    .leaderBoard--hallway .score {
+        font-size: 18px;
+    }
+
+    .leaderBoard--hallway .first .score {
+        font-size: 22px;
+    }
+
+    .leaderBoard--hallway .teamName {
+        padding: 22px 0 8px;
+    }
+
+    .leaderBoard--hallway .teamClass {
         font-size: 11px;
-        letter-spacing: 0.18em;
     }
 
-    .hallway-podium__title h1 {
-        font-size: clamp(28px, 5vw, 40px);
-    }
-
-    .hallway-podium__stage {
-        gap: 8px;
-    }
-
-    .hallway-podium__card {
-        width: calc(33.333% - 6px);
-        padding: 78px 8px 16px;
-    }
-
-    .hallway-podium__card--first {
-        min-height: 192px;
-    }
-
-    .hallway-podium__card--second {
-        min-height: 168px;
-    }
-
-    .hallway-podium__card--third {
-        min-height: 154px;
-    }
-
-    .hallway-podium__avatar-frame {
-        top: -44px;
-        width: 88px;
-        height: 88px;
-    }
-
-    .hallway-podium__crown {
-        top: -84px;
-        font-size: 26px;
-    }
-
-    .hallway-podium__place {
+    .leaderBoard--hallway .avatar span {
         width: 28px;
         height: 28px;
+        top: 68px;
         font-size: 15px;
     }
 
-    .hallway-podium__name {
-        font-size: 16px;
-    }
-
-    .hallway-podium__class {
-        font-size: 12px;
-    }
-
-    .hallway-podium__score {
-        margin-top: 10px;
-        font-size: 22px;
+    .leaderBoardState {
+        bottom: 18px;
+        min-height: 100px;
+        font-size: 20px;
+        padding: 0 16px;
     }
 }
