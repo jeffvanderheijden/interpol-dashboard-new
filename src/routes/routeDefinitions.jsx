@@ -30,26 +30,40 @@ export const protectedRoutes = [
         teamProtected: true,
         element: <Dashboard />,
     },
-    { path: "/html-css", roles: studentRoles, element: <HtmlCss /> },
-    { path: "/javascript", roles: studentRoles, element: <Javascript /> },
+    {
+        path: "/html-css",
+        roles: studentRoles,
+        challengeRoute: "/html-css",
+        element: <HtmlCss />,
+    },
+    {
+        path: "/javascript",
+        roles: studentRoles,
+        challengeRoute: "/javascript",
+        element: <Javascript />,
+    },
     {
         path: "/kijk-op-de-wijk",
         roles: studentRoles,
+        challengeRoute: "/kijk-op-de-wijk",
         element: <KijkOpDeWijk />,
     },
     {
         path: "/creative-coding",
         roles: studentRoles,
+        challengeRoute: "/creative-coding",
         element: <CreativeCoding />,
     },
     {
         path: "/creative-coding/step2",
         roles: studentRoles,
+        challengeRoute: "/creative-coding",
         element: <Step2 />,
     },
     {
         path: "/creative-coding/step3",
         roles: studentRoles,
+        challengeRoute: "/creative-coding",
         element: <Step3 />,
     },
     { path: "/admin", roles: ["docent"], element: <Admin /> },
@@ -64,6 +78,7 @@ export function renderRouteElement(route) {
         <ProtectedRoute
             roles={route.roles}
             teamProtected={route.teamProtected}
+            challengeRoute={route.challengeRoute}
         >
             {route.element}
         </ProtectedRoute>

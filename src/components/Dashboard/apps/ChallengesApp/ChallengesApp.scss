@@ -1,0 +1,73 @@
+.challenges-app {
+    color: #f3f4f6;
+    display: grid;
+    gap: 18px;
+    padding: 4px;
+}
+
+.challenges-app__header h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+}
+
+.challenges-app__header p {
+    margin: 0;
+    color: #c7c9d1;
+    line-height: 1.5;
+}
+
+.challenges-app__empty {
+    border: 1px solid #2c3340;
+    border-radius: 12px;
+    background: #151922;
+    color: #c7c9d1;
+    padding: 18px;
+}
+
+.challenges-app__list {
+    display: grid;
+    gap: 14px;
+}
+
+.challenges-app__card {
+    display: grid;
+    gap: 8px;
+    width: 100%;
+    border: 1px solid #2f4456;
+    border-radius: 14px;
+    background:
+        linear-gradient(135deg, rgba(27, 43, 58, 0.95), rgba(13, 19, 30, 0.98));
+    color: #f3f4f6;
+    cursor: pointer;
+    padding: 18px;
+    text-align: left;
+    transition:
+        transform 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.challenges-app__card:hover {
+    border-color: #67d6ff;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+    transform: translateY(-1px);
+}
+
+.challenges-app__eyebrow {
+    color: #8ecae6;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.challenges-app__card strong {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.challenges-app__link {
+    color: #9ae6b4;
+    font-size: 14px;
+    font-weight: 600;
+}

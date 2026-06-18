@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { GameProvider } from "./components/Desktop/_context/GameContext";
 import { AuthProvider } from "./components/ProtectedRoute/_context/AuthContext";
+import { ChallengeAccessProvider } from "./components/ProtectedRoute/_context/ChallengeAccessContext";
 import "./styles/_reset.scss";
 import {
     publicRoutes,
@@ -13,22 +14,24 @@ const App = () => {
         <GameProvider>
             <Router>
                 <AuthProvider>
-                    <Routes>
-                        {protectedRoutes.map((route) => (
-                            <Route
-                                key={route.path}
-                                path={route.path}
-                                element={renderRouteElement(route)}
-                            />
-                        ))}
-                        {publicRoutes.map((route) => (
-                            <Route
-                                key={route.path}
-                                path={route.path}
-                                element={route.element}
-                            />
-                        ))}
-                    </Routes>
+                    <ChallengeAccessProvider>
+                        <Routes>
+                            {protectedRoutes.map((route) => (
+                                <Route
+                                    key={route.path}
+                                    path={route.path}
+                                    element={renderRouteElement(route)}
+                                />
+                            ))}
+                            {publicRoutes.map((route) => (
+                                <Route
+                                    key={route.path}
+                                    path={route.path}
+                                    element={route.element}
+                                />
+                            ))}
+                        </Routes>
+                    </ChallengeAccessProvider>
                 </AuthProvider>
             </Router>
         </GameProvider>

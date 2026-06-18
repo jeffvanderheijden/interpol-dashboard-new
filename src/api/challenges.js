@@ -1,5 +1,9 @@
 import { apiRequest, withJsonBody } from "./request";
 
+export async function getStudentChallenges() {
+    return apiRequest("/api/challenges");
+}
+
 // ---------------------------------------------
 // ADMIN – CHALLENGE PER KLAS
 // ---------------------------------------------
