@@ -29,7 +29,7 @@ function removeLessonProgress(lessonId) {
     saveTrainerProgress(nextProgress);
 }
 
-const TrainerCore = ({ lesson, className = "" }) => {
+const TrainerCore = ({ lesson, className = "", onComplete = null }) => {
     const iframeRef = useRef(null);
 
     const [stepIndex, setStepIndex] = useState(0);
@@ -102,6 +102,10 @@ const TrainerCore = ({ lesson, className = "" }) => {
                     ...currentCompleted,
                     stepIndex,
                 ]);
+            }
+
+            if (stepIndex === lesson.steps.length - 1 && typeof onComplete === "function") {
+                await onComplete();
             }
         }
 

@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useChallengeTracking } from "../../hooks/useChallengeTracking";
 import "./Creacod1.scss";
 
 export default function CipherStep1({
@@ -8,6 +9,7 @@ export default function CipherStep1({
     title = "Cipher",
 }) {
     const navigate = useNavigate();
+    const { complete } = useChallengeTracking("/creative-coding");
     const [value, setValue] = useState("");
     const [error, setError] = useState("");
 
@@ -54,7 +56,7 @@ export default function CipherStep1({
         return text.trim().toLowerCase().replace(/\s/g, "");
     }
 
-    function validate() {
+    async function validate() {
         const input = normalize(value);
         const expected = normalize(correctAnswer);
 
@@ -69,6 +71,11 @@ export default function CipherStep1({
         }
 
         setError("");
+        try {
+            await complete();
+        } catch (err) {
+            console.error("Creative coding completion failed", err);
+        }
         navigate(nextRoute);
     }
 

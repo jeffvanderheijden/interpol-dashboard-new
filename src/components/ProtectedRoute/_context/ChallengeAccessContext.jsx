@@ -64,6 +64,9 @@ export function ChallengeAccessProvider({ children }) {
         () => ({
             challenges,
             loading: authLoading || loading,
+            getChallengeByRoute(route) {
+                return challengesByRoute.get(route) || null;
+            },
             hasAccessToRoute(route) {
                 if (!user || user.role !== "student") {
                     return true;

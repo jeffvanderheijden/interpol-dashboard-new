@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { GameContext } from "./_context/GameContext";
 import { triggerHackerAnimation } from "./_helpers/dossierHelpers";
+import { completeTutorialProgress } from "../../api/challenges";
+import { useAuth } from "../ProtectedRoute/_context/AuthContext";
 import AppDesktopShell from "../_shared/AppDesktopShell/AppDesktopShell";
 import Notification from "./Notification/Notification";
 import { buildDesktopIcons, renderConfiguredApp } from "../_shared/appConfig";
@@ -19,6 +21,7 @@ import {
 import "./Desktop.scss";
 
 const Desktop = () => {
+    const { user } = useAuth();
     const {
         mails,
         showNotification,
@@ -52,6 +55,7 @@ const Desktop = () => {
     // auto-run signal for virus simulation in Terminal
     const [autoRunVirusSignal, setAutoRunVirusSignal] = useState(null);
     const autoRunConsumedRef = useRef(false);
+    const tutorialSyncedRef = useRef(false);
 
     const prevMailCount = useRef(0);
 
@@ -87,6 +91,23 @@ const Desktop = () => {
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (
+            !user ||
+            user.role !== "student" ||
+            !progress?.virusExecutionSimulated ||
+            tutorialSyncedRef.current
+        ) {
+            return;
+        }
+
+        tutorialSyncedRef.current = true;
+        completeTutorialProgress().catch((err) => {
+            console.error("Tutorial score sync failed", err);
+            tutorialSyncedRef.current = false;
+        });
+    }, [progress?.virusExecutionSimulated, user]);
 
     // open single-instance app + mail badge/reset logica
     const openTrainingApp = (appName) => {

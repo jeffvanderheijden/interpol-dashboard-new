@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "./NewTeamApp.scss";
 import { useNavigate } from "react-router-dom";
 import { captureFromVideo } from "./../../_helpers/newTeamHelpers";
+import { completeTutorialProgress } from "./../../../../api/challenges";
 import { createGroup } from "./../../../../api/groups";
 
 const NewTeamApp = () => {
@@ -131,6 +132,7 @@ const NewTeamApp = () => {
         // ----------------------
         try {
             setLoading(true);
+            await completeTutorialProgress().catch(() => null);
             const data = await createGroup(teamPhoto, members, teamName, className);
             // Navigeren naar dashboard van nieuw team
             navigate(`/dashboard/${data.id}`);

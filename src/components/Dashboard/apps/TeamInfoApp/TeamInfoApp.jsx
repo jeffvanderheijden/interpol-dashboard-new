@@ -47,13 +47,15 @@ const TeamInfoApp = () => {
         () => (Array.isArray(data?.challenges) ? data.challenges : []),
         [data?.challenges]
     );
+    const tutorialPoints = Number(data?.tutorial_points) || 0;
 
-    const totalPoints = useMemo(() => {
+    const challengePoints = useMemo(() => {
         return challenges.reduce(
             (sum, c) => sum + (c.points || 0) - (c.point_deduction || 0),
             0
         );
     }, [challenges]);
+    const totalPoints = tutorialPoints + challengePoints;
 
     // later uitbreidbaar, nu fixed zoals je had
     const statusClass = "active";
@@ -137,6 +139,8 @@ const TeamInfoApp = () => {
                 <section className="teaminfo-block">
                     <h4>Voortgang</h4>
                     <p>Challenges: {challenges.length}</p>
+                    <p>Tutorialpunten: {tutorialPoints}</p>
+                    <p>Challengepunten: {challengePoints}</p>
                     <p>Punten: {totalPoints}</p>
                 </section>
             </div>

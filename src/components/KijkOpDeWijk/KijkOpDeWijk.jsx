@@ -1,6 +1,7 @@
 import React from "react";
 import locationsData from "./_data/locations.json";
 import ChatUI from "./chat/ChatUI";
+import { useChallengeTracking } from "../../hooks/useChallengeTracking";
 
 function getDistance(lat1, lng1, lat2, lng2) {
     function toRad(x) { return x * Math.PI / 180; }
@@ -75,6 +76,7 @@ const shuffledLocations = shuffle(locationsData);
 const DISTANCE_THRESHOLD = 100;
 
 export default function KijkOpDeWijk() {
+    const { complete } = useChallengeTracking("/kijk-op-de-wijk");
     const [step, setStep] = React.useState(0);
     const [debugOpen, setDebugOpen] = React.useState(true);
     const [feedback, setFeedback] = React.useState("");
@@ -207,7 +209,7 @@ export default function KijkOpDeWijk() {
         }
     }, [activeLocation, distanceToActive, userLocation]);
 
-    const handleSend = (input) => {
+    const handleSend = async (input) => {
         if (!activeLocation) {
             return;
         }
@@ -223,6 +225,11 @@ export default function KijkOpDeWijk() {
         }
 
         if (activeLocation.question.type === "end") {
+            try {
+                await complete();
+            } catch (err) {
+                console.error("Kijk op de wijk completion failed", err);
+            }
             setStep((currentStep) => currentStep + 1);
             return;
         }

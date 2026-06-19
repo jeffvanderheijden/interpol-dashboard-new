@@ -37,6 +37,13 @@ const ChallengesApp = () => {
                                 {challenge.component || "Challenge"}
                             </span>
                             <strong>{challenge.title}</strong>
+                            <span className="challenges-app__meta">
+                                {challenge.completed
+                                    ? `Voltooid · ${challenge.earned_points ?? 0} punten`
+                                    : challenge.started_at
+                                        ? "Bezig"
+                                        : "Nog niet gestart"}
+                            </span>
                             <span className="challenges-app__link">
                                 Open onderdeel
                             </span>
