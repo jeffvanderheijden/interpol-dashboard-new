@@ -14,14 +14,14 @@ const Editor = ({ language, value, onChange, label }) => {
                     language={language}
                     value={safeValue}
                     onChange={(nextValue) => onChange(nextValue || "")}
-                    theme="vs-dark"
+                    theme="vs"
                     options={{
                         automaticLayout: true,
                         minimap: { enabled: false },
                         scrollBeyondLastLine: false,
-                        fontSize: 14,
+                        fontSize: 13,
                         wordWrap: "on",
-                        padding: { top: 10 },
+                        padding: { top: 6 },
                         tabSize: 2,
                     }}
                 />

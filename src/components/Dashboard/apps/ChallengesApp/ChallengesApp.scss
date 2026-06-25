@@ -1,78 +1,101 @@
+@use "../../../../styles/win95" as *;
+
 .challenges-app {
-    color: #f3f4f6;
+    @include win95-font;
+    background: $win95-bg;
+    color: $win95-window-text;
     display: grid;
-    gap: 18px;
+    gap: 4px;
+    height: 100%;
     padding: 4px;
 }
 
-.challenges-app__header h2 {
-    margin: 0 0 8px;
-    font-size: 24px;
+.challenges-app__header {
+    @include win95-border("sunken");
+    background: $win95-window-bg;
+    padding: 10px 12px;
+
+    h2 {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0 0 6px;
+    }
+
+    p {
+        line-height: 1.4;
+        margin: 0;
+    }
 }
 
-.challenges-app__header p {
-    margin: 0;
-    color: #c7c9d1;
-    line-height: 1.5;
+.challenges-app__empty,
+.challenges-app__list {
+    @include win95-border("sunken");
+    background: $win95-window-bg;
 }
 
 .challenges-app__empty {
-    border: 1px solid #2c3340;
-    border-radius: 12px;
-    background: #151922;
-    color: #c7c9d1;
-    padding: 18px;
+    color: $border-dark;
+    padding: 10px 12px;
 }
 
 .challenges-app__list {
-    display: grid;
-    gap: 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    padding: 1px;
 }
 
 .challenges-app__card {
-    display: grid;
-    gap: 8px;
-    width: 100%;
-    border: 1px solid #2f4456;
-    border-radius: 14px;
-    background:
-        linear-gradient(135deg, rgba(27, 43, 58, 0.95), rgba(13, 19, 30, 0.98));
-    color: #f3f4f6;
+    @include win95-font;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid $border-dark;
+    color: $win95-window-text;
     cursor: pointer;
-    padding: 18px;
+    display: grid;
+    gap: 3px;
+    padding: 8px 10px;
     text-align: left;
-    transition:
-        transform 0.15s ease,
-        border-color 0.15s ease,
-        box-shadow 0.15s ease;
-}
+    width: 100%;
 
-.challenges-app__card:hover {
-    border-color: #67d6ff;
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
-    transform: translateY(-1px);
+    &:last-child {
+        border-bottom: 0;
+    }
+
+    &:hover,
+    &:focus {
+        background: $win95-blue-titlebar;
+        color: $win95-titlebar-text;
+        outline: none;
+    }
+
+    &:hover .challenges-app__eyebrow,
+    &:hover .challenges-app__meta,
+    &:hover .challenges-app__link,
+    &:focus .challenges-app__eyebrow,
+    &:focus .challenges-app__meta,
+    &:focus .challenges-app__link {
+        color: $win95-titlebar-text;
+    }
 }
 
 .challenges-app__eyebrow {
-    color: #8ecae6;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    color: $border-dark;
+    font-size: 11px;
     text-transform: uppercase;
 }
 
 .challenges-app__card strong {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-.challenges-app__meta {
-    color: #c7c9d1;
-    font-size: 14px;
+.challenges-app__meta,
+.challenges-app__link {
+    color: $border-dark;
+    font-size: 12px;
 }
 
 .challenges-app__link {
-    color: #9ae6b4;
-    font-size: 14px;
-    font-weight: 600;
+    font-weight: bold;
 }

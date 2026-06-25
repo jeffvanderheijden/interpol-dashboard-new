@@ -1,3 +1,5 @@
+import "./Creacod1.scss";
+
 const Step3 = () => {
     return (
         <div className="creacod1-step3">

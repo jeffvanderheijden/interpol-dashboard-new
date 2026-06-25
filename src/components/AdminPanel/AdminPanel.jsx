@@ -6,6 +6,7 @@ import AdminEditTeamImage from "./AdminEditTeam/AdminEditTeamImage";
 import AdminCreateTeam from "./AdminCreateTeam/AdminCreateTeam";
 import AdminChallengeControl from "./AdminChallengeControl/AdminChallengeControl";
 import AdminMessages from "./AdminMessages/AdminMessages";
+import AdminDossiers from "./AdminDossiers/AdminDossiers";
 
 import "./AdminPanel.scss";
 
@@ -95,6 +96,13 @@ export default function AdminPanel() {
                 >
                     Challengebeheer
                 </button>
+                <button
+                    className={activeTab === "dossiers" ? "active" : ""}
+                    onClick={() => setActiveTab("dossiers")}
+                >
+                    Dossierbeheer
+                </button>
+
                 <button
                     className={activeTab === "messages" ? "active" : ""}
                     onClick={() => setActiveTab("messages")}
@@ -228,6 +236,10 @@ export default function AdminPanel() {
             {/* ===================================================== */}
             {activeTab === "messages" && (
                 <AdminMessages groups={groups} />
+            )}
+
+            {activeTab === "dossiers" && (
+                <AdminDossiers />
             )}
 
 

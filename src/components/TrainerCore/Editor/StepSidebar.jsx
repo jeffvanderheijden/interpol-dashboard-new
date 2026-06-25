@@ -39,9 +39,9 @@ const StepSidebar = ({
     return (
         <aside className="step-sidebar" aria-label="Trainingsstappen">
             <div className="step-sidebar__header">
-                <p className="step-sidebar__eyebrow">Trainingsstappen</p>
+                <p className="step-sidebar__eyebrow">Stappen</p>
                 <h2>Opdrachten</h2>
-                <p>Werk de opdrachten rustig op volgorde af.</p>
+                <p>Werk ze op volgorde af.</p>
             </div>
 
             <ol className="step-sidebar__list">

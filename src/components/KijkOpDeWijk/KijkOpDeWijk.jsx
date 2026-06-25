@@ -241,7 +241,7 @@ export default function KijkOpDeWijk() {
         if (correct) {
             setMessages((prev) => [
                 ...prev,
-                { sender: "hacker", text: "✅ Correct!" }
+                { sender: "hacker", text: "Correct." }
             ]);
 
             setTimeout(() => {
@@ -250,7 +250,7 @@ export default function KijkOpDeWijk() {
         } else {
             setMessages((prev) => [
                 ...prev,
-                { sender: "hacker", text: "❌ Niet juist." }
+                { sender: "hacker", text: "Niet juist." }
             ]);
         }
     };
@@ -273,7 +273,7 @@ export default function KijkOpDeWijk() {
                 className="route-debugger__toggle"
                 onClick={() => setDebugOpen((open) => !open)}
             >
-                {debugOpen ? "Verberg coordinate debugger" : "Toon coordinate debugger"}
+                {debugOpen ? "Verberg coordinaten" : "Toon coordinaten"}
             </button>
 
             {debugOpen ? (
@@ -330,8 +330,8 @@ export default function KijkOpDeWijk() {
                     ) : null}
 
                     <div className="route-debugger__route-note">
-                        Routevolgorde in deze sessie:
-                        <strong> willekeurig geshuffeld</strong>.
+                        Volgorde van deze route is
+                        <strong> willekeurig gekozen</strong>.
                     </div>
 
                     <div className="route-debugger__list">

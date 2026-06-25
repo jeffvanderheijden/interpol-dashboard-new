@@ -66,6 +66,56 @@
         }
     }
 
+    &__notice {
+        @include win95-border("sunken");
+        background: #f3e5f5;
+        color: #7b1fa2;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        padding: 6px 8px;
+        text-transform: uppercase;
+    }
+
+    &__badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    &__badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid;
+        font-size: 12px;
+        font-weight: bold;
+
+        &--suspect {
+            border-color: #ef6c00;
+            color: #ef6c00;
+            background: #fff3e0;
+        }
+
+        &--cleared {
+            border-color: #2e7d32;
+            color: #2e7d32;
+            background: #e8f5e9;
+        }
+
+        &--eliminated {
+            border-color: #7b1fa2;
+            color: #7b1fa2;
+            background: #f3e5f5;
+        }
+
+        &--active {
+            border-color: #546e7a;
+            color: #546e7a;
+            background: #eceff1;
+        }
+    }
+
     &__motive {
         background: color.scale($win95-notification-bg, $lightness: -6%);
         padding: 8px;

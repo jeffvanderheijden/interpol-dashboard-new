@@ -1,22 +1,10 @@
 import React from "react";
 import "./DossierDetail.scss";
 import { generateMotive } from "./../../_helpers/dossierHelpers";
-
-/**
- * Props:
- * - dossier: { id, name, img } (zoals in DossierApp)
- * - onClose: () => void
- */
 const DossierDetail = ({ dossier, onClose }) => {
     if (!dossier) return null;
 
-    const motive = generateMotive(dossier.name);
-    // voorbeeld extra data (kan later uit API komen)
-    const extra = {
-        afdeling: "Informatica",
-        laatstGezien: "2025-03-12 02:14",
-        mogelijkeWallet: "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
-    };
+    const description = dossier.description?.trim() || generateMotive(dossier.name);
 
     return (
         <div className="dossier-detail" role="dialog" aria-modal="true">
@@ -38,18 +26,41 @@ const DossierDetail = ({ dossier, onClose }) => {
                     </div>
 
                     <div className="dossier-detail__info">
-                        <p><strong>Afdeling:</strong> {extra.afdeling}</p>
-                        <p><strong>Laatst gezien (netwerk):</strong> {extra.laatstGezien}</p>
-                        <p><strong>Bekende wallet:</strong> {extra.mogelijkeWallet}</p>
+                        {dossier.is_eliminated ? (
+                            <div className="dossier-detail__notice">
+                                Deze docent is weggespeeld.
+                            </div>
+                        ) : null}
 
-                        <h4>Waarom verdacht?</h4>
-                        <p className="dossier-detail__motive">{motive}</p>
+                        <div className="dossier-detail__badges">
+                            <span
+                                className={`dossier-detail__badge ${
+                                    dossier.is_suspect
+                                        ? "dossier-detail__badge--suspect"
+                                        : "dossier-detail__badge--cleared"
+                                }`}
+                            >
+                                {dossier.is_suspect ? "Nog verdacht" : "Niet verdacht"}
+                            </span>
+
+                            <span
+                                className={`dossier-detail__badge ${
+                                    dossier.is_eliminated
+                                        ? "dossier-detail__badge--eliminated"
+                                        : "dossier-detail__badge--active"
+                                }`}
+                            >
+                                {dossier.is_eliminated ? "Weggespeeld" : "Actief"}
+                            </span>
+                        </div>
+
+                        <h4>Dossierinformatie</h4>
+                        <p className="dossier-detail__motive">{description}</p>
                     </div>
                 </div>
 
             </div>
 
-            {/* achtergrond-overlay */}
             <div className="dossier-detail__backdrop" onClick={onClose} />
         </div>
     );

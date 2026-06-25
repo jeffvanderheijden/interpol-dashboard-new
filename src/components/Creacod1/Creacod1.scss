@@ -1,37 +1,56 @@
+@use "../../styles/win95" as *;
+
+.puzzle,
+.creacod1-step2,
+.creacod1-step3 {
+    @include win95-font;
+    background: $win95-bg;
+    color: $win95-window-text;
+    min-height: 100%;
+    padding: 4px;
+}
+
 .puzzle {
-    width: 100%;
-    height: 100%;
-    padding: 16px;
-    text-align: center;
+    display: grid;
+    align-content: start;
+    gap: 8px;
 
     h1 {
-        margin-bottom: 20px;
+        @include win95-border("raised");
+        background: $win95-window-bg;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0;
+        padding: 10px 12px;
+        text-align: left;
     }
 }
 
+.cipher,
+.answer,
+.alphabet,
+.creacod1-step2,
+.creacod1-step3 {
+    @include win95-border("sunken");
+    background: $win95-window-bg;
+}
+
 .cipher {
-    margin-bottom: 24px;
-    background-color: #e8e8e8;
-    padding: 20px;
-    border: 3px solid #999;
-    border-radius: 10px;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+    padding: 14px 12px;
 
     ul {
-        width: 100%;
-        padding: 0;
-        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: center;
         list-style: none;
+        margin: 0;
+        padding: 0;
     }
 
     li {
-        height: 34px;
-        width: 34px;
-        display: inline-flex;
         align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        font-weight: 600;
+        display: inline-flex;
         font-family:
             "Segoe UI Symbol",
             "Noto Sans Symbols",
@@ -39,63 +58,73 @@
             "Apple Symbols",
             "Arial Unicode MS",
             sans-serif;
+        font-size: 22px;
+        font-weight: 600;
+        height: 34px;
+        justify-content: center;
         user-select: none;
+        width: 34px;
     }
 }
 
 .answer {
-    margin-top: 10px;
+    display: grid;
+    gap: 8px;
+    padding: 12px;
 
     input {
-        padding: 10px;
-        width: 360px;
-        font-size: 16px;
-        border: 1px solid #999;
-        border-radius: 6px;
+        @include win95-font;
+        @include win95-border("sunken");
+        background: $win95-window-bg;
+        min-width: 0;
         outline: none;
+        padding: 6px 8px;
+        width: min(420px, 100%);
 
         &.error {
-            border: 2px solid #c00;
+            border-color: $win95-danger;
+        }
+
+        &:focus {
+            outline: 1px dotted $border-darker;
+            outline-offset: -4px;
         }
     }
 
     button {
-        display: block;
-        margin: 12px auto 0;
-        padding: 10px 24px;
-        font-size: 16px;
-        cursor: pointer;
+        @include win95-button;
+        justify-self: start;
+        min-width: 104px;
     }
 
     .message {
-        margin-top: 12px;
-        color: #c00;
+        color: $win95-danger;
+        margin: 0;
     }
 }
 
 .alphabet {
-    margin-top: 30px;
     display: none;
+    margin-top: 0;
+    padding: 12px;
 
     ul {
-        width: 100%;
-        padding: 0;
-        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        justify-content: center;
         list-style: none;
+        margin: 0;
+        padding: 0;
     }
 
     .letters {
-        margin-top: 10px;
+        margin-top: 8px;
     }
 
     li {
-        height: 34px;
-        width: 34px;
-        display: inline-flex;
         align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        font-weight: 600;
+        display: inline-flex;
         font-family:
             "Segoe UI Symbol",
             "Noto Sans Symbols",
@@ -103,6 +132,44 @@
             "Apple Symbols",
             "Arial Unicode MS",
             sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        height: 28px;
+        justify-content: center;
         user-select: none;
+        width: 28px;
+    }
+}
+
+.creacod1-step2,
+.creacod1-step3 {
+    display: grid;
+    gap: 8px;
+    margin: 4px;
+    max-width: 720px;
+    padding: 12px;
+
+    h1 {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    p {
+        line-height: 1.45;
+        margin: 0;
+    }
+
+    input {
+        @include win95-font;
+        @include win95-border("sunken");
+        background: $win95-window-bg;
+        padding: 6px 8px;
+    }
+
+    button {
+        @include win95-button;
+        justify-self: start;
+        min-width: 104px;
     }
 }

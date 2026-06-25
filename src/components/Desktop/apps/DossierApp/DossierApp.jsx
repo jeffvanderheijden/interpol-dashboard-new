@@ -1,28 +1,86 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { API_BASE } from "../../../../api/_config";
+import { getStudentDossiers } from "../../../../api/dossiers";
 import "./DossierApp.scss";
 import "./DossierDetail.scss";
 import DossierDetail from "./DossierDetail";
 import { formatName } from "./../../_helpers/dossierHelpers";
 
+const legacyImages = import.meta.glob("/src/assets/docenten/*.{jpg,jpeg,png}", {
+    eager: true,
+});
+
+const legacyImageMap = new Map(
+    Object.entries(legacyImages).map(([path, module]) => {
+        const filename = path.split("/").pop();
+        return [formatName(filename), module.default || path];
+    })
+);
+
+function resolveImage(imageUrl, name) {
+    if (imageUrl) {
+        if (/^https?:\/\//i.test(imageUrl)) return imageUrl;
+        return `${API_BASE}${imageUrl}`;
+    }
+
+    return legacyImageMap.get(name) || "/icons/default-team.png";
+}
+
 const DossierApp = ({ onStepComplete }) => {
     const [selected, setSelected] = useState(null);
     const [detailOpen, setDetailOpen] = useState(false);
     const [activeDossier, setActiveDossier] = useState(null);
+    const [dossiers, setDossiers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const images = import.meta.glob("/src/assets/docenten/*.{jpg,jpeg,png}", {
-        eager: true,
-    });
+    useEffect(() => {
+        let ignore = false;
 
-    const dossiers = Object.entries(images).map(([path, module]) => {
-        const filename = path.split("/").pop();
-        return {
-            id: filename,
-            name: formatName(filename),
-            img: module.default || path,
+        setLoading(true);
+        setError(null);
+
+        getStudentDossiers()
+            .then((rows) => {
+                if (ignore) return;
+                setDossiers(rows);
+            })
+            .catch((e) => {
+                if (ignore) return;
+                setError(e.message || "Dossiers laden mislukt");
+            })
+            .finally(() => {
+                if (!ignore) setLoading(false);
+            });
+
+        return () => {
+            ignore = true;
         };
-    });
+    }, []);
 
-    const notTheHacker = ["Hilda Uitvlught", "Brian Hokke", "Jeff van der Heijden"];
+    const resolvedDossiers = useMemo(
+        () =>
+            dossiers.map((dossier) => ({
+                ...dossier,
+                img: resolveImage(dossier.image_url, dossier.name),
+            })),
+        [dossiers]
+    );
+
+    useEffect(() => {
+        if (!resolvedDossiers.length) {
+            setSelected(null);
+            return;
+        }
+
+        setSelected((current) => {
+            if (current && resolvedDossiers.some((dossier) => dossier.id === current)) {
+                return current;
+            }
+
+            return resolvedDossiers[0].id;
+        });
+    }, [resolvedDossiers]);
 
     const openDetail = (dossier) => {
         setActiveDossier(dossier);
@@ -39,17 +97,33 @@ const DossierApp = ({ onStepComplete }) => {
             <h2 className="dossier-app__header">Verdachte docenten</h2>
 
             <div className="dossier-app__content">
+                {loading ? <div className="dossier-app__state">Dossiers laden…</div> : null}
+
+                {error ? (
+                    <div className="dossier-app__state dossier-app__state--error">
+                        <strong>Fout:</strong> {error}
+                    </div>
+                ) : null}
+
                 <ul className="dossier-app__list">
-                    {dossiers.map((dossier) => {
-                        const isCleared = notTheHacker.includes(dossier.name);
+                    {!loading &&
+                        !error &&
+                        resolvedDossiers.map((dossier) => {
+                        const isCleared = !dossier.is_suspect;
                         const isSelected = selected === dossier.id;
 
                         return (
                             <li
                                 key={dossier.id}
-                                className={`dossier-app__item ${isSelected ? "dossier-app__item--selected" : ""}`}
-                                onClick={() => setSelected(dossier.id)}     // enkelklik = highlight
-                                onDoubleClick={() => openDetail(dossier)}   // dubbelklik = open detail
+                                className={[
+                                    "dossier-app__item",
+                                    isSelected ? "dossier-app__item--selected" : "",
+                                    dossier.is_eliminated ? "dossier-app__item--eliminated" : "",
+                                ]
+                                    .filter(Boolean)
+                                    .join(" ")}
+                                onClick={() => setSelected(dossier.id)}
+                                onDoubleClick={() => openDetail(dossier)}
                                 role="button"
                                 tabIndex={0}
                                 onKeyDown={(e) => {
@@ -61,7 +135,22 @@ const DossierApp = ({ onStepComplete }) => {
                                     src={dossier.img}
                                     alt={dossier.name}
                                 />
+
+                                {dossier.is_eliminated ? (
+                                    <div className="dossier-app__stamp" aria-hidden>
+                                        Weggespeeld
+                                    </div>
+                                ) : null}
+
                                 <span>{dossier.name}</span>
+
+                                <small className="dossier-app__item-status">
+                                    {dossier.is_eliminated
+                                        ? "Weggespeeld"
+                                        : isCleared
+                                            ? "Niet verdacht"
+                                            : "Verdacht"}
+                                </small>
 
                                 {isCleared && (
                                     <div className="dossier-app__not-hacker" aria-hidden>
@@ -72,7 +161,6 @@ const DossierApp = ({ onStepComplete }) => {
                         );
                     })}
 
-                    {/* Hacker tile */}
                     <li
                         className="dossier-app__item dossier-app__item--hacker"
                         onDoubleClick={() => onStepComplete("dossierDone")}
@@ -93,6 +181,10 @@ const DossierApp = ({ onStepComplete }) => {
                         </span>
                     </li>
                 </ul>
+
+                {!loading && !error && resolvedDossiers.length === 0 ? (
+                    <div className="dossier-app__state">Nog geen dossiers beschikbaar.</div>
+                ) : null}
             </div>
 
             {detailOpen && activeDossier && (

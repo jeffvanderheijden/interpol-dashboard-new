@@ -8,45 +8,43 @@ function buildJavascriptDocument() {
         <style>
             body {
                 margin: 0;
-                padding: 16px;
-                background: #09131c;
-                color: #d7f4ff;
+                padding: 12px;
+                background: #c0c0c0;
+                color: #000000;
                 font-family: "Courier New", monospace;
                 min-height: 100vh;
             }
 
             .console-shell {
-                border: 1px solid #2e4a60;
-                background: linear-gradient(180deg, #071019 0%, #0c1b28 100%);
-                border-radius: 10px;
+                border: 2px solid;
+                border-color: #808080 #ffffff #ffffff #808080;
+                background: #ffffff;
                 overflow: hidden;
-                box-shadow: inset 0 0 0 1px rgba(126, 247, 207, 0.12);
             }
 
             .console-titlebar {
-                padding: 10px 14px;
-                background: #102231;
-                border-bottom: 1px solid #2e4a60;
+                padding: 4px 8px;
+                background: #000080;
                 font-size: 12px;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                color: #7ef7cf;
+                color: #ffffff;
+                font-family: "MS Sans Serif", Tahoma, Geneva, sans-serif;
+                font-weight: bold;
             }
 
             #console-output {
                 margin: 0;
-                padding: 16px;
+                padding: 12px;
                 min-height: 220px;
                 white-space: pre-wrap;
-                line-height: 1.6;
+                line-height: 1.5;
             }
 
             .placeholder {
-                color: #86a5bc;
+                color: #666666;
             }
 
             .error {
-                color: #ff8080;
+                color: #800000;
             }
         </style>
     </head>
@@ -172,8 +170,8 @@ function buildNotificationMessage(results) {
 
     if (results.every((result) => result.pass)) {
         return {
-            title: "Mission accomplished",
-            body: "Alle controles zijn geslaagd. Deze stap is vrijgegeven.",
+            title: "Stap voltooid",
+            body: "Alle controles zijn geslaagd.",
             tone: "success",
         };
     }
@@ -244,11 +242,11 @@ const Preview = ({ code, lesson, iframeRef, runTests, results = [] }) => {
         <section className="preview" aria-label="Preview en testresultaten">
             <div className="preview__header">
                 <div>
-                    <p className="preview__eyebrow">Field Monitor</p>
+                    <p className="preview__eyebrow">Voorbeeld</p>
                     <h3>
                         {lesson.language === "javascript"
-                            ? "Console output"
-                            : "Live preview"}
+                            ? "Console"
+                            : "Pagina"}
                     </h3>
                 </div>
 
@@ -258,7 +256,7 @@ const Preview = ({ code, lesson, iframeRef, runTests, results = [] }) => {
                     onClick={handleRunClick}
                     disabled={isRunning}
                 >
-                    {isRunning ? "Valideren..." : "Valideer missie"}
+                    {isRunning ? "Controleren..." : "Controleer"}
                 </button>
             </div>
 
