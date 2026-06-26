@@ -15,52 +15,10 @@
     align-content: start;
     gap: 4px;
 
-    h1 {
-        font-size: 16px;
-        font-weight: bold;
-        margin: 0 0 4px;
-        text-align: left;
-    }
-
-    &__eyebrow {
-        color: $border-dark;
-        font-size: 11px;
-        font-weight: bold;
-        margin: 0 0 3px;
-        text-transform: uppercase;
-    }
-
-    &__intro {
-        line-height: 1.45;
-        margin: 0;
-    }
-
     &__layout {
         display: grid;
         gap: 4px;
     }
-}
-
-.puzzle__header,
-.creacod1-screen__header {
-    @include win95-border("sunken");
-    background: $win95-window-bg;
-    padding: 10px;
-}
-
-.puzzle__eyebrow,
-.creacod1-screen__eyebrow {
-    color: $border-dark;
-    font-size: 11px;
-    font-weight: bold;
-    margin: 0 0 3px;
-    text-transform: uppercase;
-}
-
-.puzzle__intro,
-.creacod1-screen__intro {
-    line-height: 1.45;
-    margin: 0;
 }
 
 .cipher,
@@ -74,8 +32,7 @@
 
 .cipher {
     display: grid;
-    gap: 8px;
-    padding: 10px;
+    gap: 6px;
 
     h2 {
         font-size: 14px;
@@ -115,7 +72,6 @@
 .answer {
     display: grid;
     gap: 6px;
-    padding: 10px;
 
     h2 {
         font-size: 14px;
@@ -276,6 +232,25 @@
         line-height: 1.45;
         margin: 0;
     }
+}
+
+.creacod1-screen__header {
+    @include win95-border("sunken");
+    background: $win95-window-bg;
+    padding: 10px;
+}
+
+.creacod1-screen__eyebrow {
+    color: $border-dark;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0 0 3px;
+    text-transform: uppercase;
+}
+
+.creacod1-screen__intro {
+    line-height: 1.45;
+    margin: 0;
 }
 
 .creacod1-screen__section {

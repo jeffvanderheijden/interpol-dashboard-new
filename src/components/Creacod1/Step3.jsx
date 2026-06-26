@@ -2,19 +2,19 @@ import "./Creacod1.scss";
 
 const figmaFiles = [
     {
-        title: "Figma Bestand 1",
-        description: "Placeholder voor je eerste creative coding bronbestand.",
-        href: "#figma-bestand-1",
+        title: "Layer 1",
+        description: "Download het eerste Figma-bestand.",
+        href: "/downloads/creative-coding/Layer1.fig",
     },
     {
-        title: "Figma Bestand 2",
-        description: "Placeholder voor referenties, componenten of assets.",
-        href: "#figma-bestand-2",
+        title: "Layer 2",
+        description: "Download het tweede Figma-bestand.",
+        href: "/downloads/creative-coding/Layer2.fig",
     },
     {
-        title: "Figma Bestand 3",
-        description: "Placeholder voor een extra oefening of variatie.",
-        href: "#figma-bestand-3",
+        title: "Layer 3",
+        description: "Download het derde Figma-bestand.",
+        href: "/downloads/creative-coding/Layer3.fig",
     },
 ];
 
@@ -33,22 +33,25 @@ const Step3 = () => {
             <section className="creacod1-screen__section">
                 <h2>Wat is Figma?</h2>
                 <p>
-                    Figma is een programma waarmee je ontwerpen kunt maken op je
-                    computer. Je gebruikt het om ideeën uit te tekenen voordat
-                    je gaat bouwen.
+                    Figma is een programma waarmee je een ontwerp kunt tekenen op
+                    je computer.
                 </p>
                 <p>
-                    Bij creative coding kan Figma helpen om kleuren, vormen,
-                    schermen en composities eerst rustig uit te werken. Daarna
-                    kun je die ideeën makkelijker omzetten naar code.
+                    Je kunt er kleuren, vormen en schermen mee uitproberen
+                    voordat je begint met coderen.
+                </p>
+                <p>
+                    Bij creative coding helpt dat, omdat je eerst rustig kunt
+                    bedenken hoe iets eruit moet zien. Daarna is het makkelijker
+                    om het in code na te bouwen.
                 </p>
             </section>
 
             <section className="creacod1-screen__section">
                 <h2>Bestanden</h2>
                 <p>
-                    Download hieronder de drie bestanden. Later vervangen we deze
-                    placeholders door de echte Figma-bestanden.
+                    Download hieronder de drie Figma-bestanden en open ze in
+                    Figma.
                 </p>
 
                 <div className="creacod1-downloads">
@@ -61,7 +64,7 @@ const Step3 = () => {
                         >
                             <strong>{file.title}</strong>
                             <span>{file.description}</span>
-                            <em>Download placeholder</em>
+                            <em>Download .fig bestand</em>
                         </a>
                     ))}
                 </div>
