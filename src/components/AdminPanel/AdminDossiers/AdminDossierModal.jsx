@@ -28,8 +28,12 @@ export default function AdminDossierModal({ dossier, onClose, onSaved }) {
     const [name, setName] = useState(dossier?.name || "");
     const [description, setDescription] = useState(dossier?.description || "");
     const [image, setImage] = useState(null);
-    const [isSuspect, setIsSuspect] = useState(Boolean(dossier?.is_suspect ?? true));
-    const [isEliminated, setIsEliminated] = useState(Boolean(dossier?.is_eliminated ?? false));
+    const [isSuspect, setIsSuspect] = useState(
+        dossier?.is_suspect ? "1" : "0"
+    );
+    const [isEliminated, setIsEliminated] = useState(
+        dossier?.is_eliminated ? "1" : "0"
+    );
 
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState(null);
@@ -67,8 +71,8 @@ export default function AdminDossierModal({ dossier, onClose, onSaved }) {
                 name: name.trim(),
                 description: description.trim(),
                 imageFile: image,
-                is_suspect: isSuspect,
-                is_eliminated: isEliminated,
+                is_suspect: isSuspect === "1",
+                is_eliminated: isEliminated === "1",
             };
 
             if (dossier?.id) {
@@ -96,73 +100,92 @@ export default function AdminDossierModal({ dossier, onClose, onSaved }) {
                 </div>
 
                 <form className="admin-modal__body" onSubmit={onSubmit}>
-                    <label>
-                        Naam
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    </label>
+                    <div className="admin-modal__section">
+                        <div className="admin-modal__section-title">Basisinformatie</div>
 
-                    <label>
-                        Informatie
-                        <textarea
-                            rows={8}
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            placeholder="Korte dossierinformatie voor studenten"
-                        />
-                    </label>
-
-                    <div className="admin-modal__checkboxes">
-                        <label className="admin-modal__checkbox">
+                        <label>
+                            <span className="admin-modal__label">Naam</span>
                             <input
-                                type="checkbox"
-                                checked={isSuspect}
-                                onChange={(e) => setIsSuspect(e.target.checked)}
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder="Bijvoorbeeld: Judith Pouwelse"
                             />
-                            <span>Deze docent is nog verdacht</span>
                         </label>
 
-                        <label className="admin-modal__checkbox">
-                            <input
-                                type="checkbox"
-                                checked={isEliminated}
-                                onChange={(e) => setIsEliminated(e.target.checked)}
+                        <label>
+                            <span className="admin-modal__label">Informatie</span>
+                            <textarea
+                                rows={8}
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                placeholder="Korte dossierinformatie voor studenten"
                             />
-                            <span>Deze docent is weggespeeld</span>
                         </label>
                     </div>
 
-                    <div className="admin-modal__existing">
-                        <strong>Bestaande afbeelding:</strong>{" "}
-                        {existingImageSrc ? "aanwezig" : "geen"}
+                    <div className="admin-modal__section">
+                        <div className="admin-modal__section-title">Status</div>
+
+                        <div className="admin-modal__row">
+                            <label>
+                                <span className="admin-modal__label">Verdachte status</span>
+                                <select
+                                    value={isSuspect}
+                                    onChange={(e) => setIsSuspect(e.target.value)}
+                                >
+                                    <option value="1">Nog verdacht</option>
+                                    <option value="0">Niet verdacht</option>
+                                </select>
+                            </label>
+
+                            <label>
+                                <span className="admin-modal__label">Spelstatus</span>
+                                <select
+                                    value={isEliminated}
+                                    onChange={(e) => setIsEliminated(e.target.value)}
+                                >
+                                    <option value="0">Actief</option>
+                                    <option value="1">Weggespeeld</option>
+                                </select>
+                            </label>
+                        </div>
                     </div>
 
-                    {existingImageSrc && !image ? (
-                        <div className="admin-modal__preview">
-                            <img src={existingImageSrc} alt={name || "Dossier"} />
-                        </div>
-                    ) : null}
+                    <div className="admin-modal__section">
+                        <div className="admin-modal__section-title">Afbeelding</div>
 
-                    <label>
-                        Nieuwe afbeelding (optioneel)
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => onPickFile(e.target.files?.[0] ?? null)}
-                        />
-                    </label>
-
-                    {image ? (
-                        <div className="admin-modal__preview">
-                            <img src={URL.createObjectURL(image)} alt="preview" />
-                            <button type="button" onClick={() => setImage(null)}>
-                                Nieuwe afbeelding verwijderen
-                            </button>
+                        <div className="admin-modal__existing">
+                            <strong>Bestaande afbeelding:</strong>{" "}
+                            {existingImageSrc ? "aanwezig" : "geen"}
                         </div>
-                    ) : null}
+
+                        {existingImageSrc && !image ? (
+                            <div className="admin-modal__preview">
+                                <img src={existingImageSrc} alt={name || "Dossier"} />
+                            </div>
+                        ) : null}
+
+                        <label>
+                            <span className="admin-modal__label">
+                                Nieuwe afbeelding
+                            </span>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => onPickFile(e.target.files?.[0] ?? null)}
+                            />
+                        </label>
+
+                        {image ? (
+                            <div className="admin-modal__preview">
+                                <img src={URL.createObjectURL(image)} alt="preview" />
+                                <button type="button" onClick={() => setImage(null)}>
+                                    Nieuwe afbeelding verwijderen
+                                </button>
+                            </div>
+                        ) : null}
+                    </div>
 
                     {error ? (
                         <div className="admin-modal__error">
