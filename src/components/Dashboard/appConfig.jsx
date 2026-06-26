@@ -2,6 +2,7 @@ import TeamInfoApp from "./apps/TeamInfoApp/TeamInfoApp";
 import ChallengesApp from "./apps/ChallengesApp/ChallengesApp";
 import LeaderboardApp from "./apps/LeaderboardApp/LeaderboardApp";
 import MailApp from "./apps/MailApp/MailApp";
+import DossierApp from "./apps/DossierApp/DossierApp";
 import { buildMenuApps } from "../_shared/appConfig";
 
 export const dashboardAppConfig = {
@@ -23,6 +24,15 @@ export const dashboardAppConfig = {
         height: 500,
         render: () => <ChallengesApp />,
     },
+    dossier: {
+        key: "dossier",
+        title: "Dossier Viewer",
+        desktopLabel: "Dossiers",
+        icon: "/icons/documents.ico",
+        width: 640,
+        height: 520,
+        render: () => <DossierApp />,
+    },
     leaderboard: {
         key: "leaderboard",
         title: "Leaderboard",
@@ -43,7 +53,13 @@ export const dashboardAppConfig = {
     },
 };
 
-export const dashboardAppOrder = ["teaminfo", "challenges", "leaderboard", "mail"];
+export const dashboardAppOrder = [
+    "teaminfo",
+    "challenges",
+    "dossier",
+    "leaderboard",
+    "mail",
+];
 
 export function getDashboardMenuApps() {
     return buildMenuApps(dashboardAppConfig, dashboardAppOrder);

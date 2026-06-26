@@ -26,7 +26,11 @@ function resolveImage(imageUrl, name) {
     return legacyImageMap.get(name) || "/icons/default-team.png";
 }
 
-const DossierApp = ({ onStepComplete }) => {
+const DossierApp = ({
+    onStepComplete,
+    showHackerTile = true,
+    title = "Verdachte docenten",
+}) => {
     const [selected, setSelected] = useState(null);
     const [detailOpen, setDetailOpen] = useState(false);
     const [activeDossier, setActiveDossier] = useState(null);
@@ -94,7 +98,7 @@ const DossierApp = ({ onStepComplete }) => {
 
     return (
         <div className="dossier-app">
-            <h2 className="dossier-app__header">Verdachte docenten</h2>
+            <h2 className="dossier-app__header">{title}</h2>
 
             <div className="dossier-app__content">
                 {loading ? <div className="dossier-app__state">Dossiers laden…</div> : null}
@@ -161,25 +165,28 @@ const DossierApp = ({ onStepComplete }) => {
                         );
                     })}
 
-                    <li
-                        className="dossier-app__item dossier-app__item--hacker"
-                        onDoubleClick={() => onStepComplete("dossierDone")}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ")
-                                onStepComplete("dossierDone");
-                        }}
-                    >
-                        <img
-                            className="dossier-app__item-image"
-                            src="/images/hacker.png"
-                            alt="De hacker"
-                        />
-                        <span className="glitched">
-                            h̴̗̬̚a̸̜̓͒c̴̠̯͂̇k̵̛̤͑e̸̦͑̓r̷̥̓̑
-                        </span>
-                    </li>
+                    {showHackerTile ? (
+                        <li
+                            className="dossier-app__item dossier-app__item--hacker"
+                            onDoubleClick={() => onStepComplete?.("dossierDone")}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    onStepComplete?.("dossierDone");
+                                }
+                            }}
+                        >
+                            <img
+                                className="dossier-app__item-image"
+                                src="/images/hacker.png"
+                                alt="De hacker"
+                            />
+                            <span className="glitched">
+                                h̴̗̬̚a̸̜̓͒c̴̠̯͂̇k̵̛̤͑e̸̦͑̓r̷̥̓̑
+                            </span>
+                        </li>
+                    ) : null}
                 </ul>
 
                 {!loading && !error && resolvedDossiers.length === 0 ? (
