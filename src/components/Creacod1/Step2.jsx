@@ -36,51 +36,55 @@ const Step2 = () => {
 
     return (
         <div className="creacod-app">
-            <header className="creacod-app__header">
-                <p className="creacod-app__eyebrow">Creative Coding</p>
-                <h1>Stap 2</h1>
-                <p>
-                    Gebruik je telefoon om de verborgen route te volgen. De
-                    laatste poster geeft het wachtwoord voor deze stap.
-                </p>
-            </header>
-
-            <div className="creacod-app__body creacod-app__body--split">
-                <section className="creacod-app__panel">
-                    <h2>Opdracht</h2>
+            <div className="creacod-app__window">
+                <header className="creacod-app__header">
+                    <p className="creacod-app__eyebrow">Creative Coding</p>
+                    <h1>Stap 2</h1>
                     <p>
-                        Open de verborgen link op je telefoon. Scan daarna 4 posters.
-                        Elke poster stuurt je door naar de volgende. Het wachtwoord
-                        van de 4e poster vul je hieronder in.
+                        Gebruik je telefoon om de verborgen route te volgen. De
+                        laatste poster geeft het wachtwoord voor deze stap.
                     </p>
-                </section>
+                </header>
 
-                <section className="creacod-app__panel creacod-app__panel--narrow">
-                    <h2>Wachtwoord</h2>
-                    <input
-                        ref={inputRef}
-                        type="text"
-                        placeholder="Wachtwoord"
-                        value={value}
-                        onChange={(e) => {
-                            setValue(e.target.value);
-                            if (error) setError("");
-                        }}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                e.preventDefault();
-                                validate();
-                            }
-                        }}
-                        className={error ? "is-error" : ""}
-                        autoComplete="off"
-                        spellCheck="false"
-                    />
+                <div className="creacod-app__body creacod-app__body--split">
+                    <section className="creacod-app__panel">
+                        <h2>Opdracht</h2>
+                        <p>
+                            Open de verborgen link op je telefoon. Scan daarna 4
+                            posters. Elke poster stuurt je door naar de volgende.
+                            Het wachtwoord van de 4e poster vul je hieronder in.
+                        </p>
+                    </section>
 
-                    <button type="button" onClick={validate}>Controleer</button>
+                    <section className="creacod-app__panel creacod-app__panel--narrow">
+                        <h2>Wachtwoord</h2>
+                        <input
+                            ref={inputRef}
+                            type="text"
+                            placeholder="Wachtwoord"
+                            value={value}
+                            onChange={(e) => {
+                                setValue(e.target.value);
+                                if (error) setError("");
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    validate();
+                                }
+                            }}
+                            className={error ? "is-error" : ""}
+                            autoComplete="off"
+                            spellCheck="false"
+                        />
 
-                    {error ? <p className="creacod1-feedback">{error}</p> : null}
-                </section>
+                        <button type="button" onClick={validate}>
+                            Controleer
+                        </button>
+
+                        {error ? <p className="creacod1-feedback">{error}</p> : null}
+                    </section>
+                </div>
             </div>
 
             <a

@@ -2,23 +2,30 @@
 
 .creacod-app {
     @include win95-font;
-    background: $win95-bg;
     color: $win95-window-text;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 4px;
     height: 100%;
+    min-height: 100%;
     overflow: auto;
-    padding: 4px;
-    padding-top: 0;
+    padding: 12px 8px;
+    box-sizing: border-box;
+}
+
+.creacod-app__window {
+    display: grid;
+    gap: 4px;
+    max-height: 100%;
+    width: min(100%, 920px);
 }
 
 .creacod-app__header {
     @include win95-border("sunken");
     background: $win95-window-bg;
     box-sizing: border-box;
-    max-width: 920px;
     padding: 10px 12px;
     width: 100%;
     
@@ -46,10 +53,8 @@
     @include win95-border("sunken");
     background: $win95-window-bg;
     box-sizing: border-box;
-    flex: 1;
     display: grid;
     gap: 6px;
-    max-width: 920px;
     min-height: 0;
     overflow: auto;
     padding: 1px;
@@ -225,13 +230,14 @@
 }
 
 @media (max-width: 759px) {
+    .creacod-app {
+        justify-content: flex-start;
+        padding: 8px 4px 4px;
+    }
+
     .creacod-app__body--split > .creacod-app__panel--narrow {
         border-left: 0;
         border-top: 1px solid $border-dark;
-    }
-
-    .creacod-app {
-        padding: 4px;
     }
 
     .creacod-app__header,

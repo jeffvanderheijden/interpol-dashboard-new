@@ -96,55 +96,61 @@ export default function CipherStep1({
 
     return (
         <div className="creacod-app">
-            <header className="creacod-app__header">
-                <p className="creacod-app__eyebrow">Creative Coding</p>
-                <h1>{title}</h1>
-                <p>
-                    Ontcijfer de symbolen. <a href="https://www.youtube.com/watch?v=i_qYXUbhtIY">Inspecteer</a> de pagina goed!
-                </p>
-            </header>
+            <div className="creacod-app__window">
+                <header className="creacod-app__header">
+                    <p className="creacod-app__eyebrow">Creative Coding</p>
+                    <h1>{title}</h1>
+                    <p>
+                        Ontcijfer de symbolen.{" "}
+                        <a href="https://www.youtube.com/watch?v=i_qYXUbhtIY" target="_blank" rel="noopener noreferrer">
+                            Inspecteer
+                        </a>{" "}
+                        de pagina goed!
+                    </p>
+                </header>
 
-            <div className="creacod-app__body creacod-app__body--split">
-                <section
-                    className="creacod-app__panel cipher"
-                    aria-label="Versleutelde code"
-                >
-                    <h2>Gecodeerd bericht</h2>
-                    <ul>
-                        {cipherSymbols.map((symbol, index) => (
-                            <li key={`${symbol}-${index}`}>{symbol}</li>
-                        ))}
-                    </ul>
-                </section>
+                <div className="creacod-app__body creacod-app__body--split">
+                    <section
+                        className="creacod-app__panel cipher"
+                        aria-label="Versleutelde code"
+                    >
+                        <h2>Gecodeerd bericht</h2>
+                        <ul>
+                            {cipherSymbols.map((symbol, index) => (
+                                <li key={`${symbol}-${index}`}>{symbol}</li>
+                            ))}
+                        </ul>
+                    </section>
 
-                <section
-                    className="creacod-app__panel creacod-app__panel--narrow answer"
-                    aria-label="Antwoord invoeren"
-                >
-                    <h2>Antwoord</h2>
-                    <p>Vul het ontcijferde woord in.</p>
+                    <section
+                        className="creacod-app__panel creacod-app__panel--narrow answer"
+                        aria-label="Antwoord invoeren"
+                    >
+                        <h2>Antwoord</h2>
+                        <p>Vul het ontcijferde woord in.</p>
 
-                    <input
-                        ref={inputRef}
-                        type="text"
-                        value={value}
-                        onChange={(e) => {
-                            setValue(e.target.value);
-                            if (error) setError("");
-                        }}
-                        onKeyDown={handleKeyDown}
-                        placeholder="Type je antwoord..."
-                        className={error ? "error" : ""}
-                        autoComplete="off"
-                        spellCheck="false"
-                    />
+                        <input
+                            ref={inputRef}
+                            type="text"
+                            value={value}
+                            onChange={(e) => {
+                                setValue(e.target.value);
+                                if (error) setError("");
+                            }}
+                            onKeyDown={handleKeyDown}
+                            placeholder="Type je antwoord..."
+                            className={error ? "error" : ""}
+                            autoComplete="off"
+                            spellCheck="false"
+                        />
 
-                    <button type="button" onClick={validate}>
-                        Controleer
-                    </button>
+                        <button type="button" onClick={validate}>
+                            Controleer
+                        </button>
 
-                    {error ? <p className="message">{error}</p> : null}
-                </section>
+                        {error ? <p className="message">{error}</p> : null}
+                    </section>
+                </div>
             </div>
 
             <section id="alphabet" className="alphabet" aria-label="Legenda">
