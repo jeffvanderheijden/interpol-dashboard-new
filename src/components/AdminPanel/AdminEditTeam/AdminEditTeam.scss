@@ -52,7 +52,8 @@
         font-size: 14px;
     }
 
-    input {
+    input,
+    textarea {
         padding: 10px;
         border-radius: 6px;
         background: #262626;
@@ -64,6 +65,16 @@
             outline: none;
         }
     }
+
+    textarea {
+        resize: vertical;
+        min-height: 88px;
+        font-family: inherit;
+    }
+}
+
+.modal-section--full {
+    flex: 1.4;
 }
 
 .member-row {

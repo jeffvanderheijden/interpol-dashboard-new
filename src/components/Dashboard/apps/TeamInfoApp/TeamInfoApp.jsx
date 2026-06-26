@@ -48,6 +48,8 @@ const TeamInfoApp = () => {
         [data?.challenges]
     );
     const tutorialPoints = Number(data?.tutorial_points) || 0;
+    const manualPoints = Number(data?.manual_points) || 0;
+    const manualPointsNote = String(data?.manual_points_note || "").trim();
 
     const challengePoints = useMemo(() => {
         return challenges.reduce(
@@ -55,7 +57,7 @@ const TeamInfoApp = () => {
             0
         );
     }, [challenges]);
-    const totalPoints = tutorialPoints + challengePoints;
+    const totalPoints = tutorialPoints + challengePoints + manualPoints;
 
     // later uitbreidbaar, nu fixed zoals je had
     const statusClass = "active";
@@ -141,6 +143,8 @@ const TeamInfoApp = () => {
                     <p>Challenges: {challenges.length}</p>
                     <p>Tutorialpunten: {tutorialPoints}</p>
                     <p>Challengepunten: {challengePoints}</p>
+                    <p>Handmatige correctie: {manualPoints}</p>
+                    {manualPointsNote ? <p>Toelichting: {manualPointsNote}</p> : null}
                     <p>Punten: {totalPoints}</p>
                 </section>
             </div>

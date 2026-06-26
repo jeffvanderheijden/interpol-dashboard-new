@@ -12,6 +12,8 @@ export default function AdminEditTeam({ team, onClose, onSaved }) {
     const [name, setName] = useState(team.name);
     const [className, setClassName] = useState(team.class);
     const [image] = useState(team.image_url);
+    const [manualPoints, setManualPoints] = useState(String(team.manual_points ?? 0));
+    const [manualPointsNote, setManualPointsNote] = useState(team.manual_points_note || "");
 
     const [members, setMembers] = useState(
         team.members.map(m => ({
@@ -64,7 +66,9 @@ export default function AdminEditTeam({ team, onClose, onSaved }) {
         await updateAdminGroup(team.id, {
             name,
             className,
-            image_url: image
+            image_url: image,
+            manual_points: Number.parseInt(manualPoints || "0", 10) || 0,
+            manual_points_note: manualPointsNote,
         });
 
         // 2. Delete members
@@ -105,6 +109,30 @@ export default function AdminEditTeam({ team, onClose, onSaved }) {
                     <div className="modal-section">
                         <label>Klas</label>
                         <input value={className} onChange={(e) => setClassName(e.target.value)} />
+                    </div>
+                </div>
+
+                <h3>Handmatige punten</h3>
+
+                <div className="modal-section-half">
+                    <div className="modal-section">
+                        <label>Plus- of minpunten</label>
+                        <input
+                            type="number"
+                            value={manualPoints}
+                            onChange={(e) => setManualPoints(e.target.value)}
+                            placeholder="0"
+                        />
+                    </div>
+
+                    <div className="modal-section modal-section--full">
+                        <label>Toelichting docent</label>
+                        <textarea
+                            value={manualPointsNote}
+                            onChange={(e) => setManualPointsNote(e.target.value)}
+                            placeholder="Waarom krijgt dit team extra punten of minpunten?"
+                            rows={3}
+                        />
                     </div>
                 </div>
 

@@ -52,13 +52,18 @@ export async function createAdminGroup({ teamPhoto, teamName, className, members
 }
 
 // UPDATE GROUP (admin)
-export async function updateAdminGroup(id, { name, className, image_url }) {
+export async function updateAdminGroup(
+    id,
+    { name, className, image_url, manual_points, manual_points_note }
+) {
     return apiRequest(`/api/admin/groups/${id}`, {
         method: "PUT",
         ...withJsonBody({
             name,
             className,
             image_url,
+            manual_points,
+            manual_points_note,
         }),
     });
 }
