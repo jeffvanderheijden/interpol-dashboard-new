@@ -100,8 +100,7 @@ export default function CipherStep1({
                 <p className="creacod-app__eyebrow">Creative Coding</p>
                 <h1>{title}</h1>
                 <p>
-                    Ontcijfer de symbolen, vergelijk ze met de legenda en voer het
-                    juiste antwoord in om door te gaan naar de volgende stap.
+                    Ontcijfer de symbolen. <a href="https://www.youtube.com/watch?v=i_qYXUbhtIY">Inspecteer</a> de pagina goed!
                 </p>
             </header>
 
@@ -123,7 +122,7 @@ export default function CipherStep1({
                     aria-label="Antwoord invoeren"
                 >
                     <h2>Antwoord</h2>
-                    <p>Gebruik de legenda hieronder en vul het ontcijferde woord in.</p>
+                    <p>Vul het ontcijferde woord in.</p>
 
                     <input
                         ref={inputRef}
