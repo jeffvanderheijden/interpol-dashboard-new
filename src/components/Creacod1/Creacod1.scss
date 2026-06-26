@@ -7,26 +7,18 @@
     background: $win95-bg;
     color: $win95-window-text;
     min-height: 100%;
-    padding: 8px;
+    padding: 4px;
 }
 
 .puzzle {
     display: grid;
     align-content: start;
-    gap: 8px;
-    max-width: 980px;
-    margin: 0 auto;
-
-    &__header {
-        @include win95-border("raised");
-        background: $win95-window-bg;
-        padding: 10px 12px;
-    }
+    gap: 4px;
 
     h1 {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: bold;
-        margin: 0 0 6px;
+        margin: 0 0 4px;
         text-align: left;
     }
 
@@ -34,7 +26,7 @@
         color: $border-dark;
         font-size: 11px;
         font-weight: bold;
-        margin: 0 0 4px;
+        margin: 0 0 3px;
         text-transform: uppercase;
     }
 
@@ -45,8 +37,30 @@
 
     &__layout {
         display: grid;
-        gap: 8px;
+        gap: 4px;
     }
+}
+
+.puzzle__header,
+.creacod1-screen__header {
+    @include win95-border("sunken");
+    background: $win95-window-bg;
+    padding: 10px;
+}
+
+.puzzle__eyebrow,
+.creacod1-screen__eyebrow {
+    color: $border-dark;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0 0 3px;
+    text-transform: uppercase;
+}
+
+.puzzle__intro,
+.creacod1-screen__intro {
+    line-height: 1.45;
+    margin: 0;
 }
 
 .cipher,
@@ -60,8 +74,8 @@
 
 .cipher {
     display: grid;
-    gap: 10px;
-    padding: 14px 12px;
+    gap: 8px;
+    padding: 10px;
 
     h2 {
         font-size: 14px;
@@ -72,7 +86,7 @@
     ul {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 6px;
         justify-content: flex-start;
         list-style: none;
         margin: 0;
@@ -80,9 +94,7 @@
     }
 
     li {
-        @include win95-border("raised");
         align-items: center;
-        background: #f3f3f3;
         display: inline-flex;
         font-family:
             "Segoe UI Symbol",
@@ -93,17 +105,17 @@
             sans-serif;
         font-size: 22px;
         font-weight: 600;
-        height: 40px;
+        height: 34px;
         justify-content: center;
         user-select: none;
-        width: 40px;
+        width: 34px;
     }
 }
 
 .answer {
     display: grid;
-    gap: 8px;
-    padding: 12px;
+    gap: 6px;
+    padding: 10px;
 
     h2 {
         font-size: 14px;
@@ -124,7 +136,7 @@
         min-width: 0;
         outline: none;
         padding: 6px 8px;
-        width: min(420px, 100%);
+        width: min(280px, 100%);
 
         &.error {
             border-color: $win95-danger;
@@ -139,7 +151,7 @@
     button {
         @include win95-button;
         justify-self: start;
-        min-width: 110px;
+        min-width: 96px;
     }
 
     .message {
@@ -149,9 +161,7 @@
 }
 
 .alphabet {
-    display: grid;
-    gap: 10px;
-    padding: 12px;
+    display: none;
 
     &__header {
         display: grid;
@@ -217,21 +227,10 @@
 .creacod1-step2,
 .creacod1-step3 {
     display: grid;
-    gap: 8px;
-    margin: 4px;
-    max-width: 720px;
-    padding: 12px;
-
-    h1 {
-        font-size: 16px;
-        font-weight: bold;
-        margin: 0;
-    }
-
-    p {
-        line-height: 1.45;
-        margin: 0;
-    }
+    gap: 4px;
+    margin: 0;
+    max-width: 760px;
+    padding: 4px;
 
     input {
         @include win95-font;
@@ -253,8 +252,42 @@
     button {
         @include win95-button;
         justify-self: start;
-        min-width: 104px;
+        min-width: 96px;
     }
+}
+
+.creacod1-screen {
+    display: grid;
+    gap: 4px;
+
+    h1 {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0 0 4px;
+    }
+
+    h2 {
+        font-size: 14px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    p {
+        line-height: 1.45;
+        margin: 0;
+    }
+}
+
+.creacod1-screen__section {
+    @include win95-border("sunken");
+    background: $win95-window-bg;
+    display: grid;
+    gap: 6px;
+    padding: 10px;
+}
+
+.creacod1-screen__section--compact {
+    max-width: 360px;
 }
 
 .creacod1-feedback {
@@ -264,17 +297,17 @@
 
 .creacod1-downloads {
     display: grid;
-    gap: 8px;
-    margin-top: 4px;
+    gap: 4px;
+    margin-top: 2px;
 }
 
 .creacod1-download {
-    @include win95-border("raised");
-    background: #f3f3f3;
+    @include win95-border("sunken");
+    background: $win95-window-bg;
     color: $win95-window-text;
     display: grid;
-    gap: 4px;
-    padding: 10px 12px;
+    gap: 3px;
+    padding: 8px 10px;
     text-decoration: none;
 
     strong {
@@ -287,14 +320,14 @@
     }
 
     em {
-        color: $win95-blue-titlebar;
+        color: $border-dark;
         font-style: normal;
         font-weight: bold;
     }
 
     &:hover,
     &:focus {
-        background: #e9eefc;
+        background: #f3f3f3;
         outline: 1px dotted $border-darker;
         outline-offset: -4px;
     }
@@ -302,7 +335,7 @@
 
 @media (min-width: 760px) {
     .puzzle__layout {
-        grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+        grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
         align-items: start;
     }
 }
@@ -317,10 +350,5 @@
     .cipher ul,
     .alphabet ul {
         gap: 6px;
-    }
-
-    .cipher li {
-        height: 36px;
-        width: 36px;
     }
 }
