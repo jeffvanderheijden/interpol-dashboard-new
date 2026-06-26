@@ -20,11 +20,14 @@
         pointer-events: auto;
         width: 740px;
         max-width: calc(100% - 40px);
+        max-height: calc(100vh - 48px);
         background: $win95-window-bg;
         color: $win95-window-text;
         @include win95-border("raised");
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
         z-index: 1200;
+        display: flex;
+        flex-direction: column;
     }
 
     &__header {
@@ -35,12 +38,15 @@
         background: $win95-blue-titlebar;
         color: $win95-titlebar-text;
         font-weight: bold;
+        flex: 0 0 auto;
     }
 
     &__body {
         display: flex;
         gap: 12px;
         padding: 12px;
+        overflow-y: auto;
+        min-height: 0;
     }
 
     &__media {
@@ -121,9 +127,35 @@
         padding: 8px;
         border-radius: 2px;
         @include win95-border("sunken");
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        line-height: 1.55;
+        max-width: 100%;
     }
 
     &__actions {
         margin-top: 12px;
+    }
+
+    @media (max-width: 720px) {
+        &__panel {
+            max-width: calc(100% - 16px);
+            max-height: calc(100vh - 16px);
+        }
+
+        &__body {
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        &__media {
+            flex: 0 0 auto;
+
+            img {
+                width: 100%;
+                height: auto;
+                max-height: 240px;
+            }
+        }
     }
 }

@@ -178,16 +178,20 @@
         background: rgba(0, 0, 0, 0.55);
         display: grid;
         place-items: center;
+        padding: 16px;
         z-index: 9999;
     }
 
     .admin-modal {
-        width: min(720px, 92vw);
+        width: min(640px, 100%);
+        max-height: calc(100vh - 32px);
         background: #202020;
         border: 1px solid #2a2a2a;
         border-radius: 10px;
         color: #eee;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
     }
 
     .admin-modal__header {
@@ -196,6 +200,7 @@
         align-items: center;
         padding: 14px 16px;
         border-bottom: 1px solid #2a2a2a;
+        flex: 0 0 auto;
 
         h2 {
             margin: 0;
@@ -220,6 +225,8 @@
         padding: 16px;
         display: grid;
         gap: 14px;
+        overflow-y: auto;
+        min-height: 0;
 
         > label,
         > .admin-modal__section {
@@ -271,7 +278,7 @@
 
         textarea {
             resize: vertical;
-            min-height: 160px;
+            min-height: 120px;
         }
     }
 
@@ -319,7 +326,7 @@
 
         img {
             width: 100%;
-            max-height: 320px;
+            max-height: 220px;
             object-fit: contain;
             display: block;
             border-radius: 8px;
@@ -356,6 +363,10 @@
         justify-content: flex-end;
         gap: 10px;
         margin-top: 6px;
+        position: sticky;
+        bottom: 0;
+        padding-top: 12px;
+        background: linear-gradient(180deg, rgba(32, 32, 32, 0) 0%, #202020 24px);
     }
 
     .btn-primary {
@@ -393,6 +404,29 @@
     @media (min-width: 720px) {
         .admin-modal__row {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 640px) {
+        .admin-modal__backdrop {
+            padding: 8px;
+        }
+
+        .admin-modal {
+            max-height: calc(100vh - 16px);
+        }
+
+        .admin-modal__header,
+        .admin-modal__body {
+            padding: 12px;
+        }
+
+        .admin-modal__section {
+            padding: 12px;
+        }
+
+        .dossier-card {
+            padding: 14px;
         }
     }
 }
