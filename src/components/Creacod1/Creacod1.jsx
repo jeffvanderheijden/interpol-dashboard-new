@@ -95,19 +95,19 @@ export default function CipherStep1({
     }
 
     return (
-        <div className="puzzle creacod1-screen">
-            <header className="creacod1-screen__header">
-                <p className="creacod1-screen__eyebrow">Creative Coding</p>
+        <div className="creacod-app">
+            <header className="creacod-app__header">
+                <p className="creacod-app__eyebrow">Creative Coding</p>
                 <h1>{title}</h1>
-                <p className="creacod1-screen__intro">
+                <p>
                     Ontcijfer de symbolen, vergelijk ze met de legenda en voer het
                     juiste antwoord in om door te gaan naar de volgende stap.
                 </p>
             </header>
 
-            <div className="puzzle__layout">
+            <div className="creacod-app__body creacod-app__body--split">
                 <section
-                    className="cipher creacod1-screen__section"
+                    className="creacod-app__panel cipher"
                     aria-label="Versleutelde code"
                 >
                     <h2>Gecodeerd bericht</h2>
@@ -119,7 +119,7 @@ export default function CipherStep1({
                 </section>
 
                 <section
-                    className="answer creacod1-screen__section creacod1-screen__section--compact"
+                    className="creacod-app__panel creacod-app__panel--narrow answer"
                     aria-label="Antwoord invoeren"
                 >
                     <h2>Antwoord</h2>
@@ -148,11 +148,7 @@ export default function CipherStep1({
                 </section>
             </div>
 
-            <section
-                id="alphabet"
-                className="alphabet"
-                aria-label="Legenda"
-            >
+            <section id="alphabet" className="alphabet" aria-label="Legenda">
                 <div className="alphabet__header">
                     <h2>Legenda</h2>
                     <p>Zoek per symbool de bijbehorende letter.</p>

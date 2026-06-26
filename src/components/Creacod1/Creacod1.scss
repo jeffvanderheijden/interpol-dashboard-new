@@ -1,231 +1,26 @@
 @use "../../styles/win95" as *;
 
-.puzzle,
-.creacod1-step2,
-.creacod1-step3 {
+.creacod-app {
     @include win95-font;
     background: $win95-bg;
     color: $win95-window-text;
-    min-height: 100%;
-    padding: 4px;
-}
-
-.puzzle {
-    display: grid;
-    align-content: start;
+    display: flex;
+    flex-direction: column;
     gap: 4px;
-
-    &__layout {
-        display: grid;
-        gap: 4px;
-    }
+    height: 100%;
+    padding: 4px;
+    padding-top: 0;
 }
 
-.cipher,
-.answer,
-.alphabet,
-.creacod1-step2,
-.creacod1-step3 {
+.creacod-app__header {
     @include win95-border("sunken");
     background: $win95-window-bg;
-}
-
-.cipher {
-    display: grid;
-    gap: 6px;
-
-    h2 {
-        font-size: 14px;
-        font-weight: bold;
-        margin: 0;
-    }
-
-    ul {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        justify-content: flex-start;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    li {
-        align-items: center;
-        display: inline-flex;
-        font-family:
-            "Segoe UI Symbol",
-            "Noto Sans Symbols",
-            "Noto Sans Symbols2",
-            "Apple Symbols",
-            "Arial Unicode MS",
-            sans-serif;
-        font-size: 22px;
-        font-weight: 600;
-        height: 34px;
-        justify-content: center;
-        user-select: none;
-        width: 34px;
-    }
-}
-
-.answer {
-    display: grid;
-    gap: 6px;
-
-    h2 {
-        font-size: 14px;
-        font-weight: bold;
-        margin: 0;
-    }
-
-    p {
-        color: $border-dark;
-        line-height: 1.45;
-        margin: 0;
-    }
-
-    input {
-        @include win95-font;
-        @include win95-border("sunken");
-        background: $win95-window-bg;
-        min-width: 0;
-        outline: none;
-        padding: 6px 8px;
-        width: min(280px, 100%);
-
-        &.error {
-            border-color: $win95-danger;
-        }
-
-        &:focus {
-            outline: 1px dotted $border-darker;
-            outline-offset: -4px;
-        }
-    }
-
-    button {
-        @include win95-button;
-        justify-self: start;
-        min-width: 96px;
-    }
-
-    .message {
-        color: $win95-danger;
-        margin: 0;
-    }
-}
-
-.alphabet {
-    display: none;
-
-    &__header {
-        display: grid;
-        gap: 4px;
-    }
-
-    h2 {
-        font-size: 14px;
-        font-weight: bold;
-        margin: 0;
-    }
-
-    p {
-        color: $border-dark;
-        line-height: 1.45;
-        margin: 0;
-    }
-
-    &__grid {
-        @include win95-border("sunken");
-        background: #f7f7f7;
-        display: grid;
-        gap: 6px;
-        padding: 10px;
-    }
-
-    ul {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px;
-        justify-content: flex-start;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .letters {
-        border-top: 1px solid $border-dark;
-        padding-top: 6px;
-    }
-
-    li {
-        @include win95-border("raised");
-        align-items: center;
-        background: $win95-window-bg;
-        display: inline-flex;
-        font-family:
-            "Segoe UI Symbol",
-            "Noto Sans Symbols",
-            "Noto Sans Symbols2",
-            "Apple Symbols",
-            "Arial Unicode MS",
-            sans-serif;
-        font-size: 16px;
-        font-weight: 600;
-        height: 30px;
-        justify-content: center;
-        user-select: none;
-        width: 30px;
-    }
-}
-
-.creacod1-step2,
-.creacod1-step3 {
-    display: grid;
-    gap: 4px;
-    margin: 0;
-    max-width: 760px;
-    padding: 4px;
-
-    input {
-        @include win95-font;
-        @include win95-border("sunken");
-        background: $win95-window-bg;
-        padding: 6px 8px;
-        width: min(320px, 100%);
-
-        &.is-error {
-            border-color: $win95-danger;
-        }
-
-        &:focus {
-            outline: 1px dotted $border-darker;
-            outline-offset: -4px;
-        }
-    }
-
-    button {
-        @include win95-button;
-        justify-self: start;
-        min-width: 96px;
-    }
-}
-
-.creacod1-screen {
-    display: grid;
-    gap: 4px;
-
+    padding: 10px 12px;
+    
     h1 {
         font-size: 16px;
         font-weight: bold;
-        margin: 0 0 4px;
-    }
-
-    h2 {
-        font-size: 14px;
-        font-weight: bold;
-        margin: 0;
+        margin: 0 0 6px;
     }
 
     p {
@@ -234,13 +29,7 @@
     }
 }
 
-.creacod1-screen__header {
-    @include win95-border("sunken");
-    background: $win95-window-bg;
-    padding: 10px;
-}
-
-.creacod1-screen__eyebrow {
+.creacod-app__eyebrow {
     color: $border-dark;
     font-size: 11px;
     font-weight: bold;
@@ -248,21 +37,59 @@
     text-transform: uppercase;
 }
 
-.creacod1-screen__intro {
-    line-height: 1.45;
-    margin: 0;
-}
-
-.creacod1-screen__section {
+.creacod-app__body {
     @include win95-border("sunken");
     background: $win95-window-bg;
+    flex: 1;
     display: grid;
     gap: 6px;
-    padding: 10px;
+    min-height: 0;
+    overflow: auto;
+    padding: 1px;
 }
 
-.creacod1-screen__section--compact {
-    max-width: 360px;
+.creacod-app__body > .creacod-app__panel {
+    border-bottom: 1px solid $border-dark;
+    padding: 10px 12px;
+}
+
+.creacod-app__body > .creacod-app__panel:last-child {
+    border-bottom: 0;
+}
+
+.creacod-app__body--split > .creacod-app__panel {
+    border-bottom: 0;
+}
+
+.creacod-app__body--split > .creacod-app__panel--narrow {
+    border-left: 1px solid $border-dark;
+}
+
+.creacod-app__body--split {
+    align-items: stretch;
+    grid-template-columns: minmax(0, 1fr);
+    overflow: auto;
+}
+
+.creacod-app__panel {
+    display: grid;
+    gap: 6px;
+    align-content: start;
+
+    h2 {
+        font-size: 14px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    p {
+        line-height: 1.45;
+        margin: 0;
+    }
+}
+
+.creacod-app__panel--narrow {
+    align-content: start;
 }
 
 .creacod1-feedback {
@@ -270,20 +97,95 @@
     margin: 0;
 }
 
+.cipher ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-start;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cipher li {
+    align-items: center;
+    display: inline-flex;
+    font-family:
+        "Segoe UI Symbol",
+        "Noto Sans Symbols",
+        "Noto Sans Symbols2",
+        "Apple Symbols",
+        "Arial Unicode MS",
+        sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    height: 34px;
+    justify-content: center;
+    user-select: none;
+    width: 34px;
+    @include win95-border("sunken");
+    background: $win95-bg;
+}
+
+.answer input,
+.creacod-app input {
+    @include win95-font;
+    @include win95-border("sunken");
+    background: $win95-window-bg;
+    display: block;
+    min-width: 0;
+    outline: none;
+    padding: 6px 8px;
+    width: min(320px, 100%);
+
+    &.error,
+    &.is-error {
+        border-color: $win95-danger;
+    }
+
+    &:focus {
+        outline: 1px dotted $border-darker;
+        outline-offset: -4px;
+    }
+}
+
+.answer button,
+.creacod-app button {
+    @include win95-button;
+    justify-self: start;
+    min-width: 96px;
+}
+
+.answer .message {
+    color: $win95-danger;
+    margin: 0;
+}
+
+.alphabet {
+    display: none;
+}
+
 .creacod1-downloads {
     display: grid;
-    gap: 4px;
+    gap: 0;
     margin-top: 2px;
+    @include win95-border("sunken");
+    background: $win95-window-bg;
+    padding: 1px;
 }
 
 .creacod1-download {
-    @include win95-border("sunken");
-    background: $win95-window-bg;
+    background: transparent;
+    border-bottom: 1px solid $border-dark;
     color: $win95-window-text;
     display: grid;
     gap: 3px;
     padding: 8px 10px;
     text-decoration: none;
+
+    &:last-child {
+        border-bottom: 0;
+    }
 
     strong {
         font-size: 13px;
@@ -309,21 +211,14 @@
 }
 
 @media (min-width: 760px) {
-    .puzzle__layout {
-        grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
-        align-items: start;
+    .creacod-app__body--split {
+        grid-template-columns: minmax(0, 1fr) 280px;
     }
 }
 
-@media (max-width: 640px) {
-    .puzzle,
-    .creacod1-step2,
-    .creacod1-step3 {
-        padding: 4px;
-    }
-
-    .cipher ul,
-    .alphabet ul {
-        gap: 6px;
+@media (max-width: 759px) {
+    .creacod-app__body--split > .creacod-app__panel--narrow {
+        border-left: 0;
+        border-top: 1px solid $border-dark;
     }
 }
