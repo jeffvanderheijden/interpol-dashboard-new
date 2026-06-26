@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useChallengeTracking } from "../../hooks/useChallengeTracking";
 import "./Creacod1.scss";
@@ -12,6 +12,7 @@ export default function CipherStep1({
     const { complete } = useChallengeTracking("/creative-coding");
     const [value, setValue] = useState("");
     const [error, setError] = useState("");
+    const inputRef = useRef(null);
 
     const cipherSymbols = useMemo(
         () => ["⌠", "⌘", "⌗", "⌧", "⌖", "⬣", "⧩", "△", "◌", "⌢", "⌘"],
@@ -56,17 +57,24 @@ export default function CipherStep1({
         return text.trim().toLowerCase().replace(/\s/g, "");
     }
 
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
+
     async function validate() {
         const input = normalize(value);
         const expected = normalize(correctAnswer);
 
         if (!input) {
             setError("Vul eerst je antwoord in.");
+            inputRef.current?.focus();
             return;
         }
 
         if (input !== expected) {
             setError("Incorrect. Probeer opnieuw.");
+            inputRef.current?.focus();
+            inputRef.current?.select();
             return;
         }
 
@@ -80,49 +88,80 @@ export default function CipherStep1({
     }
 
     function handleKeyDown(e) {
-        if (e.key === "Enter") validate();
+        if (e.key === "Enter") {
+            e.preventDefault();
+            validate();
+        }
     }
 
     return (
         <div className="puzzle">
-            <h1>{title}</h1>
+            <header className="puzzle__header">
+                <p className="puzzle__eyebrow">Creative Coding</p>
+                <h1>{title}</h1>
+                <p className="puzzle__intro">
+                    Ontcijfer de symbolen, vergelijk ze met de legenda en voer het
+                    juiste antwoord in om door te gaan naar de volgende stap.
+                </p>
+            </header>
 
-            <div className="cipher">
-                <ul>
-                    {cipherSymbols.map((symbol, index) => (
-                        <li key={`${symbol}-${index}`}>{symbol}</li>
-                    ))}
-                </ul>
+            <div className="puzzle__layout">
+                <section className="cipher" aria-label="Versleutelde code">
+                    <h2>Gecodeerd bericht</h2>
+                    <ul>
+                        {cipherSymbols.map((symbol, index) => (
+                            <li key={`${symbol}-${index}`}>{symbol}</li>
+                        ))}
+                    </ul>
+                </section>
+
+                <section className="answer" aria-label="Antwoord invoeren">
+                    <h2>Antwoord</h2>
+                    <p>Gebruik de legenda hieronder en vul het ontcijferde woord in.</p>
+
+                    <input
+                        ref={inputRef}
+                        type="text"
+                        value={value}
+                        onChange={(e) => {
+                            setValue(e.target.value);
+                            if (error) setError("");
+                        }}
+                        onKeyDown={handleKeyDown}
+                        placeholder="Type je antwoord..."
+                        className={error ? "error" : ""}
+                        autoComplete="off"
+                        spellCheck="false"
+                    />
+
+                    <button type="button" onClick={validate}>
+                        Controleer
+                    </button>
+
+                    {error ? <p className="message">{error}</p> : null}
+                </section>
             </div>
 
-            <div className="answer">
-                <input
-                    type="text"
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Type je antwoord..."
-                    className={error ? "error" : ""}
-                />
+            <section id="alphabet" className="alphabet" aria-label="Legenda">
+                <div className="alphabet__header">
+                    <h2>Legenda</h2>
+                    <p>Zoek per symbool de bijbehorende letter.</p>
+                </div>
 
-                <button onClick={validate}>Submit</button>
+                <div className="alphabet__grid">
+                    <ul className="symbols">
+                        {alphabetSymbols.map((symbol, index) => (
+                            <li key={`${symbol}-${index}`}>{symbol}</li>
+                        ))}
+                    </ul>
 
-                {error && <p className="message">{error}</p>}
-            </div>
-
-            <div id="alphabet" className="alphabet">
-                <ul className="symbols">
-                    {alphabetSymbols.map((symbol, index) => (
-                        <li key={`${symbol}-${index}`}>{symbol}</li>
-                    ))}
-                </ul>
-
-                <ul className="letters">
-                    {letters.map((letter) => (
-                        <li key={letter}>{letter}</li>
-                    ))}
-                </ul>
-            </div>
+                    <ul className="letters">
+                        {letters.map((letter) => (
+                            <li key={letter}>{letter}</li>
+                        ))}
+                    </ul>
+                </div>
+            </section>
         </div>
     );
 }
