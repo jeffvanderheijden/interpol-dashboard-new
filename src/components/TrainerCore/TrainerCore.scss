@@ -2,17 +2,14 @@
 
 .trainer-core {
     @include win95-font;
-    background: $win95-bg;
     min-height: 100%;
     height: 100vh;
     padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .trainer-window {
     @include win95-border("raised");
+    background: $win95-bg;
     color: $win95-window-text;
     display: flex;
     flex-direction: column;
