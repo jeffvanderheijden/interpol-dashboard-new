@@ -1,4 +1,4 @@
-import { apiRequest, createFormData } from "./request";
+import { apiRequest, createFormData, withJsonBody } from "./request";
 
 export async function getAdminDossiers() {
     const data = await apiRequest("/api/admin/dossiers");
@@ -18,18 +18,31 @@ export async function createAdminDossier({
     is_suspect,
     is_eliminated,
 }) {
-    const formData = createFormData({
-        name,
-        description,
-        image: imageFile,
-        is_suspect,
-        is_eliminated,
-    });
-    formData.append("video_url", videoUrl || "");
+    if (imageFile) {
+        const formData = createFormData({
+            name,
+            description,
+            image: imageFile,
+            is_suspect,
+            is_eliminated,
+        });
+        formData.append("video_url", videoUrl || "");
+
+        return apiRequest("/api/admin/dossiers", {
+            method: "POST",
+            body: formData,
+        });
+    }
 
     return apiRequest("/api/admin/dossiers", {
         method: "POST",
-        body: formData,
+        ...withJsonBody({
+            name,
+            description,
+            video_url: videoUrl || "",
+            is_suspect,
+            is_eliminated,
+        }),
     });
 }
 
@@ -37,18 +50,31 @@ export async function updateAdminDossier(
     id,
     { name, description, imageFile, videoUrl, is_suspect, is_eliminated }
 ) {
-    const formData = createFormData({
-        name,
-        description,
-        image: imageFile,
-        is_suspect,
-        is_eliminated,
-    });
-    formData.append("video_url", videoUrl || "");
+    if (imageFile) {
+        const formData = createFormData({
+            name,
+            description,
+            image: imageFile,
+            is_suspect,
+            is_eliminated,
+        });
+        formData.append("video_url", videoUrl || "");
+
+        return apiRequest(`/api/admin/dossiers/${id}`, {
+            method: "PATCH",
+            body: formData,
+        });
+    }
 
     return apiRequest(`/api/admin/dossiers/${id}`, {
         method: "PATCH",
-        body: formData,
+        ...withJsonBody({
+            name,
+            description,
+            video_url: videoUrl || "",
+            is_suspect,
+            is_eliminated,
+        }),
     });
 }
 
