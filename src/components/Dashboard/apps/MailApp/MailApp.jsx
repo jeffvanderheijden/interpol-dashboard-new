@@ -3,6 +3,11 @@ import { getStudentMessages } from "../../../../api/messages";
 import { API_BASE } from "./../../../../api/_config";
 import "./MailApp.scss";
 
+const resolveMediaUrl = (value) => {
+    if (!value) return null;
+    return /^https?:\/\//i.test(value) ? value : `${API_BASE}${value}`;
+};
+
 const MailApp = () => {
     const [mails, setMails] = useState([]);
     const [selected, setSelected] = useState(null);
@@ -113,23 +118,30 @@ const MailApp = () => {
 
                                     {selected.mediaType === "image" ? (
                                         <a
-                                            href={`${API_BASE}${selected.attachment}`}
+                                            href={resolveMediaUrl(selected.attachment)}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
                                             <img
                                                 className="mail-app__attachment-image"
-                                                src={`${API_BASE}${selected.attachment}`}
+                                                src={resolveMediaUrl(selected.attachment)}
                                                 alt="Bijlage"
                                             />
                                         </a>
+                                    ) : selected.mediaType === "video" ? (
+                                        <video controls className="mail-app__attachment-image">
+                                            <source
+                                                src={resolveMediaUrl(selected.attachment)}
+                                            />
+                                            Je browser ondersteunt deze video niet.
+                                        </video>
                                     ) : (
                                         <a
-                                            href={`${API_BASE}${selected.attachment}`}
+                                            href={resolveMediaUrl(selected.attachment)}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
-                                            {`${API_BASE}${selected.attachment}`}
+                                            {resolveMediaUrl(selected.attachment)}
                                         </a>
                                     )}
                                 </div>

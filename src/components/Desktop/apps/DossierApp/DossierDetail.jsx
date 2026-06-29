@@ -1,10 +1,18 @@
 import React from "react";
 import "./DossierDetail.scss";
 import { generateMotive } from "./../../_helpers/dossierHelpers";
+import { API_BASE } from "../../../../api/_config";
+
+const resolveMediaUrl = (value) => {
+    if (!value) return null;
+    return /^https?:\/\//i.test(value) ? value : `${API_BASE}${value}`;
+};
+
 const DossierDetail = ({ dossier, onClose }) => {
     if (!dossier) return null;
 
     const description = dossier.description?.trim() || generateMotive(dossier.name);
+    const videoUrl = resolveMediaUrl(dossier.video_url);
 
     return (
         <div className="dossier-detail" role="dialog" aria-modal="true">
@@ -56,6 +64,18 @@ const DossierDetail = ({ dossier, onClose }) => {
 
                         <h4>Dossierinformatie</h4>
                         <p className="dossier-detail__motive">{description}</p>
+
+                        {videoUrl ? (
+                            <>
+                                <h4>Video</h4>
+                                <div className="dossier-detail__video">
+                                    <video controls>
+                                        <source src={videoUrl} />
+                                        Je browser ondersteunt deze video niet.
+                                    </video>
+                                </div>
+                            </>
+                        ) : null}
                     </div>
                 </div>
 

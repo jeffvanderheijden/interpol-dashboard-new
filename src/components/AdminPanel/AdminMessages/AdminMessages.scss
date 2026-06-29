@@ -192,6 +192,8 @@
         }
 
         input[type="text"],
+        input[type="datetime-local"],
+        select,
         textarea,
         input[type="file"] {
             padding: 10px 14px;
@@ -212,6 +214,12 @@
         }
     }
 
+    .admin-modal__split {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: minmax(0, 1fr) 180px;
+    }
+
     .admin-modal__existing {
         font-size: 13px;
         color: #aaa;
@@ -223,6 +231,12 @@
             &:hover {
                 text-decoration: none;
             }
+        }
+    }
+
+    @media (max-width: 720px) {
+        .admin-modal__split {
+            grid-template-columns: 1fr;
         }
     }
 

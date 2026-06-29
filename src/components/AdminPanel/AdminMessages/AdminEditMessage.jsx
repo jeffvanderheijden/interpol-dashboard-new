@@ -13,10 +13,20 @@ const toMysqlDatetime = (dtLocal) => {
     return dtLocal.replace("T", " ") + ":00";
 };
 
+const resolveMediaUrl = (value) => {
+    if (!value) return "";
+    return /^https?:\/\//i.test(value) ? value : `${API_BASE}${value}`;
+};
+
 export default function AdminEditMessage({ message, onClose, onSaved }) {
     const [title, setTitle] = useState(message.title || "");
     const [body, setBody] = useState(message.body || "");
     const [media, setMedia] = useState(null);
+    const [mediaUrl, setMediaUrl] = useState(message.media_url || "");
+    const [mediaType, setMediaType] = useState(
+        message.media_type === "image" ? "image" : "video"
+    );
+    const [clearMedia, setClearMedia] = useState(false);
     const [publishAt, setPublishAt] = useState(toDatetimeLocalValue(message.publish_at));
 
     const [busy, setBusy] = useState(false);
@@ -34,8 +44,14 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
             return;
         }
         setError(null);
+        setClearMedia(false);
+        setMediaUrl("");
         setMedia(file);
     };
+
+    const linkedMediaUrl = mediaUrl.trim();
+    const hasLinkedMedia = linkedMediaUrl !== "";
+    const existingMediaUrl = resolveMediaUrl(message.media_url);
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -49,6 +65,9 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
                 title: title.trim(),
                 body: body.trim(),
                 mediaFile: media,
+                mediaUrl: linkedMediaUrl,
+                mediaType,
+                clearMedia,
                 publish_at: publishAt ? toMysqlDatetime(publishAt) : "",
             });
             onSaved();
@@ -97,7 +116,7 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
                         <strong>Bestaande bijlage:</strong>{" "}
                         {message.media_url ? (
                             <a
-                                href={`${API_BASE}${message.media_url}`}
+                                href={existingMediaUrl}
                                 target="_blank"
                                 rel="noreferrer"
                             >
@@ -117,6 +136,33 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
                         />
                     </label>
 
+                    <div className="admin-modal__split">
+                        <label>
+                            Media-link (optioneel)
+                            <input
+                                type="text"
+                                value={mediaUrl}
+                                placeholder="/uploads/messages/mijn-video.mp4 of https://..."
+                                onChange={(e) => {
+                                    setMediaUrl(e.target.value);
+                                    setMedia(null);
+                                    setClearMedia(false);
+                                }}
+                            />
+                        </label>
+
+                        <label>
+                            Link type
+                            <select
+                                value={mediaType}
+                                onChange={(e) => setMediaType(e.target.value)}
+                            >
+                                <option value="video">Video</option>
+                                <option value="image">Afbeelding</option>
+                            </select>
+                        </label>
+                    </div>
+
                     {media ? (
                         <div className="admin-modal__preview">
                             {media.type.startsWith("image/") ? (
@@ -128,6 +174,43 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
                             <button type="button" onClick={() => setMedia(null)}>
                                 Nieuwe bijlage verwijderen
                             </button>
+                        </div>
+                    ) : null}
+
+                    {!media && hasLinkedMedia ? (
+                        <div className="admin-modal__preview">
+                            {mediaType === "image" ? (
+                                <img src={resolveMediaUrl(linkedMediaUrl)} alt="Gelinkte media" />
+                            ) : (
+                                <video src={resolveMediaUrl(linkedMediaUrl)} controls />
+                            )}
+                        </div>
+                    ) : null}
+
+                    {message.media_url && !media && !hasLinkedMedia && !clearMedia ? (
+                        <div className="admin-modal__preview">
+                            {message.media_type === "image" ? (
+                                <img src={existingMediaUrl} alt="Bestaande bijlage" />
+                            ) : message.media_type === "video" ? (
+                                <video src={existingMediaUrl} controls />
+                            ) : null}
+
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setMedia(null);
+                                    setMediaUrl("");
+                                    setClearMedia(true);
+                                }}
+                            >
+                                Bestaande bijlage verwijderen
+                            </button>
+                        </div>
+                    ) : null}
+
+                    {clearMedia ? (
+                        <div className="admin-modal__existing">
+                            Bestaande bijlage wordt verwijderd bij opslaan.
                         </div>
                     ) : null}
 

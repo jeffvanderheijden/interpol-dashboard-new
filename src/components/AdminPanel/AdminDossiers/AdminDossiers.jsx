@@ -132,6 +132,12 @@ export default function AdminDossiers() {
                                                     ? "Weggespeeld"
                                                     : "Actief"}
                                             </span>
+
+                                            {dossier.video_url ? (
+                                                <span className="dossier-status dossier-status--active">
+                                                    Video gekoppeld
+                                                </span>
+                                            ) : null}
                                         </div>
 
                                         <p className="dossier-snippet">

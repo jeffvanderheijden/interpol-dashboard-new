@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createAdminMessage } from "../../../api/messages";
+import { API_BASE } from "../../../api/_config";
 import "./AdminMessages.scss";
 
 const toMysqlDatetime = (dtLocal) => {
@@ -7,10 +8,17 @@ const toMysqlDatetime = (dtLocal) => {
     return dtLocal.replace("T", " ") + ":00";
 };
 
+const resolveMediaUrl = (value) => {
+    if (!value) return "";
+    return /^https?:\/\//i.test(value) ? value : `${API_BASE}${value}`;
+};
+
 export default function AdminCreateMessage({ onClose, onSaved }) {
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const [media, setMedia] = useState(null);
+    const [mediaUrl, setMediaUrl] = useState("");
+    const [mediaType, setMediaType] = useState("video");
     const [publishAt, setPublishAt] = useState("");
 
     const [busy, setBusy] = useState(false);
@@ -28,8 +36,12 @@ export default function AdminCreateMessage({ onClose, onSaved }) {
             return;
         }
         setError(null);
+        setMediaUrl("");
         setMedia(file);
     };
+
+    const linkedMediaUrl = mediaUrl.trim();
+    const hasLinkedMedia = linkedMediaUrl !== "";
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -43,6 +55,8 @@ export default function AdminCreateMessage({ onClose, onSaved }) {
                 title: title.trim(),
                 body: body.trim(),
                 mediaFile: media,
+                mediaUrl: linkedMediaUrl,
+                mediaType,
                 publish_at: publishAt ? toMysqlDatetime(publishAt) : "",
             });
             onSaved();
@@ -96,6 +110,32 @@ export default function AdminCreateMessage({ onClose, onSaved }) {
                         />
                     </label>
 
+                    <div className="admin-modal__split">
+                        <label>
+                            Media-link (optioneel)
+                            <input
+                                type="text"
+                                value={mediaUrl}
+                                placeholder="/uploads/messages/mijn-video.mp4 of https://..."
+                                onChange={(e) => {
+                                    setMediaUrl(e.target.value);
+                                    setMedia(null);
+                                }}
+                            />
+                        </label>
+
+                        <label>
+                            Link type
+                            <select
+                                value={mediaType}
+                                onChange={(e) => setMediaType(e.target.value)}
+                            >
+                                <option value="video">Video</option>
+                                <option value="image">Afbeelding</option>
+                            </select>
+                        </label>
+                    </div>
+
                     {media ? (
                         <div className="admin-modal__preview">
                             {media.type.startsWith("image/") ? (
@@ -107,6 +147,16 @@ export default function AdminCreateMessage({ onClose, onSaved }) {
                             <button type="button" onClick={() => setMedia(null)}>
                                 Bijlage verwijderen
                             </button>
+                        </div>
+                    ) : null}
+
+                    {!media && hasLinkedMedia ? (
+                        <div className="admin-modal__preview">
+                            {mediaType === "image" ? (
+                                <img src={resolveMediaUrl(linkedMediaUrl)} alt="Gelinkte media" />
+                            ) : (
+                                <video src={resolveMediaUrl(linkedMediaUrl)} controls />
+                            )}
                         </div>
                     ) : null}
 

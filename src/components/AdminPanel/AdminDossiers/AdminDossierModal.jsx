@@ -24,10 +24,17 @@ function resolveImageSrc(imageUrl) {
     return `${API_BASE}${imageUrl}`;
 }
 
+function resolveMediaSrc(mediaUrl) {
+    if (!mediaUrl) return null;
+    if (/^https?:\/\//i.test(mediaUrl)) return mediaUrl;
+    return `${API_BASE}${mediaUrl}`;
+}
+
 export default function AdminDossierModal({ dossier, onClose, onSaved }) {
     const [name, setName] = useState(dossier?.name || "");
     const [description, setDescription] = useState(dossier?.description || "");
     const [image, setImage] = useState(null);
+    const [videoUrl, setVideoUrl] = useState(dossier?.video_url || "");
     const [isSuspect, setIsSuspect] = useState(
         dossier?.is_suspect ? "1" : "0"
     );
@@ -43,6 +50,7 @@ export default function AdminDossierModal({ dossier, onClose, onSaved }) {
         resolveImageSrc(dossier?.image_url) ||
         legacyImageMap.get(dossier?.name || "") ||
         null;
+    const existingVideoSrc = resolveMediaSrc(dossier?.video_url);
 
     const onPickFile = (file) => {
         if (!file) {
@@ -71,6 +79,7 @@ export default function AdminDossierModal({ dossier, onClose, onSaved }) {
                 name: name.trim(),
                 description: description.trim(),
                 imageFile: image,
+                videoUrl: videoUrl.trim(),
                 is_suspect: isSuspect === "1",
                 is_eliminated: isEliminated === "1",
             };
@@ -183,6 +192,33 @@ export default function AdminDossierModal({ dossier, onClose, onSaved }) {
                                 <button type="button" onClick={() => setImage(null)}>
                                     Nieuwe afbeelding verwijderen
                                 </button>
+                            </div>
+                        ) : null}
+                    </div>
+
+                    <div className="admin-modal__section">
+                        <div className="admin-modal__section-title">Video</div>
+
+                        <label>
+                            <span className="admin-modal__label">Video-link</span>
+                            <input
+                                type="text"
+                                value={videoUrl}
+                                onChange={(e) => setVideoUrl(e.target.value)}
+                                placeholder="/uploads/dossiers/mijn-video.mp4 of https://..."
+                            />
+                        </label>
+
+                        {videoUrl.trim() ? (
+                            <div className="admin-modal__preview">
+                                <video src={resolveMediaSrc(videoUrl.trim())} controls />
+                                <button type="button" onClick={() => setVideoUrl("")}>
+                                    Video-link verwijderen
+                                </button>
+                            </div>
+                        ) : existingVideoSrc ? (
+                            <div className="admin-modal__preview">
+                                <video src={existingVideoSrc} controls />
                             </div>
                         ) : null}
                     </div>

@@ -259,6 +259,16 @@
             }
         }
 
+        input[type="datetime-local"] {
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            background: #252525;
+            color: #fff;
+            font-size: 15px;
+            width: 100%;
+        }
+
         select {
             appearance: none;
             background-image:

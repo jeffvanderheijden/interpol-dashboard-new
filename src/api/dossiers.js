@@ -14,34 +14,41 @@ export async function createAdminDossier({
     name,
     description,
     imageFile,
+    videoUrl,
     is_suspect,
     is_eliminated,
 }) {
+    const formData = createFormData({
+        name,
+        description,
+        image: imageFile,
+        is_suspect,
+        is_eliminated,
+    });
+    formData.append("video_url", videoUrl || "");
+
     return apiRequest("/api/admin/dossiers", {
         method: "POST",
-        body: createFormData({
-            name,
-            description,
-            image: imageFile,
-            is_suspect,
-            is_eliminated,
-        }),
+        body: formData,
     });
 }
 
 export async function updateAdminDossier(
     id,
-    { name, description, imageFile, is_suspect, is_eliminated }
+    { name, description, imageFile, videoUrl, is_suspect, is_eliminated }
 ) {
+    const formData = createFormData({
+        name,
+        description,
+        image: imageFile,
+        is_suspect,
+        is_eliminated,
+    });
+    formData.append("video_url", videoUrl || "");
+
     return apiRequest(`/api/admin/dossiers/${id}`, {
         method: "PATCH",
-        body: createFormData({
-            name,
-            description,
-            image: imageFile,
-            is_suspect,
-            is_eliminated,
-        }),
+        body: formData,
     });
 }
 

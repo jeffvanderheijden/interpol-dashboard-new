@@ -135,6 +135,20 @@
         max-width: 100%;
     }
 
+    &__video {
+        @include win95-border("sunken");
+        background: #000;
+        padding: 4px;
+        max-width: 100%;
+
+        video {
+            display: block;
+            max-height: 320px;
+            max-width: 100%;
+            width: 100%;
+        }
+    }
+
     &__actions {
         margin-top: 12px;
     }
