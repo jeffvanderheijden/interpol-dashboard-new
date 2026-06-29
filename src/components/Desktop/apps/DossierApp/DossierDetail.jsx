@@ -1,6 +1,5 @@
 import React from "react";
 import "./DossierDetail.scss";
-import { generateMotive } from "./../../_helpers/dossierHelpers";
 import { API_BASE } from "../../../../api/_config";
 
 const resolveMediaUrl = (value) => {
@@ -11,7 +10,7 @@ const resolveMediaUrl = (value) => {
 const DossierDetail = ({ dossier, onClose }) => {
     if (!dossier) return null;
 
-    const description = dossier.description?.trim() || generateMotive(dossier.name);
+    const description = dossier.description?.trim() || "";
     const videoUrl = resolveMediaUrl(dossier.video_url);
 
     return (
@@ -62,8 +61,12 @@ const DossierDetail = ({ dossier, onClose }) => {
                             </span>
                         </div>
 
-                        <h4>Dossierinformatie</h4>
-                        <p className="dossier-detail__motive">{description}</p>
+                        {description ? (
+                            <>
+                                <h4>Dossierinformatie</h4>
+                                <p className="dossier-detail__motive">{description}</p>
+                            </>
+                        ) : null}
 
                         {videoUrl ? (
                             <>
