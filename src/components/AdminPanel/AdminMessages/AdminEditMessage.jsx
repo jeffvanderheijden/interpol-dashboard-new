@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { updateAdminMessage } from "../../../api/messages";
 import { API_BASE } from "./../../../api/_config";
 import "./AdminMessages.scss";
@@ -19,10 +19,11 @@ const resolveMediaUrl = (value) => {
 };
 
 export default function AdminEditMessage({ message, onClose, onSaved }) {
+    const fileInputRef = useRef(null);
     const [title, setTitle] = useState(message.title || "");
     const [body, setBody] = useState(message.body || "");
     const [media, setMedia] = useState(null);
-    const [mediaUrl, setMediaUrl] = useState(message.media_url || "");
+    const [mediaUrl, setMediaUrl] = useState("");
     const [mediaType, setMediaType] = useState(
         message.media_type === "image" ? "image" : "video"
     );
@@ -46,6 +47,9 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
         setError(null);
         setClearMedia(false);
         setMediaUrl("");
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
         setMedia(file);
     };
 
@@ -132,6 +136,7 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
                         <input
                             type="file"
                             accept="image/*,video/*"
+                            ref={fileInputRef}
                             onChange={(e) => onPickFile(e.target.files?.[0] ?? null)}
                         />
                     </label>
@@ -142,11 +147,14 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
                             <input
                                 type="text"
                                 value={mediaUrl}
-                                placeholder="/uploads/messages/mijn-video.mp4 of https://..."
+                                placeholder="Laat leeg om huidige bijlage te behouden"
                                 onChange={(e) => {
                                     setMediaUrl(e.target.value);
                                     setMedia(null);
                                     setClearMedia(false);
+                                    if (fileInputRef.current) {
+                                        fileInputRef.current.value = "";
+                                    }
                                 }}
                             />
                         </label>
@@ -201,6 +209,9 @@ export default function AdminEditMessage({ message, onClose, onSaved }) {
                                     setMedia(null);
                                     setMediaUrl("");
                                     setClearMedia(true);
+                                    if (fileInputRef.current) {
+                                        fileInputRef.current.value = "";
+                                    }
                                 }}
                             >
                                 Bestaande bijlage verwijderen

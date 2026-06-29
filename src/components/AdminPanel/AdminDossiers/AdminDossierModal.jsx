@@ -197,7 +197,15 @@ export default function AdminDossierModal({ dossier, onClose, onSaved }) {
                     </div>
 
                     <div className="admin-modal__section">
-                        <div className="admin-modal__section-title">Video</div>
+                        <div className="admin-modal__section-title">
+                            Aanvullende video
+                        </div>
+
+                        <div className="admin-modal__existing">
+                            De afbeelding hierboven blijft altijd het hoofdbeeld van
+                            het dossier. Deze video komt alleen als extra aanvulling
+                            onder de dossiertekst te staan.
+                        </div>
 
                         <label>
                             <span className="admin-modal__label">Video-link</span>
@@ -205,7 +213,7 @@ export default function AdminDossierModal({ dossier, onClose, onSaved }) {
                                 type="text"
                                 value={videoUrl}
                                 onChange={(e) => setVideoUrl(e.target.value)}
-                                placeholder="/uploads/dossiers/mijn-video.mp4 of https://..."
+                                placeholder="/media/dossiers/mijn-video.mp4 of https://..."
                             />
                         </label>
 

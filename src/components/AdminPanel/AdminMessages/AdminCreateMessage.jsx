@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { createAdminMessage } from "../../../api/messages";
 import { API_BASE } from "../../../api/_config";
 import "./AdminMessages.scss";
@@ -14,6 +14,7 @@ const resolveMediaUrl = (value) => {
 };
 
 export default function AdminCreateMessage({ onClose, onSaved }) {
+    const fileInputRef = useRef(null);
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const [media, setMedia] = useState(null);
@@ -37,6 +38,9 @@ export default function AdminCreateMessage({ onClose, onSaved }) {
         }
         setError(null);
         setMediaUrl("");
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
         setMedia(file);
     };
 
@@ -106,6 +110,7 @@ export default function AdminCreateMessage({ onClose, onSaved }) {
                         <input
                             type="file"
                             accept="image/*,video/*"
+                            ref={fileInputRef}
                             onChange={(e) => onPickFile(e.target.files?.[0] ?? null)}
                         />
                     </label>
@@ -120,6 +125,9 @@ export default function AdminCreateMessage({ onClose, onSaved }) {
                                 onChange={(e) => {
                                     setMediaUrl(e.target.value);
                                     setMedia(null);
+                                    if (fileInputRef.current) {
+                                        fileInputRef.current.value = "";
+                                    }
                                 }}
                             />
                         </label>
