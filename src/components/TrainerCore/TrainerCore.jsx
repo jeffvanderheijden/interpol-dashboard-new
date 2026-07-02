@@ -209,6 +209,29 @@ const TrainerCore = ({ lesson, className = "", onComplete = null }) => {
                                             />
                                         </p>
                                     ) : null}
+
+                                    {Array.isArray(step.resources) &&
+                                    step.resources.length > 0 ? (
+                                        <div className="trainer-briefing__resources">
+                                            <h3>Hulp bij deze stap</h3>
+                                            <div className="trainer-briefing__resource-list">
+                                                {step.resources.map((resource) => (
+                                                    <a
+                                                        key={`${step.id}-${resource.href}`}
+                                                        className="trainer-briefing__resource-link"
+                                                        href={resource.href}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        <span className="trainer-briefing__resource-kind">
+                                                            {resource.kind || "Link"}
+                                                        </span>
+                                                        <strong>{resource.title}</strong>
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ) : null}
                                 </div>
 
                                 <div className="trainer-briefing__actions">

@@ -255,6 +255,45 @@
     margin-top: 8px;
 }
 
+.trainer-briefing__resources {
+    margin-top: 10px;
+
+    h3 {
+        font-size: 13px;
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+}
+
+.trainer-briefing__resource-list {
+    display: grid;
+    gap: 4px;
+}
+
+.trainer-briefing__resource-link {
+    @include win95-border("raised");
+    align-items: center;
+    background: $win95-bg;
+    color: $win95-window-text;
+    display: grid;
+    gap: 2px;
+    padding: 6px 8px;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        background: #efefef;
+        outline: none;
+    }
+}
+
+.trainer-briefing__resource-kind {
+    color: $border-dark;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
 .trainer-briefing__actions {
     display: flex;
     flex-wrap: wrap;
