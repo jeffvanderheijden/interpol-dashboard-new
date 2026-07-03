@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Creacod1.scss";
 
-const CORRECT_PASSWORD = "fibonacci";
+const CORRECT_PASSWORD = "phi";
 
 const Step2 = () => {
     const navigate = useNavigate();
