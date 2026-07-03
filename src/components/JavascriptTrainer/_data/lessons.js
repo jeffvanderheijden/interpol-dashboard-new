@@ -5,14 +5,9 @@ const JS_CONSOLE_RESOURCES = [
         href: "https://developer.mozilla.org/en-US/docs/Web/API/console/log_static",
     },
     {
-        kind: "Les",
-        title: "web.dev: Learn JavaScript",
-        href: "https://web.dev/learn/javascript/welcome",
-    },
-    {
         kind: "Video",
-        title: "Scrimba: Learn JavaScript",
-        href: "https://scrimba.com/learn-javascript-c0v?via=mdn",
+        title: "YouTube: console.log for beginners",
+        href: "https://www.youtube.com/results?search_query=console.log+javascript+for+beginners",
     },
 ];
 
@@ -23,14 +18,9 @@ const JS_VARIABLE_RESOURCES = [
         href: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Variables",
     },
     {
-        kind: "Les",
-        title: "web.dev: Learn JavaScript",
-        href: "https://web.dev/learn/javascript/welcome",
-    },
-    {
         kind: "Video",
-        title: "Scrimba: Learn JavaScript",
-        href: "https://scrimba.com/learn-javascript-c0v?via=mdn",
+        title: "YouTube: JavaScript variables for beginners",
+        href: "https://www.youtube.com/results?search_query=javascript+variables+for+beginners",
     },
 ];
 
@@ -41,14 +31,9 @@ const JS_MATH_RESOURCES = [
         href: "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Math",
     },
     {
-        kind: "Les",
-        title: "web.dev: Learn JavaScript",
-        href: "https://web.dev/learn/javascript/welcome",
-    },
-    {
         kind: "Video",
-        title: "Scrimba: Learn JavaScript",
-        href: "https://scrimba.com/learn-javascript-c0v?via=mdn",
+        title: "YouTube: JavaScript numbers for beginners",
+        href: "https://www.youtube.com/results?search_query=javascript+numbers+for+beginners",
     },
 ];
 
@@ -59,14 +44,9 @@ const JS_CONDITIONAL_RESOURCES = [
         href: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/Conditionals",
     },
     {
-        kind: "Les",
-        title: "web.dev: Learn JavaScript",
-        href: "https://web.dev/learn/javascript/welcome",
-    },
-    {
         kind: "Video",
-        title: "Scrimba: Learn JavaScript",
-        href: "https://scrimba.com/learn-javascript-c0v?via=mdn",
+        title: "YouTube: JavaScript if statements for beginners",
+        href: "https://www.youtube.com/results?search_query=javascript+if+statement+for+beginners",
     },
 ];
 
@@ -77,14 +57,9 @@ const JS_FUNCTION_RESOURCES = [
         href: "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Functions",
     },
     {
-        kind: "Les",
-        title: "web.dev: Learn JavaScript",
-        href: "https://web.dev/learn/javascript/welcome",
-    },
-    {
         kind: "Video",
-        title: "Scrimba: Learn JavaScript",
-        href: "https://scrimba.com/learn-javascript-c0v?via=mdn",
+        title: "YouTube: JavaScript functions for beginners",
+        href: "https://www.youtube.com/results?search_query=javascript+functions+for+beginners",
     },
 ];
 

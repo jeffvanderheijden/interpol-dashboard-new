@@ -95,61 +95,94 @@ export default function CipherStep1({
     }
 
     return (
-        <div className="creacod-app">
-            <div className="creacod-app__window">
-                <header className="creacod-app__header">
-                    <p className="creacod-app__eyebrow">Creative Coding</p>
-                    <h1>{title}</h1>
-                    <p>
-                        Ontcijfer de symbolen.{" "}
-                        <a href="https://www.youtube.com/watch?v=i_qYXUbhtIY" target="_blank" rel="noopener noreferrer">
-                            Inspecteer
-                        </a>{" "}
-                        de pagina goed!
-                    </p>
+        <div className="trainer-core creacod-app">
+            <div className="trainer-window creacod-app__window">
+                <header className="trainer-window__titlebar">
+                    <span>Creative Coding Puzzle</span>
                 </header>
 
-                <div className="creacod-app__body creacod-app__body--split">
-                    <section
-                        className="creacod-app__panel cipher"
-                        aria-label="Versleutelde code"
-                    >
-                        <h2>Gecodeerd bericht</h2>
-                        <ul>
-                            {cipherSymbols.map((symbol, index) => (
-                                <li key={`${symbol}-${index}`}>{symbol}</li>
-                            ))}
-                        </ul>
-                    </section>
+                <div className="trainer-window__body">
+                    <div className="trainer-progressbar" aria-hidden="true">
+                        <span style={{ width: "33%" }} />
+                    </div>
 
-                    <section
-                        className="creacod-app__panel creacod-app__panel--narrow answer"
-                        aria-label="Antwoord invoeren"
-                    >
-                        <h2>Antwoord</h2>
-                        <p>Vul het ontcijferde woord in.</p>
+                    <div className="creacod-main">
+                        <section className="trainer-briefing">
+                            <div className="trainer-briefing__topline">
+                                <span className="trainer-briefing__tag">Stap 01</span>
+                                <span className="trainer-briefing__tag">
+                                    Creative Coding
+                                </span>
+                            </div>
 
-                        <input
-                            ref={inputRef}
-                            type="text"
-                            value={value}
-                            onChange={(e) => {
-                                setValue(e.target.value);
-                                if (error) setError("");
-                            }}
-                            onKeyDown={handleKeyDown}
-                            placeholder="Type je antwoord..."
-                            className={error ? "error" : ""}
-                            autoComplete="off"
-                            spellCheck="false"
-                        />
+                            <div className="trainer-briefing__header">
+                                <div>
+                                    <h2>{title}</h2>
+                                    <p className="trainer-briefing__objective">
+                                        Ontcijfer de symbolen en vind het juiste woord.
+                                    </p>
+                                </div>
+                            </div>
 
-                        <button type="button" onClick={validate}>
-                            Controleer
-                        </button>
+                            <div className="trainer-briefing__content">
+                                <p className="trainer-briefing__lead">
+                                    Vergelijk de symbolen met de verborgen legenda en vul
+                                    daarna het goede antwoord in.
+                                </p>
+                                <p>
+                                    Als je vastloopt, kun je de pagina goed{" "}
+                                    <a
+                                        href="https://www.youtube.com/watch?v=i_qYXUbhtIY"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        inspecteren
+                                    </a>
+                                    .
+                                </p>
+                            </div>
+                        </section>
 
-                        {error ? <p className="message">{error}</p> : null}
-                    </section>
+                        <section className="creacod-workbench" aria-label="Creative coding werkvlak">
+                            <section className="creacod-panel cipher" aria-label="Versleutelde code">
+                                <h2>Gecodeerd bericht</h2>
+                                <ul>
+                                    {cipherSymbols.map((symbol, index) => (
+                                        <li key={`${symbol}-${index}`}>{symbol}</li>
+                                    ))}
+                                </ul>
+                            </section>
+
+                            <section
+                                className="creacod-panel creacod-panel--narrow answer"
+                                aria-label="Antwoord invoeren"
+                            >
+                                <h2>Antwoord</h2>
+                                <p>Vul het ontcijferde woord in.</p>
+
+                                <input
+                                    ref={inputRef}
+                                    type="text"
+                                    value={value}
+                                    onChange={(e) => {
+                                        setValue(e.target.value);
+                                        if (error) setError("");
+                                    }}
+                                    onKeyDown={handleKeyDown}
+                                    placeholder="Type je antwoord..."
+                                    className={error ? "error" : ""}
+                                    autoComplete="off"
+                                    spellCheck="false"
+                                />
+
+                                <button type="button" onClick={validate}>
+                                    Controleer
+                                </button>
+
+                                {error ? <p className="message">{error}</p> : null}
+                            </section>
+                        </section>
+                    </div>
                 </div>
             </div>
 

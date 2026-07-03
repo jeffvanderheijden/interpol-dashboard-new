@@ -1,93 +1,43 @@
 @use "../../styles/win95" as *;
+@use "../TrainerCore/TrainerCore.scss";
 
 .creacod-app {
-    @include win95-font;
-    color: $win95-window-text;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    height: 100%;
     min-height: 100%;
-    overflow: auto;
-    padding: 12px 8px;
-    box-sizing: border-box;
+    height: 100vh;
 }
 
 .creacod-app__window {
+    width: min(960px, 100%);
+    height: min(92vh, 780px);
+    max-height: 100%;
+}
+
+.creacod-main {
     display: grid;
     gap: 4px;
-    max-height: 100%;
-    width: min(100%, 920px);
-}
-
-.creacod-app__header {
-    @include win95-border("sunken");
-    background: $win95-window-bg;
-    box-sizing: border-box;
-    padding: 10px 12px;
-    width: 100%;
-    
-    h1 {
-        font-size: 16px;
-        font-weight: bold;
-        margin: 0 0 6px;
-    }
-
-    p {
-        line-height: 1.45;
-        margin: 0;
-    }
-}
-
-.creacod-app__eyebrow {
-    color: $border-dark;
-    font-size: 11px;
-    font-weight: bold;
-    margin: 0 0 3px;
-    text-transform: uppercase;
-}
-
-.creacod-app__body {
-    @include win95-border("sunken");
-    background: $win95-window-bg;
-    box-sizing: border-box;
-    display: grid;
-    gap: 6px;
+    grid-template-rows: auto minmax(0, 1fr);
     min-height: 0;
-    overflow: auto;
-    padding: 1px;
-    width: 100%;
 }
 
-.creacod-app__body > .creacod-app__panel {
-    border-bottom: 1px solid $border-dark;
-    padding: 10px 12px;
+.creacod-workbench {
+    display: grid;
+    gap: 4px;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+    min-height: 0;
 }
 
-.creacod-app__body > .creacod-app__panel:last-child {
-    border-bottom: 0;
-}
-
-.creacod-app__body--split > .creacod-app__panel {
-    border-bottom: 0;
-}
-
-.creacod-app__body--split > .creacod-app__panel--narrow {
-    border-left: 1px solid $border-dark;
-}
-
-.creacod-app__body--split {
-    align-items: stretch;
+.creacod-workbench--single {
     grid-template-columns: minmax(0, 1fr);
-    overflow: auto;
 }
 
-.creacod-app__panel {
+.creacod-panel {
+    @include win95-border("sunken");
+    background: $win95-bg;
     display: grid;
     gap: 6px;
     align-content: start;
+    min-height: 0;
+    padding: 8px;
 
     h2 {
         font-size: 14px;
@@ -101,13 +51,8 @@
     }
 }
 
-.creacod-app__panel--narrow {
+.creacod-panel--narrow {
     align-content: start;
-}
-
-.creacod1-feedback {
-    color: $win95-danger;
-    margin: 0;
 }
 
 .cipher ul {
@@ -121,7 +66,9 @@
 }
 
 .cipher li {
+    @include win95-border("sunken");
     align-items: center;
+    background: $win95-window-bg;
     display: inline-flex;
     font-family:
         "Segoe UI Symbol",
@@ -136,8 +83,6 @@
     justify-content: center;
     user-select: none;
     width: 34px;
-    @include win95-border("sunken");
-    background: $win95-bg;
 }
 
 .answer input,
@@ -169,21 +114,18 @@
     min-width: 96px;
 }
 
-.answer .message {
+.answer .message,
+.creacod1-feedback {
     color: $win95-danger;
     margin: 0;
 }
 
-.alphabet {
-    display: none;
-}
-
 .creacod1-downloads {
+    @include win95-border("sunken");
+    background: $win95-window-bg;
     display: grid;
     gap: 0;
     margin-top: 2px;
-    @include win95-border("sunken");
-    background: $win95-window-bg;
     padding: 1px;
 }
 
@@ -200,50 +142,46 @@
         border-bottom: 0;
     }
 
-    strong {
-        font-size: 13px;
-    }
-
-    span {
-        color: $border-dark;
-        line-height: 1.4;
-    }
-
-    em {
-        color: $border-dark;
-        font-style: normal;
-        font-weight: bold;
-    }
-
     &:hover,
     &:focus {
         background: #f3f3f3;
         outline: 1px dotted $border-darker;
         outline-offset: -4px;
     }
-}
 
-@media (min-width: 760px) {
-    .creacod-app__body--split {
-        grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
+    strong {
+        font-size: 13px;
+    }
+
+    span,
+    em {
+        color: $border-dark;
+        line-height: 1.4;
+    }
+
+    em {
+        font-style: normal;
+        font-weight: bold;
     }
 }
 
-@media (max-width: 759px) {
+.alphabet {
+    display: none;
+}
+
+@media (max-width: 1100px) {
+    .creacod-workbench {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
     .creacod-app {
-        justify-content: flex-start;
-        padding: 8px 4px 4px;
+        padding: 4px;
     }
 
-    .creacod-app__body--split > .creacod-app__panel--narrow {
-        border-left: 0;
-        border-top: 1px solid $border-dark;
-    }
-
-    .creacod-app__header,
-    .creacod-app__body > .creacod-app__panel {
-        padding-left: 10px;
-        padding-right: 10px;
+    .creacod-app__window {
+        height: 100%;
     }
 
     .cipher ul {

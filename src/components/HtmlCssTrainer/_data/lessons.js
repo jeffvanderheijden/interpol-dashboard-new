@@ -5,14 +5,9 @@ const HTML_RESOURCES = [
         href: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Your_first_website/Creating_the_content",
     },
     {
-        kind: "Les",
-        title: "web.dev: Learn HTML",
-        href: "https://web.dev/learn/html/welcome",
-    },
-    {
         kind: "Video",
-        title: "Scrimba: Learn HTML and CSS",
-        href: "https://scrimba.com/learn-html-and-css-c0p?via=mdn",
+        title: "YouTube: HTML for beginners",
+        href: "https://www.youtube.com/results?search_query=html+for+absolute+beginners",
     },
 ];
 
@@ -23,14 +18,9 @@ const CSS_RESOURCES = [
         href: "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Your_first_website/Styling_the_content",
     },
     {
-        kind: "Les",
-        title: "web.dev: Learn CSS",
-        href: "https://web.dev/learn/css/welcome",
-    },
-    {
         kind: "Video",
-        title: "Scrimba: Learn HTML and CSS",
-        href: "https://scrimba.com/learn-html-and-css-c0p?via=mdn",
+        title: "YouTube: CSS for beginners",
+        href: "https://www.youtube.com/results?search_query=css+for+absolute+beginners",
     },
 ];
 
