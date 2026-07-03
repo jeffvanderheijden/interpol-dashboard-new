@@ -20,12 +20,6 @@ const figmaFiles = [
     },
 ];
 
-const tutorialVideo = {
-    title: "Creative Coding Tutorial",
-    description: "Bekijk deze video als extra uitleg bij stap 3.",
-    href: "https://www.youtube.com/watch?v=jQ1sfKIl50E",
-};
-
 const CORRECT_PASSWORD = "fibonacci";
 
 const Step3 = () => {
@@ -99,6 +93,17 @@ const Step3 = () => {
                                     kijk goed naar de lagen. Vul daarna het gevonden
                                     wachtwoord hieronder in.
                                 </p>
+                                <p>
+                                    Als je extra uitleg nodig hebt, kun je deze{" "}
+                                    <a
+                                        href="https://www.youtube.com/watch?v=jQ1sfKIl50E"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        tutorial
+                                    </a>{" "}
+                                    bekijken.
+                                </p>
                             </div>
                         </section>
 
@@ -144,27 +149,6 @@ const Step3 = () => {
                                             <em>Download .fig bestand</em>
                                         </a>
                                     ))}
-                                </div>
-                            </section>
-
-                            <section className="creacod-panel">
-                                <h2>Tutorial</h2>
-                                <p>
-                                    Heb je extra uitleg nodig? Bekijk dan deze tutorial
-                                    over creative coding.
-                                </p>
-
-                                <div className="creacod1-downloads">
-                                    <a
-                                        className="creacod1-download"
-                                        href={tutorialVideo.href}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <strong>{tutorialVideo.title}</strong>
-                                        <span>{tutorialVideo.description}</span>
-                                        <em>Open YouTube-video</em>
-                                    </a>
                                 </div>
                             </section>
 
