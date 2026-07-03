@@ -103,7 +103,7 @@ export default function CipherStep1({
 
                 <div className="trainer-window__body">
                     <div className="trainer-progressbar" aria-hidden="true">
-                        <span style={{ width: "33%" }} />
+                        <span style={{ width: "25%" }} />
                     </div>
 
                     <div className="creacod-main">

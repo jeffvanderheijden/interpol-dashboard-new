@@ -43,7 +43,7 @@ const Step2 = () => {
 
                 <div className="trainer-window__body">
                     <div className="trainer-progressbar" aria-hidden="true">
-                        <span style={{ width: "66%" }} />
+                        <span style={{ width: "50%" }} />
                     </div>
 
                     <div className="creacod-main">

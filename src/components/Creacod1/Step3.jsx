@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Creacod1.scss";
 
 const figmaFiles = [
@@ -18,7 +20,44 @@ const figmaFiles = [
     },
 ];
 
+const tutorialVideo = {
+    title: "Creative Coding Tutorial",
+    description: "Bekijk deze video als extra uitleg bij stap 3.",
+    href: "https://www.youtube.com/watch?v=jQ1sfKIl50E",
+};
+
+const CORRECT_PASSWORD = "fibonacci";
+
 const Step3 = () => {
+    const navigate = useNavigate();
+    const inputRef = useRef(null);
+    const [value, setValue] = useState("");
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
+
+    const validate = () => {
+        const normalized = value.trim().toLowerCase().replace(/\s/g, "");
+
+        if (!normalized) {
+            setError("Vul eerst het wachtwoord in.");
+            inputRef.current?.focus();
+            return;
+        }
+
+        if (normalized !== CORRECT_PASSWORD) {
+            setError("Dat wachtwoord klopt niet. Probeer opnieuw.");
+            inputRef.current?.focus();
+            inputRef.current?.select();
+            return;
+        }
+
+        setError("");
+        navigate("/creative-coding/step4");
+    };
+
     return (
         <div className="trainer-core creacod-app">
             <div className="trainer-window creacod-app__window">
@@ -28,7 +67,7 @@ const Step3 = () => {
 
                 <div className="trainer-window__body">
                     <div className="trainer-progressbar" aria-hidden="true">
-                        <span style={{ width: "100%" }} />
+                        <span style={{ width: "75%" }} />
                     </div>
 
                     <div className="creacod-main">
@@ -57,7 +96,8 @@ const Step3 = () => {
                                 </p>
                                 <p>
                                     Download de bestanden hieronder, open ze in Figma en
-                                    kijk goed naar de lagen.
+                                    kijk goed naar de lagen. Vul daarna het gevonden
+                                    wachtwoord hieronder in.
                                 </p>
                             </div>
                         </section>
@@ -105,6 +145,61 @@ const Step3 = () => {
                                         </a>
                                     ))}
                                 </div>
+                            </section>
+
+                            <section className="creacod-panel">
+                                <h2>Tutorial</h2>
+                                <p>
+                                    Heb je extra uitleg nodig? Bekijk dan deze tutorial
+                                    over creative coding.
+                                </p>
+
+                                <div className="creacod1-downloads">
+                                    <a
+                                        className="creacod1-download"
+                                        href={tutorialVideo.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <strong>{tutorialVideo.title}</strong>
+                                        <span>{tutorialVideo.description}</span>
+                                        <em>Open YouTube-video</em>
+                                    </a>
+                                </div>
+                            </section>
+
+                            <section className="creacod-panel creacod-panel--narrow">
+                                <h2>Wachtwoord</h2>
+                                <p>
+                                    Heb je het verborgen bericht gevonden? Vul dan het
+                                    wachtwoord in om naar stap 4 te gaan.
+                                </p>
+
+                                <input
+                                    ref={inputRef}
+                                    type="text"
+                                    placeholder="Wachtwoord"
+                                    value={value}
+                                    onChange={(e) => {
+                                        setValue(e.target.value);
+                                        if (error) setError("");
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            e.preventDefault();
+                                            validate();
+                                        }
+                                    }}
+                                    className={error ? "is-error" : ""}
+                                    autoComplete="off"
+                                    spellCheck="false"
+                                />
+
+                                <button type="button" onClick={validate}>
+                                    Controleer
+                                </button>
+
+                                {error ? <p className="creacod1-feedback">{error}</p> : null}
                             </section>
                         </section>
                     </div>
