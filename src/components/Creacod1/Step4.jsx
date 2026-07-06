@@ -4,15 +4,16 @@ import "./Creacod1.scss";
 const Step4 = () => {
     useEffect(() => {
         document.title = "CAESAR";
-    }, []);
+        const commentNode = document.createComment(
+            " Gebruik de cipher die in de titel staat om het volgende te oncijferen: Ola huadvvyk chu ola yhhkzls vw klgl whnpuh ollma al thrlu tla hssl huklyl dhjoadvvyklu ava ub avl. Kvl vuklygvlr! Hsz ql ola dhjoadvvyk dlla, rbu ql ola oply pucbsslu: khzoivhyk.pualywvs.zk-shi.us/jylhapcl-jvkpun/mpuhs "
+        );
 
-    const contentHtml = `<!-- Gebruik de cipher die in de titel staat om het volgende te oncijferen: Ola huadvvyk chu ola yhhkzls vw klgl whnpuh ollma al thrlu tla hssl huklyl dhjoadvvyklu ava ub avl. Kvl vuklygvlr! Hsz ql ola dhjoadvvyk dlla, rbu ql ola oply pucbsslu: khzoivhyk.pualywvs.zk-shi.us/jylhapcl-jvkpun/mpuhs -->
-        <p class="trainer-briefing__lead">
-            De afbeeldingen in de voorgaande figma puzzel zijn hints. Gebruik die hints in combinatie met de volgende om het wachtwoord te ontrafelen:
-        </p>
-        <p>
-            "Ik ben een reeks waarin elk getal de som is van de twee voorgaande."
-        </p>`;
+        document.body.appendChild(commentNode);
+
+        return () => {
+            commentNode.remove();
+        };
+    }, []);
 
     return (
         <div className="trainer-core creacod-app">
@@ -45,10 +46,17 @@ const Step4 = () => {
                                 </div>
                             </div>
 
-                            <div
-                                className="trainer-briefing__content"
-                                dangerouslySetInnerHTML={{ __html: contentHtml }}
-                            />
+                            <div className="trainer-briefing__content">
+                                <p className="trainer-briefing__lead">
+                                    De afbeeldingen in de voorgaande figma puzzel zijn
+                                    hints. Gebruik die hints in combinatie met de volgende
+                                    om het wachtwoord te ontrafelen:
+                                </p>
+                                <p>
+                                    "Ik ben een reeks waarin elk getal de som is van de
+                                    twee voorgaande."
+                                </p>
+                            </div>
                         </section>
 
                         <section
