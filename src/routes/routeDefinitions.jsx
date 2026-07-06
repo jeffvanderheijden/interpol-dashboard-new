@@ -3,6 +3,7 @@ import KijkOpDeWijk from "../components/KijkOpDeWijk/KijkOpDeWijk";
 import Step2 from "../components/Creacod1/Step2";
 import Step3 from "../components/Creacod1/Step3";
 import Step4 from "../components/Creacod1/Step4";
+import Final from "../components/Creacod1/Final";
 import Login from "../pages/Login";
 import Training from "../pages/Training";
 import Dashboard from "../pages/Dashboard";
@@ -72,6 +73,12 @@ export const protectedRoutes = [
         roles: studentRoles,
         challengeRoute: "/creative-coding",
         element: <Step4 />,
+    },
+    {
+        path: "/final",
+        roles: studentRoles,
+        challengeRoute: "/creative-coding",
+        element: <Final />,
     },
     { path: "/admin", roles: ["docent"], element: <Admin /> },
 ];

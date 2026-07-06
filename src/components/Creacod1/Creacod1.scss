@@ -120,6 +120,15 @@
     margin: 0;
 }
 
+.creacod1-success {
+    color: #1a5f28;
+    margin: 0;
+}
+
+.creacod1-html-comment {
+    display: none;
+}
+
 .creacod1-downloads {
     @include win95-border("sunken");
     background: $win95-window-bg;

@@ -9,7 +9,7 @@ export default function CipherStep1({
     title = "Cipher",
 }) {
     const navigate = useNavigate();
-    const { complete } = useChallengeTracking("/creative-coding");
+    useChallengeTracking("/creative-coding");
     const [value, setValue] = useState("");
     const [error, setError] = useState("");
     const inputRef = useRef(null);
@@ -61,7 +61,7 @@ export default function CipherStep1({
         inputRef.current?.focus();
     }, []);
 
-    async function validate() {
+    function validate() {
         const input = normalize(value);
         const expected = normalize(correctAnswer);
 
@@ -79,11 +79,6 @@ export default function CipherStep1({
         }
 
         setError("");
-        try {
-            await complete();
-        } catch (err) {
-            console.error("Creative coding completion failed", err);
-        }
         navigate(nextRoute);
     }
 
