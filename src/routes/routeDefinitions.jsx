@@ -9,6 +9,7 @@ import Training from "../pages/Training";
 import Dashboard from "../pages/Dashboard";
 import HtmlCss from "../pages/HtmlCss";
 import Javascript from "../pages/Javascript";
+import TerminalOps from "../pages/TerminalOps";
 import CreativeCoding from "../pages/CreativeCoding";
 import Admin from "../pages/Admin";
 import LeaderboardScreen from "../pages/LeaderboardScreen";
@@ -43,6 +44,12 @@ export const protectedRoutes = [
         roles: studentRoles,
         challengeRoute: "/javascript",
         element: <Javascript />,
+    },
+    {
+        path: "/terminal-ops",
+        roles: studentRoles,
+        challengeRoute: "/terminal-ops",
+        element: <TerminalOps />,
     },
     {
         path: "/kijk-op-de-wijk",

@@ -21,6 +21,17 @@ function getStarterCode(lesson, step) {
     return String(step?.starter?.js || step?.starter || "");
 }
 
+function getLanguageLabel(language) {
+    switch (language) {
+        case "javascript":
+            return "JavaScript";
+        case "terminal":
+            return "Terminal";
+        default:
+            return "HTML + CSS";
+    }
+}
+
 function removeLessonProgress(lessonId) {
     const currentProgress = loadTrainerProgress();
     const nextProgress = { ...currentProgress };
@@ -169,9 +180,7 @@ const TrainerCore = ({ lesson, className = "", onComplete = null }) => {
                                         Stap {String(stepIndex + 1).padStart(2, "0")}
                                     </span>
                                     <span className="trainer-briefing__tag">
-                                        {lesson.language === "javascript"
-                                            ? "JavaScript"
-                                            : "HTML + CSS"}
+                                        {getLanguageLabel(lesson.language)}
                                     </span>
                                 </div>
 
@@ -278,6 +287,13 @@ const TrainerCore = ({ lesson, className = "", onComplete = null }) => {
                                                 label="CSS"
                                             />
                                         </>
+                                    ) : lesson.language === "terminal" ? (
+                                        <Editor
+                                            language="plaintext"
+                                            value={code}
+                                            onChange={handleCodeChange}
+                                            label="Terminal"
+                                        />
                                     ) : (
                                         <Editor
                                             language="javascript"
