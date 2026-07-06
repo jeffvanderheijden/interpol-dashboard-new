@@ -125,107 +125,6 @@ function buildJavascriptDocument() {
 </html>`;
 }
 
-function buildTerminalDocument() {
-    return `<!doctype html>
-<html lang="nl">
-    <head>
-        <meta charset="UTF-8" />
-        <style>
-            body {
-                margin: 0;
-                padding: 12px;
-                background: #c0c0c0;
-                color: #000000;
-                font-family: "Courier New", monospace;
-                min-height: 100vh;
-            }
-
-            .terminal-shell {
-                border: 2px solid;
-                border-color: #808080 #ffffff #ffffff #808080;
-                background: #101820;
-                color: #d8f3dc;
-                overflow: hidden;
-            }
-
-            .terminal-titlebar {
-                padding: 4px 8px;
-                background: #000080;
-                font-size: 12px;
-                color: #ffffff;
-                font-family: "MS Sans Serif", Tahoma, Geneva, sans-serif;
-                font-weight: bold;
-            }
-
-            #terminal-status {
-                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-                color: #9ec5ab;
-                font-size: 12px;
-                padding: 8px 12px 0;
-            }
-
-            #terminal-output {
-                margin: 0;
-                padding: 10px 12px 14px;
-                min-height: 220px;
-                white-space: pre-wrap;
-                line-height: 1.5;
-            }
-
-            .placeholder {
-                color: #8aa29e;
-            }
-
-            .command {
-                color: #f4f1de;
-            }
-
-            .output {
-                color: #d8f3dc;
-            }
-
-            .error {
-                color: #ff8a80;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="terminal-shell">
-            <div class="terminal-titlebar">Interpol Terminal Sandbox</div>
-            <div id="terminal-status">Huidige map: /agent</div>
-            <pre id="terminal-output"><span class="placeholder">Klik op "Controleer" om je commando's in de terminalsimulatie uit te voeren.</span></pre>
-        </div>
-
-        <script>
-            (function initializeTerminalPreview() {
-                const output = document.getElementById("terminal-output");
-                const status = document.getElementById("terminal-status");
-
-                window.__trainerRenderTerminal = (lines, currentPath) => {
-                    output.textContent = "";
-                    status.textContent = "Huidige map: " + String(currentPath || "/");
-
-                    if (!Array.isArray(lines) || lines.length === 0) {
-                        const empty = document.createElement("div");
-                        empty.className = "placeholder";
-                        empty.textContent = "Geen commando's uitgevoerd.";
-                        output.appendChild(empty);
-                        return;
-                    }
-
-                    for (const line of lines) {
-                        const row = document.createElement("div");
-                        row.className = line.kind || "output";
-                        row.textContent = line.text || "";
-                        output.appendChild(row);
-                    }
-                };
-            })();
-        </script>
-    </body>
-</html>`;
-}
-
 function buildHtmlCssDocument(code) {
     const html = String(code?.html ?? "");
     const css = String(code?.css ?? "");
@@ -255,9 +154,7 @@ function buildPreviewDocument(lesson, code, revision) {
     const documentSource =
         lesson.language === "javascript"
             ? buildJavascriptDocument()
-            : lesson.language === "terminal"
-                ? buildTerminalDocument()
-                : buildHtmlCssDocument(code);
+            : buildHtmlCssDocument(code);
 
     return `${documentSource}\n<!-- revision:${revision} -->`;
 }
@@ -349,9 +246,7 @@ const Preview = ({ code, lesson, iframeRef, runTests, results = [] }) => {
                     <h3>
                         {lesson.language === "javascript"
                             ? "Console"
-                            : lesson.language === "terminal"
-                                ? "Terminal"
-                                : "Pagina"}
+                            : "Pagina"}
                     </h3>
                 </div>
 

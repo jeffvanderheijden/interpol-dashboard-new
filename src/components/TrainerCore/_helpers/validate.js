@@ -1,8 +1,3 @@
-import {
-    normalizeTerminalPath,
-    runTerminalProgram,
-} from "./terminalRuntime";
-
 function normalizeText(value) {
     return String(value ?? "").replace(/\s+/g, " ").trim().toLowerCase();
 }
@@ -21,11 +16,6 @@ function normalizeTestType(type) {
         hasCount: "elementCount",
         objectPropertyEquals: "objectPropertyEquals",
         selectorExists: "selectorExists",
-        terminalCommandUsed: "terminalCommandUsed",
-        terminalEntryExists: "terminalEntryExists",
-        terminalErrorCount: "terminalErrorCount",
-        terminalOutputIncludes: "terminalOutputIncludes",
-        terminalPathEquals: "terminalPathEquals",
         textContains: "textIncludes",
         variableEquals: "variableEquals",
     };
@@ -237,97 +227,6 @@ async function runJavascriptTests(win, tests, code) {
     return results;
 }
 
-async function runTerminalTests(win, tests, code, scenario) {
-    const execution = runTerminalProgram({
-        code,
-        scenario,
-    });
-    const results = [];
-
-    if (typeof win.__trainerRenderTerminal === "function") {
-        win.__trainerRenderTerminal(execution.lines, execution.currentPath);
-    }
-
-    for (const test of tests) {
-        const normalizedType = normalizeTestType(test.type);
-        let pass = false;
-
-        try {
-            switch (normalizedType) {
-                case "terminalCommandUsed": {
-                    const anyOf = Array.isArray(test.anyOf)
-                        ? test.anyOf
-                        : Array.isArray(test.commands)
-                            ? test.commands
-                            : [test.command || test.value || test.equals];
-
-                    pass = anyOf
-                        .filter(Boolean)
-                        .map((item) => normalizeText(item))
-                        .some((item) =>
-                            execution.commands.some(
-                                (command) => normalizeText(command) === item
-                            )
-                        );
-                    break;
-                }
-
-                case "terminalPathEquals": {
-                    const expectedPath = normalizeTerminalPath(
-                        getExpectedValue(test, "path", "value"),
-                        scenario?.startPath || "/"
-                    );
-
-                    pass = execution.currentPath === expectedPath;
-                    break;
-                }
-
-                case "terminalOutputIncludes": {
-                    pass = execution.output.some((line) =>
-                        normalizeText(line).includes(
-                            normalizeText(test.includes)
-                        )
-                    );
-                    break;
-                }
-
-                case "terminalEntryExists": {
-                    const expectedPath = normalizeTerminalPath(
-                        test.path,
-                        scenario?.startPath || "/"
-                    );
-                    const entry = execution.entries?.[expectedPath];
-                    const expectedType = test.entryType || test.typeName;
-
-                    pass =
-                        !!entry &&
-                        (!expectedType || entry.type === expectedType);
-                    break;
-                }
-
-                case "terminalErrorCount": {
-                    const expected = Number(
-                        getExpectedValue(test, "value", "equals") ?? 0
-                    );
-
-                    pass = execution.errors.length === expected;
-                    break;
-                }
-
-                default:
-                    pass = false;
-                    break;
-            }
-        } catch {
-            pass = false;
-        }
-
-        results.push({ label: test.label || test.type, pass });
-    }
-
-    return results;
-}
-
 async function runHtmlCssTests(doc, tests) {
     const results = [];
 
@@ -470,15 +369,6 @@ export async function runAllTests({ lesson, step, code, iframeRef }) {
 
     if (lesson.language === "javascript") {
         return runJavascriptTests(win, tests, String(code ?? ""));
-    }
-
-    if (lesson.language === "terminal") {
-        return runTerminalTests(
-            win,
-            tests,
-            String(code ?? ""),
-            step.scenario || lesson.terminalScenario || {}
-        );
     }
 
     return runHtmlCssTests(doc, tests);

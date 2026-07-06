@@ -1,0 +1,75 @@
+.terminal-ops-briefing {
+    display: grid;
+    gap: 10px;
+    padding: 12px;
+    line-height: 1.45;
+}
+
+.terminal-ops-briefing__eyebrow {
+    color: #666;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.terminal-ops-briefing h2 {
+    font-size: 17px;
+    margin: 0;
+}
+
+.terminal-ops-briefing__panel {
+    border: 2px solid;
+    border-color: #808080 #ffffff #ffffff #808080;
+    background: #ffffff;
+    display: grid;
+    gap: 6px;
+    padding: 8px;
+}
+
+.terminal-ops-briefing__panel h3 {
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.terminal-ops-briefing__panel ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.terminal-ops-briefing__panel code {
+    background: #f3f3f3;
+    border: 1px solid #c7c7c7;
+    padding: 1px 4px;
+}
+
+.terminal-ops-briefing__links {
+    display: grid;
+    gap: 6px;
+}
+
+.terminal-ops-briefing__link {
+    border: 2px solid;
+    border-color: #ffffff #000000 #000000 #ffffff;
+    background: silver;
+    color: #222;
+    display: grid;
+    gap: 2px;
+    padding: 7px 8px;
+    text-decoration: none;
+}
+
+.terminal-ops-briefing__link:hover,
+.terminal-ops-briefing__link:focus {
+    background: #efefef;
+    outline: 1px dotted #000;
+    outline-offset: -4px;
+}
+
+.terminal-ops-briefing__link span {
+    color: #666;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}

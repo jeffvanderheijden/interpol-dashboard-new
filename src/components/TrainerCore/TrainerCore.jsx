@@ -25,8 +25,6 @@ function getLanguageLabel(language) {
     switch (language) {
         case "javascript":
             return "JavaScript";
-        case "terminal":
-            return "Terminal";
         default:
             return "HTML + CSS";
     }
@@ -287,13 +285,6 @@ const TrainerCore = ({ lesson, className = "", onComplete = null }) => {
                                                 label="CSS"
                                             />
                                         </>
-                                    ) : lesson.language === "terminal" ? (
-                                        <Editor
-                                            language="plaintext"
-                                            value={code}
-                                            onChange={handleCodeChange}
-                                            label="Terminal"
-                                        />
                                     ) : (
                                         <Editor
                                             language="javascript"

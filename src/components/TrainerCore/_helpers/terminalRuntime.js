@@ -366,11 +366,19 @@ export function runTerminalProgram({ code, scenario = {} }) {
 
             case "help": {
                 pushOutput(
-                    [
-                        "Beschikbare commando's:",
-                        "pwd, cd, ls, dir, cat, type, mkdir, cp, copy, mv, move",
-                    ].join("\n")
+                    scenario.helpText ||
+                        [
+                            "Beschikbare commando's:",
+                            "pwd, cd, ls, dir, cat, type, mkdir, cp, copy, mv, move",
+                        ].join("\n")
                 );
+                break;
+            }
+
+            case "clear": {
+                state.lines = [];
+                state.output = [];
+                state.errors = [];
                 break;
             }
 

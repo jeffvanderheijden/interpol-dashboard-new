@@ -1,7 +1,7 @@
-import TerminalTrainer from "../components/TerminalTrainer/TerminalTrainer";
+import TerminalOpsDesktop from "../components/TerminalOpsDesktop/TerminalOpsDesktop";
 
 const TerminalOps = () => {
-    return <TerminalTrainer />;
+    return <TerminalOpsDesktop />;
 };
 
 export default TerminalOps;
