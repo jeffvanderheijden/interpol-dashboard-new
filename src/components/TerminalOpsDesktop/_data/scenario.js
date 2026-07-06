@@ -4,6 +4,19 @@ export const TERMINAL_OPS_SCENARIO = {
         "Beschikbare commando's:",
         "pwd, cd, ls, dir, cat, type, mkdir, md, cp, copy, mv, move, help, clear",
     ].join("\n"),
+    resolveFileContent({ targetPath, entry }) {
+        if (
+            targetPath === "/home/agent/operations/briefing/signals/clue.txt"
+        ) {
+            return [
+                "SIGNAAL BEVESTIGD",
+                "Codewoord: terminal-mastery",
+                "Missie afgerond. Je hebt het bestand vanuit de juiste map heropend.",
+            ].join("\n");
+        }
+
+        return entry?.content || "";
+    },
     entries: [
         { path: "/home", type: "dir" },
         { path: "/home/agent", type: "dir" },

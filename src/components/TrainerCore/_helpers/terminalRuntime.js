@@ -286,7 +286,16 @@ export function runTerminalProgram({ code, scenario = {} }) {
                     break;
                 }
 
-                pushOutput(targetEntry.content || "");
+                const resolvedContent =
+                    typeof scenario.resolveFileContent === "function"
+                        ? scenario.resolveFileContent({
+                            targetPath,
+                            entry: targetEntry,
+                            state,
+                        })
+                        : targetEntry.content || "";
+
+                pushOutput(resolvedContent);
                 break;
             }
 
