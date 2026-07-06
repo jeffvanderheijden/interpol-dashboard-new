@@ -128,4 +128,14 @@
         margin-right: 6px;
         image-rendering: pixelated;
     }
+
+    &__clock {
+        @include win95-border("sunken");
+        background: $win95-bg;
+        font-size: 12px;
+        min-width: 64px;
+        padding: 3px 8px 2px;
+        text-align: center;
+        white-space: nowrap;
+    }
 }

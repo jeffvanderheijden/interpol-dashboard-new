@@ -4,6 +4,13 @@ import { useAuth } from "./../../ProtectedRoute/_context/AuthContext";
 
 import "./Taskbar.scss";
 
+function formatTaskbarTime(date) {
+    return new Intl.DateTimeFormat("nl-NL", {
+        hour: "2-digit",
+        minute: "2-digit",
+    }).format(date);
+}
+
 export default function Taskbar({
     openWindows,
     bringToFront,
@@ -14,6 +21,9 @@ export default function Taskbar({
     const { logout } = useAuth();
 
     const [menuOpen, setMenuOpen] = useState(false);
+    const [currentTime, setCurrentTime] = useState(() =>
+        formatTaskbarTime(new Date())
+    );
     const menuRef = useRef(null);
 
     // -------------------------------
@@ -34,6 +44,17 @@ export default function Taskbar({
 
         return () => document.removeEventListener("pointerdown", handleClickOutside);
     }, [menuOpen]);
+
+    useEffect(() => {
+        const tick = () => {
+            setCurrentTime(formatTaskbarTime(new Date()));
+        };
+
+        tick();
+        const timerId = window.setInterval(tick, 1000);
+
+        return () => window.clearInterval(timerId);
+    }, []);
 
     // -------------------------------
     // Log out actie
@@ -112,6 +133,10 @@ export default function Taskbar({
                         {win.title}
                     </button>
                 ))}
+            </div>
+
+            <div className="taskbar__clock" aria-label={`Huidige tijd: ${currentTime}`}>
+                {currentTime}
             </div>
         </div>
     );
