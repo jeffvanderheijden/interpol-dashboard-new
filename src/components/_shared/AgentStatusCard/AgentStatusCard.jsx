@@ -12,6 +12,10 @@ function buildAgentLabel(user) {
 export default function AgentStatusCard({ mode = "training" }) {
     const { user } = useAuth();
 
+    if (user?.role === "docent") {
+        return null;
+    }
+
     const isDashboard = mode === "dashboard";
     const operationLabel = isDashboard
         ? "Active Case Dashboard"
