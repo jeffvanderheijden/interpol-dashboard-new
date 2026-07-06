@@ -28,14 +28,14 @@ const Final = () => {
         const expected = EXPECTED_SEQUENCE.join(" ");
 
         if (!normalized) {
-            setError("Vul eerst de reeks in.");
+            setError("Vul eerst een antwoord in.");
             setSuccess("");
             inputRef.current?.focus();
             return;
         }
 
         if (normalized !== expected) {
-            setError("Dat is nog niet de juiste Fibonacci-reeks.");
+            setError("Dat is nog niet het juiste antwoord.");
             setSuccess("");
             inputRef.current?.focus();
             inputRef.current?.select();
@@ -82,19 +82,19 @@ const Final = () => {
                                 <div>
                                     <h2>Laatste invoer</h2>
                                     <p className="trainer-briefing__objective">
-                                        Vul de volledige Fibonacci-reeks in om de challenge
-                                        af te ronden.
+                                        Vul het juiste eindantwoord in om de challenge af
+                                        te ronden.
                                     </p>
                                 </div>
                             </div>
 
                             <div className="trainer-briefing__content">
                                 <p className="trainer-briefing__lead">
-                                    Gebruik de hint uit stap 4 en vul de reeks in.
+                                    Gebruik alles wat je tot nu toe hebt gevonden.
                                 </p>
                                 <p>
-                                    Voer de getallen in als een reeks, bijvoorbeeld met
-                                    spaties ertussen.
+                                    Als je de puzzel goed hebt opgelost, weet je wat hier
+                                    ingevuld moet worden.
                                 </p>
                             </div>
                         </section>
@@ -104,13 +104,13 @@ const Final = () => {
                             aria-label="Creative coding eindinvoer"
                         >
                             <section className="creacod-panel creacod-panel--narrow">
-                                <h2>Fibonacci-reeks</h2>
+                                <h2>Eindantwoord</h2>
                                 <p>Vul hier het eindantwoord in.</p>
 
                                 <input
                                     ref={inputRef}
                                     type="text"
-                                    placeholder="Bijv. 1 1 2 3 5 8 13"
+                                    placeholder="Typ hier je antwoord"
                                     value={value}
                                     onChange={(e) => {
                                         setValue(e.target.value);

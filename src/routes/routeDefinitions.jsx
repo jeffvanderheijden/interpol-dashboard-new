@@ -75,7 +75,7 @@ export const protectedRoutes = [
         element: <Step4 />,
     },
     {
-        path: "/final",
+        path: "/creative-coding/final",
         roles: studentRoles,
         challengeRoute: "/creative-coding",
         element: <Final />,
