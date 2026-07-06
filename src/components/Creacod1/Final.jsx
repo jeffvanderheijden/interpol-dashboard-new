@@ -3,6 +3,16 @@ import { useChallengeTracking } from "../../hooks/useChallengeTracking";
 import "./Creacod1.scss";
 
 const EXPECTED_SEQUENCE = ["1", "1", "2", "3", "5", "8", "13"];
+const CONFETTI_COLORS = [
+    "#ff4d6d",
+    "#ffd166",
+    "#06d6a0",
+    "#118ab2",
+    "#ef476f",
+    "#f78c6b",
+    "#7bdff2",
+    "#cdb4db",
+];
 
 function normalizeSequence(value) {
     return String(value ?? "")
@@ -11,12 +21,13 @@ function normalizeSequence(value) {
 }
 
 const Final = () => {
-    const { complete } = useChallengeTracking("/creative-coding");
+    const { challenge, complete } = useChallengeTracking("/creative-coding");
     const inputRef = useRef(null);
     const [value, setValue] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [pointsAwarded, setPointsAwarded] = useState(null);
 
     useEffect(() => {
         document.title = "FINAL";
@@ -46,12 +57,22 @@ const Final = () => {
         setError("");
 
         try {
-            await complete();
+            const result = await complete();
+            const awardedPoints = Number(
+                result?.points ??
+                    result?.earned_points ??
+                    challenge?.points ??
+                    challenge?.earned_points ??
+                    0
+            );
+
+            setPointsAwarded(awardedPoints);
             setSuccess("Correct. De punten zijn toegekend.");
         } catch (err) {
             console.error("Creative coding completion failed", err);
             setError("De invoer klopt, maar het toekennen van punten mislukte.");
             setSuccess("");
+            setPointsAwarded(null);
         } finally {
             setIsSubmitting(false);
         }
@@ -146,6 +167,37 @@ const Final = () => {
                     </div>
                 </div>
             </div>
+
+            {success ? (
+                <div className="creacod1-celebration" role="status" aria-live="polite">
+                    <div className="creacod1-confetti" aria-hidden="true">
+                        {Array.from({ length: 28 }, (_, index) => (
+                            <span
+                                key={index}
+                                className="creacod1-confetti-piece"
+                                style={{
+                                    left: `${(index * 17) % 100}%`,
+                                    backgroundColor:
+                                        CONFETTI_COLORS[index % CONFETTI_COLORS.length],
+                                    animationDelay: `${(index % 7) * 0.18}s`,
+                                    animationDuration: `${3.4 + (index % 5) * 0.35}s`,
+                                    transform: `rotate(${index * 19}deg)`,
+                                }}
+                            />
+                        ))}
+                    </div>
+
+                    <div className="creacod1-celebration__card">
+                        <p className="creacod1-celebration__eyebrow">
+                            Challenge voltooid
+                        </p>
+                        <h2>Goed gedaan!</h2>
+                        <p>
+                            Je hebt {pointsAwarded ?? 0} punten verdiend!
+                        </p>
+                    </div>
+                </div>
+            ) : null}
         </div>
     );
 };
