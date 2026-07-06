@@ -49,6 +49,11 @@ const Step4 = () => {
                                     "Ik ben een reeks waarin elk getal de som is van de
                                     twee voorgaande."
                                 </p>
+                                <span
+                                    aria-hidden="true"
+                                    className="creacod1-html-comment"
+                                    dangerouslySetInnerHTML={{ __html: htmlComment }}
+                                />
                             </div>
                         </section>
 
@@ -71,12 +76,6 @@ const Step4 = () => {
                     </div>
                 </div>
             </div>
-
-            <div
-                aria-hidden="true"
-                className="creacod1-html-comment"
-                dangerouslySetInnerHTML={{ __html: htmlComment }}
-            />
         </div>
     );
 };

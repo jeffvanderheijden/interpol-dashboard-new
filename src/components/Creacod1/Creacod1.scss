@@ -126,7 +126,11 @@
 }
 
 .creacod1-html-comment {
-    display: none;
+    display: block;
+    height: 0;
+    margin: 0;
+    overflow: hidden;
+    width: 0;
 }
 
 .creacod1-downloads {
