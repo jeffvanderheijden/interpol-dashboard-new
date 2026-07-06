@@ -4,6 +4,7 @@ import { triggerHackerAnimation } from "./_helpers/dossierHelpers";
 import { completeTutorialProgress } from "../../api/challenges";
 import { useAuth } from "../ProtectedRoute/_context/AuthContext";
 import AppDesktopShell from "../_shared/AppDesktopShell/AppDesktopShell";
+import AgentStatusCard from "../_shared/AgentStatusCard/AgentStatusCard";
 import Notification from "./Notification/Notification";
 import { buildDesktopIcons, renderConfiguredApp } from "../_shared/appConfig";
 import {
@@ -192,6 +193,7 @@ const Desktop = () => {
                 alt: "Interpol Watermark",
             }}
         >
+            <AgentStatusCard mode="training" />
             <Notification
                 show={showNotification}
                 subject={lastMailSubject}

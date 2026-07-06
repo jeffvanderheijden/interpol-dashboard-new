@@ -1,0 +1,93 @@
+@use "../../../styles/win95" as *;
+
+.agent-status-card {
+    @include win95-border("raised");
+    @include win95-font;
+    background: rgba(192, 192, 192, 0.94);
+    color: $win95-window-text;
+    max-width: min(320px, calc(100vw - 24px));
+    padding: 10px 12px;
+    pointer-events: none;
+    position: fixed;
+    right: 12px;
+    top: 12px;
+    z-index: 6;
+}
+
+.agent-status-card__eyebrow {
+    color: #9a3412;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    margin: 0 0 4px;
+    text-transform: uppercase;
+}
+
+.agent-status-card h2 {
+    font-size: 16px;
+    margin: 0 0 8px;
+}
+
+.agent-status-card__grid {
+    display: grid;
+    gap: 7px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0;
+
+    dt {
+        color: #555;
+        font-size: 11px;
+        font-weight: bold;
+        margin: 0 0 2px;
+        text-transform: uppercase;
+    }
+
+    dd {
+        margin: 0;
+    }
+}
+
+.agent-status-card__footer {
+    align-items: center;
+    border-top: 1px solid #8b8b8b;
+    display: flex;
+    gap: 6px;
+    margin: 10px 0 0;
+    padding-top: 8px;
+}
+
+.agent-status-card__dot {
+    animation: agent-status-pulse 1.8s ease-in-out infinite;
+    background: #0f9d58;
+    border-radius: 999px;
+    flex: 0 0 auto;
+    height: 9px;
+    width: 9px;
+}
+
+@keyframes agent-status-pulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.45;
+        transform: scale(0.8);
+    }
+}
+
+@media (max-width: 900px) {
+    .agent-status-card {
+        max-width: min(280px, calc(100vw - 16px));
+        right: 8px;
+        top: 8px;
+    }
+}
+
+@media (max-width: 640px) {
+    .agent-status-card {
+        display: none;
+    }
+}

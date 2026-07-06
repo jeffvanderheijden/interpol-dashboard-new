@@ -1,4 +1,5 @@
 import AppDesktopShell from "../_shared/AppDesktopShell/AppDesktopShell";
+import AgentStatusCard from "../_shared/AgentStatusCard/AgentStatusCard";
 import {
     buildDesktopIcons,
     renderConfiguredApp,
@@ -46,6 +47,13 @@ export default function StudentDashboard() {
                 )
             }
             menuApps={getDashboardMenuApps()}
-        />
+            watermark={{
+                src: "/svgs/interpol-logo.svg",
+                className: "desktop-watermark",
+                alt: "Interpol Watermark",
+            }}
+        >
+            <AgentStatusCard mode="dashboard" />
+        </AppDesktopShell>
     );
 }
