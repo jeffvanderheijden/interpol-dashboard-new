@@ -5,6 +5,28 @@ import { useAuth } from "./AuthContext";
 
 const ChallengeAccessContext = createContext();
 
+function normalizeChallenge(challenge) {
+    if (!challenge) {
+        return challenge;
+    }
+
+    const isDesign1Challenge =
+        Number(challenge.id) === 1 ||
+        challenge.component === "Design1" ||
+        challenge.route === "/creative-coding";
+
+    if (!isDesign1Challenge) {
+        return challenge;
+    }
+
+    return {
+        ...challenge,
+        title: "Design1",
+        route: "/design1",
+        component: "Design1",
+    };
+}
+
 export function ChallengeAccessProvider({ children }) {
     const { user, loading: authLoading } = useAuth();
     const [challenges, setChallenges] = useState([]);
@@ -31,7 +53,9 @@ export function ChallengeAccessProvider({ children }) {
                 }
 
                 setChallenges(
-                    Array.isArray(data.challenges) ? data.challenges : []
+                    Array.isArray(data.challenges)
+                        ? data.challenges.map(normalizeChallenge)
+                        : []
                 );
             })
             .catch(() => {
