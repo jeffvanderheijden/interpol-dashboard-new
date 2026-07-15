@@ -1,36 +1,36 @@
 @use "../../styles/win95" as *;
 @use "../TrainerCore/TrainerCore.scss";
 
-.creacod-app {
+.design1-app {
     min-height: 100%;
     height: 100vh;
 }
 
-.creacod-app__window {
+.design1-app__window {
     width: min(960px, 100%);
     height: min(92vh, 780px);
     max-height: 100%;
 }
 
-.creacod-main {
+.design1-main {
     display: grid;
     gap: 4px;
     grid-template-rows: auto minmax(0, 1fr);
     min-height: 0;
 }
 
-.creacod-workbench {
+.design1-workbench {
     display: grid;
     gap: 4px;
     grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
     min-height: 0;
 }
 
-.creacod-workbench--single {
+.design1-workbench--single {
     grid-template-columns: minmax(0, 1fr);
 }
 
-.creacod-panel {
+.design1-panel {
     @include win95-border("sunken");
     background: $win95-bg;
     display: grid;
@@ -51,7 +51,7 @@
     }
 }
 
-.creacod-panel--narrow {
+.design1-panel--narrow {
     align-content: start;
 }
 
@@ -86,7 +86,7 @@
 }
 
 .answer input,
-.creacod-app input {
+.design1-app input {
     @include win95-font;
     @include win95-border("sunken");
     background: $win95-window-bg;
@@ -108,24 +108,24 @@
 }
 
 .answer button,
-.creacod-app button {
+.design1-app button {
     @include win95-button;
     justify-self: start;
     min-width: 96px;
 }
 
 .answer .message,
-.creacod1-feedback {
+.design1-feedback {
     color: $win95-danger;
     margin: 0;
 }
 
-.creacod1-success {
+.design1-success {
     color: #1a5f28;
     margin: 0;
 }
 
-.creacod1-celebration {
+.design1-celebration {
     align-items: center;
     background: rgba(0, 0, 0, 0.28);
     display: flex;
@@ -136,7 +136,7 @@
     z-index: 50;
 }
 
-.creacod1-celebration__card {
+.design1-celebration__card {
     @include win95-border("raised");
     background:
         linear-gradient(135deg, #fff8cc 0%, #ffffff 45%, #dff7ff 100%);
@@ -166,7 +166,7 @@
     }
 }
 
-.creacod1-celebration__eyebrow {
+.design1-celebration__eyebrow {
     color: #9a3412;
     font-size: 12px;
     font-weight: bold;
@@ -175,25 +175,25 @@
     text-transform: uppercase;
 }
 
-.creacod1-confetti {
+.design1-confetti {
     inset: 0;
     overflow: hidden;
     position: absolute;
 }
 
-.creacod1-confetti-piece {
+.design1-confetti-piece {
     border-radius: 2px;
     height: 14px;
     opacity: 0;
     position: absolute;
     top: -10%;
     width: 10px;
-    animation-name: creacod1-confetti-fall;
+    animation-name: design1-confetti-fall;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
 
-@keyframes creacod1-confetti-fall {
+@keyframes design1-confetti-fall {
     0% {
         opacity: 0;
         transform: translate3d(0, -10vh, 0) rotate(0deg);
@@ -209,7 +209,7 @@
     }
 }
 
-.creacod1-downloads {
+.design1-downloads {
     @include win95-border("sunken");
     background: $win95-window-bg;
     display: grid;
@@ -218,7 +218,7 @@
     padding: 1px;
 }
 
-.creacod1-download {
+.design1-download {
     background: transparent;
     border-bottom: 1px solid $border-dark;
     color: $win95-window-text;
@@ -329,17 +329,17 @@
 }
 
 @media (max-width: 1100px) {
-    .creacod-workbench {
+    .design1-workbench {
         grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 720px) {
-    .creacod-app {
+    .design1-app {
         padding: 4px;
     }
 
-    .creacod-app__window {
+    .design1-app__window {
         height: 100%;
     }
 
@@ -354,11 +354,11 @@
     }
 
     .answer input,
-    .creacod-app input {
+    .design1-app input {
         width: 100%;
     }
 
-    .creacod1-celebration__card {
+    .design1-celebration__card {
         padding: 20px 18px;
     }
 

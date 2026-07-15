@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Creacod1.scss";
+import "./Design1.scss";
 
 const CORRECT_PASSWORD = "phi";
 
@@ -31,14 +31,14 @@ const Step2 = () => {
         }
 
         setError("");
-        navigate("/creative-coding/step3");
+        navigate("/design1/step3");
     };
 
     return (
-        <div className="trainer-core creacod-app">
-            <div className="trainer-window creacod-app__window">
+        <div className="trainer-core design1-app">
+            <div className="trainer-window design1-app__window">
                 <header className="trainer-window__titlebar">
-                    <span>Creative Coding Puzzle</span>
+                    <span>Design1 Puzzle</span>
                 </header>
 
                 <div className="trainer-window__body">
@@ -46,13 +46,11 @@ const Step2 = () => {
                         <span style={{ width: "50%" }} />
                     </div>
 
-                    <div className="creacod-main">
+                    <div className="design1-main">
                         <section className="trainer-briefing">
                             <div className="trainer-briefing__topline">
                                 <span className="trainer-briefing__tag">Stap 02</span>
-                                <span className="trainer-briefing__tag">
-                                    Creative Coding
-                                </span>
+                                <span className="trainer-briefing__tag">Design1</span>
                             </div>
 
                             <div className="trainer-briefing__header">
@@ -76,8 +74,8 @@ const Step2 = () => {
                             </div>
                         </section>
 
-                        <section className="creacod-workbench" aria-label="Creative coding werkvlak">
-                            <section className="creacod-panel">
+                        <section className="design1-workbench" aria-label="Design1 werkvlak">
+                            <section className="design1-panel">
                                 <h2>Opdracht</h2>
                                 <p>
                                     Open de verborgen link op je telefoon. Scan daarna 4
@@ -86,7 +84,7 @@ const Step2 = () => {
                                 </p>
                             </section>
 
-                            <section className="creacod-panel creacod-panel--narrow">
+                            <section className="design1-panel design1-panel--narrow">
                                 <h2>Wachtwoord</h2>
                                 <input
                                     ref={inputRef}
@@ -112,7 +110,7 @@ const Step2 = () => {
                                     Controleer
                                 </button>
 
-                                {error ? <p className="creacod1-feedback">{error}</p> : null}
+                                {error ? <p className="design1-feedback">{error}</p> : null}
                             </section>
                         </section>
                     </div>

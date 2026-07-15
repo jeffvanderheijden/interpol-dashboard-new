@@ -1,16 +1,16 @@
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import KijkOpDeWijk from "../components/KijkOpDeWijk/KijkOpDeWijk";
-import Step2 from "../components/Creacod1/Step2";
-import Step3 from "../components/Creacod1/Step3";
-import Step4 from "../components/Creacod1/Step4";
-import Final from "../components/Creacod1/Final";
+import Step2 from "../components/Design1/Step2";
+import Step3 from "../components/Design1/Step3";
+import Step4 from "../components/Design1/Step4";
+import Final from "../components/Design1/Final";
 import Login from "../pages/Login";
 import Training from "../pages/Training";
 import Dashboard from "../pages/Dashboard";
 import HtmlCss from "../pages/HtmlCss";
 import Javascript from "../pages/Javascript";
 import TerminalOps from "../pages/TerminalOps";
-import CreativeCoding from "../pages/CreativeCoding";
+import Design1 from "../pages/Design1";
 import Admin from "../pages/Admin";
 import LeaderboardScreen from "../pages/LeaderboardScreen";
 import Unauthorized from "../pages/Unauthorized";
@@ -58,33 +58,33 @@ export const protectedRoutes = [
         element: <KijkOpDeWijk />,
     },
     {
-        path: "/creative-coding",
+        path: "/design1",
         roles: studentRoles,
-        challengeRoute: "/creative-coding",
-        element: <CreativeCoding />,
+        challengeRoute: "/design1",
+        element: <Design1 />,
     },
     {
-        path: "/creative-coding/step2",
+        path: "/design1/step2",
         roles: studentRoles,
-        challengeRoute: "/creative-coding",
+        challengeRoute: "/design1",
         element: <Step2 />,
     },
     {
-        path: "/creative-coding/step3",
+        path: "/design1/step3",
         roles: studentRoles,
-        challengeRoute: "/creative-coding",
+        challengeRoute: "/design1",
         element: <Step3 />,
     },
     {
-        path: "/creative-coding/step4",
+        path: "/design1/step4",
         roles: studentRoles,
-        challengeRoute: "/creative-coding",
+        challengeRoute: "/design1",
         element: <Step4 />,
     },
     {
-        path: "/creative-coding/final",
+        path: "/design1/final",
         roles: studentRoles,
-        challengeRoute: "/creative-coding",
+        challengeRoute: "/design1",
         element: <Final />,
     },
     { path: "/admin", roles: ["docent"], element: <Admin /> },

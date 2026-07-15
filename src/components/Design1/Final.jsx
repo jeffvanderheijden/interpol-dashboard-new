@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useChallengeTracking } from "../../hooks/useChallengeTracking";
-import "./Creacod1.scss";
+import "./Design1.scss";
 
 const EXPECTED_SEQUENCE = ["1", "1", "2", "3", "5", "8", "13"];
 const CONFETTI_COLORS = [
@@ -21,7 +21,7 @@ function normalizeSequence(value) {
 }
 
 const Final = () => {
-    const { challenge, complete } = useChallengeTracking("/creative-coding");
+    const { challenge, complete } = useChallengeTracking("/design1");
     const inputRef = useRef(null);
     const [value, setValue] = useState("");
     const [error, setError] = useState("");
@@ -69,7 +69,7 @@ const Final = () => {
             setPointsAwarded(awardedPoints);
             setSuccess("Correct. De punten zijn toegekend.");
         } catch (err) {
-            console.error("Creative coding completion failed", err);
+            console.error("Design1 completion failed", err);
             setError("De invoer klopt, maar het toekennen van punten mislukte.");
             setSuccess("");
             setPointsAwarded(null);
@@ -79,8 +79,8 @@ const Final = () => {
     };
 
     return (
-        <div className="trainer-core creacod-app">
-            <div className="trainer-window creacod-app__window">
+        <div className="trainer-core design1-app">
+            <div className="trainer-window design1-app__window">
                 <header className="trainer-window__titlebar">
                     <span>FINAL</span>
                 </header>
@@ -90,13 +90,11 @@ const Final = () => {
                         <span style={{ width: "100%" }} />
                     </div>
 
-                    <div className="creacod-main">
+                    <div className="design1-main">
                         <section className="trainer-briefing">
                             <div className="trainer-briefing__topline">
                                 <span className="trainer-briefing__tag">Final</span>
-                                <span className="trainer-briefing__tag">
-                                    Creative Coding
-                                </span>
+                                <span className="trainer-briefing__tag">Design1</span>
                             </div>
 
                             <div className="trainer-briefing__header">
@@ -121,10 +119,10 @@ const Final = () => {
                         </section>
 
                         <section
-                            className="creacod-workbench creacod-workbench--single"
-                            aria-label="Creative coding eindinvoer"
+                            className="design1-workbench design1-workbench--single"
+                            aria-label="Design1 eindinvoer"
                         >
-                            <section className="creacod-panel creacod-panel--narrow">
+                            <section className="design1-panel design1-panel--narrow">
                                 <h2>Eindantwoord</h2>
                                 <p>Vul hier het eindantwoord in.</p>
 
@@ -158,9 +156,9 @@ const Final = () => {
                                     {isSubmitting ? "Verwerken..." : "Controleer"}
                                 </button>
 
-                                {error ? <p className="creacod1-feedback">{error}</p> : null}
+                                {error ? <p className="design1-feedback">{error}</p> : null}
                                 {success ? (
-                                    <p className="creacod1-success">{success}</p>
+                                    <p className="design1-success">{success}</p>
                                 ) : null}
                             </section>
                         </section>
@@ -169,12 +167,12 @@ const Final = () => {
             </div>
 
             {success ? (
-                <div className="creacod1-celebration" role="status" aria-live="polite">
-                    <div className="creacod1-confetti" aria-hidden="true">
+                <div className="design1-celebration" role="status" aria-live="polite">
+                    <div className="design1-confetti" aria-hidden="true">
                         {Array.from({ length: 28 }, (_, index) => (
                             <span
                                 key={index}
-                                className="creacod1-confetti-piece"
+                                className="design1-confetti-piece"
                                 style={{
                                     left: `${(index * 17) % 100}%`,
                                     backgroundColor:
@@ -187,8 +185,8 @@ const Final = () => {
                         ))}
                     </div>
 
-                    <div className="creacod1-celebration__card">
-                        <p className="creacod1-celebration__eyebrow">
+                    <div className="design1-celebration__card">
+                        <p className="design1-celebration__eyebrow">
                             Challenge voltooid
                         </p>
                         <h2>Goed gedaan!</h2>

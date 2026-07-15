@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import "./Creacod1.scss";
+import "./Design1.scss";
 
 const Step4 = () => {
     useEffect(() => {
         document.title = "CAESAR";
         const commentNode = document.createComment(
-            " Gebruik de cipher die in de titel staat om het volgende te oncijferen: Ola huadvvyk chu ola yhhkzls vw klgl whnpuh ollma al thrlu tla hssl huklyl dhjoadvvyklu ava ub avl. Kvl vuklygvlr! Hsz ql ola dhjoadvvyk dlla, rbu ql ola oply pucbsslu: khzoivhyk.pualywvs.zk-shi.us/jylhapcl-jvkpun/mpuhs "
+            " Gebruik de cipher die in de titel staat om het volgende te oncijferen: Ola huadvvyk chu ola yhhkzls vw klgl whnpuh ollma al thrlu tla hssl huklyl dhjoadvvyklu ava ub avl. Kvl vuklygvlr! Hsz ql ola dhjoadvvyk dlla, rbu ql ola oply pucbsslu: khzoivhyk.pualywvs.zk-shi.us/klzpnu1/mpuhs "
         );
 
         document.body.appendChild(commentNode);
@@ -16,8 +16,8 @@ const Step4 = () => {
     }, []);
 
     return (
-        <div className="trainer-core creacod-app">
-            <div className="trainer-window creacod-app__window">
+        <div className="trainer-core design1-app">
+            <div className="trainer-window design1-app__window">
                 <header className="trainer-window__titlebar">
                     <span>CAESAR</span>
                 </header>
@@ -27,13 +27,11 @@ const Step4 = () => {
                         <span style={{ width: "100%" }} />
                     </div>
 
-                    <div className="creacod-main">
+                    <div className="design1-main">
                         <section className="trainer-briefing">
                             <div className="trainer-briefing__topline">
                                 <span className="trainer-briefing__tag">Stap 04</span>
-                                <span className="trainer-briefing__tag">
-                                    Creative Coding
-                                </span>
+                                <span className="trainer-briefing__tag">Design1</span>
                             </div>
 
                             <div className="trainer-briefing__header">
@@ -60,10 +58,10 @@ const Step4 = () => {
                         </section>
 
                         <section
-                            className="creacod-workbench creacod-workbench--single"
-                            aria-label="Creative coding werkvlak"
+                            className="design1-workbench design1-workbench--single"
+                            aria-label="Design1 werkvlak"
                         >
-                            <section className="creacod-panel">
+                            <section className="design1-panel">
                                 <h2>Laatste hint</h2>
                                 <p>
                                     Niet alles wat je nodig hebt staat zichtbaar op deze

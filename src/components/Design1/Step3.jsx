@@ -1,22 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Creacod1.scss";
+import "./Design1.scss";
 
 const figmaFiles = [
     {
         title: "Layer 1",
         description: "Download het eerste Figma-bestand.",
-        href: "/downloads/creative-coding/Layer1.fig",
+        href: "/downloads/design1/Layer1.fig",
     },
     {
         title: "Layer 2",
         description: "Download het tweede Figma-bestand.",
-        href: "/downloads/creative-coding/Layer2.fig",
+        href: "/downloads/design1/Layer2.fig",
     },
     {
         title: "Layer 3",
         description: "Download het derde Figma-bestand.",
-        href: "/downloads/creative-coding/Layer3.fig",
+        href: "/downloads/design1/Layer3.fig",
     },
 ];
 
@@ -49,14 +49,14 @@ const Step3 = () => {
         }
 
         setError("");
-        navigate("/creative-coding/step4");
+        navigate("/design1/step4");
     };
 
     return (
-        <div className="trainer-core creacod-app">
-            <div className="trainer-window creacod-app__window">
+        <div className="trainer-core design1-app">
+            <div className="trainer-window design1-app__window">
                 <header className="trainer-window__titlebar">
-                    <span>Creative Coding Puzzle</span>
+                    <span>Design1 Puzzle</span>
                 </header>
 
                 <div className="trainer-window__body">
@@ -64,13 +64,11 @@ const Step3 = () => {
                         <span style={{ width: "75%" }} />
                     </div>
 
-                    <div className="creacod-main">
+                    <div className="design1-main">
                         <section className="trainer-briefing">
                             <div className="trainer-briefing__topline">
                                 <span className="trainer-briefing__tag">Stap 03</span>
-                                <span className="trainer-briefing__tag">
-                                    Creative Coding
-                                </span>
+                                <span className="trainer-briefing__tag">Design1</span>
                             </div>
 
                             <div className="trainer-briefing__header">
@@ -108,10 +106,10 @@ const Step3 = () => {
                         </section>
 
                         <section
-                            className="creacod-workbench creacod-workbench--single"
-                            aria-label="Creative coding werkvlak"
+                            className="design1-workbench design1-workbench--single"
+                            aria-label="Design1 werkvlak"
                         >
-                            <section className="creacod-panel">
+                            <section className="design1-panel">
                                 <h2>Wat is Figma?</h2>
                                 <p>
                                     Figma is een programma waarmee je een ontwerp kunt
@@ -122,13 +120,13 @@ const Step3 = () => {
                                     voordat je begint met coderen.
                                 </p>
                                 <p>
-                                    Bij creative coding helpt dat, omdat je eerst rustig kunt
+                                    Bij Design1 helpt dat, omdat je eerst rustig kunt
                                     bedenken hoe iets eruit moet zien. Daarna is het
                                     makkelijker om het in code na te bouwen.
                                 </p>
                             </section>
 
-                            <section className="creacod-panel">
+                            <section className="design1-panel">
                                 <h2>Bestanden</h2>
                                 <p>
                                     Download hieronder de drie Figma-bestanden en open ze
@@ -136,11 +134,11 @@ const Step3 = () => {
                                     de bestanden.
                                 </p>
 
-                                <div className="creacod1-downloads">
+                                <div className="design1-downloads">
                                     {figmaFiles.map((file) => (
                                         <a
                                             key={file.href}
-                                            className="creacod1-download"
+                                            className="design1-download"
                                             href={file.href}
                                             download
                                         >
@@ -152,7 +150,7 @@ const Step3 = () => {
                                 </div>
                             </section>
 
-                            <section className="creacod-panel creacod-panel--narrow">
+                            <section className="design1-panel design1-panel--narrow">
                                 <h2>Wachtwoord</h2>
                                 <p>
                                     Heb je het verborgen bericht gevonden? Vul dan het
@@ -183,7 +181,7 @@ const Step3 = () => {
                                     Controleer
                                 </button>
 
-                                {error ? <p className="creacod1-feedback">{error}</p> : null}
+                                {error ? <p className="design1-feedback">{error}</p> : null}
                             </section>
                         </section>
                     </div>

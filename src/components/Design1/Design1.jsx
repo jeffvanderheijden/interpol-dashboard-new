@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useChallengeTracking } from "../../hooks/useChallengeTracking";
-import "./Creacod1.scss";
+import "./Design1.scss";
 
 export default function CipherStep1({
-    nextRoute = "/creative-coding/step2",
+    nextRoute = "/design1/step2",
     correctAnswer = "goldenratio",
     title = "Cipher",
 }) {
     const navigate = useNavigate();
-    useChallengeTracking("/creative-coding");
+    useChallengeTracking("/design1");
     const [value, setValue] = useState("");
     const [error, setError] = useState("");
     const inputRef = useRef(null);
@@ -90,10 +90,10 @@ export default function CipherStep1({
     }
 
     return (
-        <div className="trainer-core creacod-app">
-            <div className="trainer-window creacod-app__window">
+        <div className="trainer-core design1-app">
+            <div className="trainer-window design1-app__window">
                 <header className="trainer-window__titlebar">
-                    <span>Creative Coding Puzzle</span>
+                    <span>Design1 Puzzle</span>
                 </header>
 
                 <div className="trainer-window__body">
@@ -101,13 +101,11 @@ export default function CipherStep1({
                         <span style={{ width: "25%" }} />
                     </div>
 
-                    <div className="creacod-main">
+                    <div className="design1-main">
                         <section className="trainer-briefing">
                             <div className="trainer-briefing__topline">
                                 <span className="trainer-briefing__tag">Stap 01</span>
-                                <span className="trainer-briefing__tag">
-                                    Creative Coding
-                                </span>
+                                <span className="trainer-briefing__tag">Design1</span>
                             </div>
 
                             <div className="trainer-briefing__header">
@@ -138,8 +136,8 @@ export default function CipherStep1({
                             </div>
                         </section>
 
-                        <section className="creacod-workbench" aria-label="Creative coding werkvlak">
-                            <section className="creacod-panel cipher" aria-label="Versleutelde code">
+                        <section className="design1-workbench" aria-label="Design1 werkvlak">
+                            <section className="design1-panel cipher" aria-label="Versleutelde code">
                                 <h2>Gecodeerd bericht</h2>
                                 <ul>
                                     {cipherSymbols.map((symbol, index) => (
@@ -149,7 +147,7 @@ export default function CipherStep1({
                             </section>
 
                             <section
-                                className="creacod-panel creacod-panel--narrow answer"
+                                className="design1-panel design1-panel--narrow answer"
                                 aria-label="Antwoord invoeren"
                             >
                                 <h2>Antwoord</h2>
