@@ -10,12 +10,26 @@ export const AuthProvider = ({ children }) => {
 
     // Check sessie bij opstart
     useEffect(() => {
+        let cancelled = false;
+
         getSession()
             .then((data) => {
-                setUser(data.user || null);
+                if (cancelled) {
+                    return;
+                }
+
+                setUser((currentUser) => currentUser || data.user || null);
                 setLoading(false);
             })
-            .catch(() => setLoading(false));
+            .catch(() => {
+                if (!cancelled) {
+                    setLoading(false);
+                }
+            });
+
+        return () => {
+            cancelled = true;
+        };
     }, []);
 
     // Check elke 5 minuten of sessie verlopen is
@@ -36,6 +50,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (username, password) => {
         const data = await apiLogin({ username, password });
         setUser(data.user);
+        return data.user;
     };
 
     const logout = async () => {

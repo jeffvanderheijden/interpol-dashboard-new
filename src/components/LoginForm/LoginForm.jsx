@@ -14,8 +14,14 @@ const LoginForm = () => {
         e.preventDefault();
         setError('');
         try {
-            await login(username, password);
-            navigate('/training'); 
+            const user = await login(username, password);
+
+            if (user?.teamId) {
+                navigate(`/dashboard/${user.teamId}`);
+                return;
+            }
+
+            navigate('/training');
         } catch (err) {
             setError(err.message || 'Incorrect username or password.');
         }
