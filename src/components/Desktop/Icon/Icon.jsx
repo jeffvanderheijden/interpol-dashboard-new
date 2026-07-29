@@ -1,4 +1,5 @@
 import "./Icon.scss";
+import { publicAsset } from "../../../utils/publicAsset";
 
 const Icon = ({ label, icon, onDoubleClick, badge }) => {
     const isImage = icon.endsWith(".ico") || icon.endsWith(".png") || icon.endsWith(".jpg");
@@ -7,7 +8,7 @@ const Icon = ({ label, icon, onDoubleClick, badge }) => {
         <div className="desktop-icon" onDoubleClick={onDoubleClick} tabIndex={0}>
             <div className="icon-image">
                 {isImage ? (
-                    <img src={icon} alt={label} className="icon-img" />
+                    <img src={publicAsset(icon)} alt={label} className="icon-img" />
                 ) : (
                     <span>{icon}</span>
                 )}

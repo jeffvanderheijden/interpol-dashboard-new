@@ -1,3 +1,4 @@
+import { publicAsset } from "../../utils/publicAsset";
 import { useEffect, useState } from "react";
 import { getAdminGroups, deleteAdminGroup } from "./../../api/groups";
 
@@ -163,7 +164,7 @@ export default function AdminPanel() {
                                         className="team-avatar"
                                         src={
                                             group.image_url ||
-                                            "/icons/default-team.png"
+                                            publicAsset("/icons/default-team.png")
                                         }
                                         alt={group.name}
                                         onClick={() => setEditImage(group)}

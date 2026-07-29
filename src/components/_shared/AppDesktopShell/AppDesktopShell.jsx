@@ -1,6 +1,7 @@
 import Icon from "../../Desktop/Icon/Icon";
 import Window from "../Window/Window";
 import Taskbar from "../Taskbar/Taskbar";
+import { publicAsset } from "../../../utils/publicAsset";
 
 export default function AppDesktopShell({
     className,
@@ -58,7 +59,7 @@ export default function AppDesktopShell({
 
             {watermark ? (
                 <img
-                    src={watermark.src}
+                    src={publicAsset(watermark.src)}
                     className={watermark.className}
                     alt={watermark.alt}
                 />

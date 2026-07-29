@@ -1,4 +1,5 @@
 import { useAuth } from "./../../ProtectedRoute/_context/AuthContext";
+import { publicAsset } from "../../../utils/publicAsset";
 import "./AdminIcon.scss";
 
 const AdminIcon = () => {
@@ -14,7 +15,7 @@ const AdminIcon = () => {
         >
             <div className="icon-image">
                 <img
-                    src="/icons/admin.ico"
+                    src={publicAsset("/icons/admin.ico")}
                     className="icon-img"
                     alt="Admin Icon"
                 />

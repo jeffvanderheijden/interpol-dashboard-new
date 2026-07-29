@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./../../ProtectedRoute/_context/AuthContext";
+import { publicAsset } from "../../../utils/publicAsset";
 
 import "./Taskbar.scss";
 
@@ -97,7 +98,7 @@ export default function Taskbar({
                                 }}
                             >
                                 <img
-                                    src={app.icon}
+                                    src={publicAsset(app.icon)}
                                     alt=""
                                     className="taskbar__menu-icon"
                                 />

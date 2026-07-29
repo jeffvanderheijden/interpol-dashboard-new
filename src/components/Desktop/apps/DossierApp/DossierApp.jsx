@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { API_BASE } from "../../../../api/_config";
 import { getStudentDossiers } from "../../../../api/dossiers";
+import { publicAsset } from "../../../../utils/publicAsset";
 import "./DossierApp.scss";
 import "./DossierDetail.scss";
 import DossierDetail from "./DossierDetail";
@@ -23,7 +24,7 @@ function resolveImage(imageUrl, name) {
         return `${API_BASE}${imageUrl}`;
     }
 
-    return legacyImageMap.get(name) || "/icons/default-team.png";
+    return legacyImageMap.get(name) || publicAsset("/icons/default-team.png");
 }
 
 const DossierApp = ({
@@ -158,7 +159,10 @@ const DossierApp = ({
 
                                 {isCleared && (
                                     <div className="dossier-app__not-hacker" aria-hidden>
-                                        <img src="/svgs/cross.svg" alt="Not the hacker" />
+                                        <img
+                                            src={publicAsset("/svgs/cross.svg")}
+                                            alt="Not the hacker"
+                                        />
                                     </div>
                                 )}
                             </li>
@@ -179,7 +183,7 @@ const DossierApp = ({
                         >
                             <img
                                 className="dossier-app__item-image"
-                                src="/images/hacker.png"
+                                src={publicAsset("/images/hacker.png")}
                                 alt="De hacker"
                             />
                             <span className="glitched">
