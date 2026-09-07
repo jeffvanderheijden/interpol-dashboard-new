@@ -118,7 +118,7 @@ const Step2 = () => {
             </div>
 
             <a
-                href="{{hiddenLink}}"
+                href="https://ar.interpol.sd-lab.nl"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ display: "none" }}
