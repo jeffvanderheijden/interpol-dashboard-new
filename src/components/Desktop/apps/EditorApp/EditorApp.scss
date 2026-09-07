@@ -87,6 +87,11 @@
                 color: rgb(9, 105, 9);
                 font-weight: bold;
             }
+
+            &.error {
+                color: rgb(170, 0, 0);
+                font-weight: bold;
+            }
         }
 
         .editor-app__tip {

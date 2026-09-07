@@ -39,7 +39,7 @@ const EditorApp = () => {
     const [active, setActive] = useState(
         () => localStorage.getItem(ACTIVE_FILE_KEY) || Object.keys(loadFiles(DEFAULT_FILES, STORAGE_KEY))[0]
     );
-    const [status, setStatus] = useState("idle"); // "idle" | "saved" | "match"
+    const [status, setStatus] = useState("idle");
     const saveTimer = useRef(null);
     const saveHandler = useRef(null);
 
@@ -47,7 +47,8 @@ const EditorApp = () => {
         setStatus(state);
         clearTimeout(saveTimer.current);
         if (state !== "idle") {
-            saveTimer.current = setTimeout(() => setStatus("idle"), 1400);
+            const duration = ["mismatch", "error"].includes(state) ? 6000 : 2500;
+            saveTimer.current = setTimeout(() => setStatus("idle"), duration);
         }
     }, []);
 
@@ -58,20 +59,32 @@ const EditorApp = () => {
         setActive(name);
     };
 
-    const handleSave = useCallback(async () => {
-        saveFilesToStorage(files, STORAGE_KEY);
-        showStatus("saved");
+    const handleSave = useCallback(async (currentEditorValue) => {
+        const currentText = currentEditorValue ?? files[active] ?? "";
+        const currentFiles = { ...files, [active]: currentText };
+
+        saveFilesToStorage(currentFiles, STORAGE_KEY);
+        showStatus("checking");
 
         try {
-            const res = await fetch("/downloads/virus.txt");
-            if (!res.ok) return console.error("Kon virus.txt niet ophalen:", res.status);
+            const res = await fetch("/downloads/virus.txt", { cache: "no-store" });
+            if (!res.ok) {
+                showStatus("error");
+                console.error("[virus.txt] Referentiebestand ophalen mislukt.", {
+                    status: res.status,
+                    statusText: res.statusText,
+                });
+                return;
+            }
 
             const rawOfficialText = await res.text();
-            const rawStudentText = files[active] ?? "";
             const officialText = normalizeFileContents(rawOfficialText);
-            const studentText = normalizeFileContents(rawStudentText);
+            const studentText = normalizeFileContents(currentText);
 
             if (studentText === officialText) {
+                console.info(
+                    "[virus.txt] Match gevonden; trigger virusAnalyzed wordt afgevuurd."
+                );
                 unlockMail?.("virusAnalyzed");
                 showStatus("match");
             } else {
@@ -82,9 +95,12 @@ const EditorApp = () => {
                 const excerptStart = Math.max(0, firstDifference - 20);
                 const excerptEnd = Math.max(40, firstDifference + 20);
 
-                console.warn("[virus.txt] Inhoud komt niet overeen.", {
+                showStatus("mismatch");
+                console.error("[virus.txt] Inhoud komt niet overeen.", {
                     activeFile: active,
                     firstDifference,
+                    rawStudentLength: currentText.length,
+                    rawOfficialLength: rawOfficialText.length,
                     studentLength: studentText.length,
                     officialLength: officialText.length,
                     studentExcerpt: studentText.slice(excerptStart, excerptEnd),
@@ -92,7 +108,8 @@ const EditorApp = () => {
                 });
             }
         } catch (err) {
-            console.error("Fout bij vergelijken virus.txt:", err);
+            showStatus("error");
+            console.error("[virus.txt] Fout bij controleren:", err);
         }
     }, [files, active, showStatus, unlockMail]);
 
@@ -112,7 +129,7 @@ const EditorApp = () => {
     const handleEditorMount = useCallback((editor, monaco) => {
         editor.addCommand(
             monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
-            () => saveHandler.current?.()
+            () => saveHandler.current?.(editor.getValue())
         );
     }, []);
 
@@ -157,8 +174,10 @@ const EditorApp = () => {
             <section className="editor-app__main">
                 <div className="editor-app__toolbar">
                     <span className="editor-app__filename">{active}</span>
-                    {status === "saved" && <span className="status saved">Saved ✓</span>}
+                    {status === "checking" && <span className="status saved">Opgeslagen, controleren…</span>}
                     {status === "match" && <span className="status match">Match gevonden ✓</span>}
+                    {status === "mismatch" && <span className="status error">Inhoud komt niet overeen ✕</span>}
+                    {status === "error" && <span className="status error">Controle mislukt ✕</span>}
                     <span className="editor-app__tip">Tip: Cmd/Ctrl + S om op te slaan</span>
                 </div>
 
