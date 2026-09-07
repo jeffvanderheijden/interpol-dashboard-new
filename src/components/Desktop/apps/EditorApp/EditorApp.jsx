@@ -16,6 +16,22 @@ const DEFAULT_FILES = {
 const STORAGE_KEY = "editorApp.files.v1";
 const ACTIVE_FILE_KEY = "editorApp.active.v1";
 
+const normalizeFileContents = (value) =>
+    String(value ?? "")
+        .replace(/^\uFEFF/, "")
+        .replace(/\r\n?/g, "\n")
+        .trim();
+
+const findFirstDifference = (left, right) => {
+    const sharedLength = Math.min(left.length, right.length);
+
+    for (let index = 0; index < sharedLength; index += 1) {
+        if (left[index] !== right[index]) return index;
+    }
+
+    return left.length === right.length ? -1 : sharedLength;
+};
+
 const EditorApp = () => {
     const { unlockMail } = useContext(GameContext);
 
@@ -25,6 +41,7 @@ const EditorApp = () => {
     );
     const [status, setStatus] = useState("idle"); // "idle" | "saved" | "match"
     const saveTimer = useRef(null);
+    const saveHandler = useRef(null);
 
     const showStatus = useCallback((state) => {
         setStatus(state);
@@ -49,17 +66,39 @@ const EditorApp = () => {
             const res = await fetch("/downloads/virus.txt");
             if (!res.ok) return console.error("Kon virus.txt niet ophalen:", res.status);
 
-            const officialText = (await res.text()).trim();
-            const studentText = (files[active] ?? "").trim();
+            const rawOfficialText = await res.text();
+            const rawStudentText = files[active] ?? "";
+            const officialText = normalizeFileContents(rawOfficialText);
+            const studentText = normalizeFileContents(rawStudentText);
 
             if (studentText === officialText) {
                 unlockMail?.("virusAnalyzed");
                 showStatus("match");
+            } else {
+                const firstDifference = findFirstDifference(
+                    studentText,
+                    officialText
+                );
+                const excerptStart = Math.max(0, firstDifference - 20);
+                const excerptEnd = Math.max(40, firstDifference + 20);
+
+                console.warn("[virus.txt] Inhoud komt niet overeen.", {
+                    activeFile: active,
+                    firstDifference,
+                    studentLength: studentText.length,
+                    officialLength: officialText.length,
+                    studentExcerpt: studentText.slice(excerptStart, excerptEnd),
+                    officialExcerpt: officialText.slice(excerptStart, excerptEnd),
+                });
             }
         } catch (err) {
             console.error("Fout bij vergelijken virus.txt:", err);
         }
     }, [files, active, showStatus, unlockMail]);
+
+    useEffect(() => {
+        saveHandler.current = handleSave;
+    }, [handleSave]);
 
     // persist files whenever they change
     useEffect(() => {
@@ -70,25 +109,12 @@ const EditorApp = () => {
         localStorage.setItem(ACTIVE_FILE_KEY, active);
     }, [active]);
 
-    // Keyboard shortcuts: Ctrl/Cmd+S
-    useEffect(() => {
-        const onKey = (e) => {
-            const key = e.key?.toLowerCase?.() || "";
-            const isSaveShortcut =
-                (e.ctrlKey || e.metaKey) &&
-                !e.altKey &&
-                (key === "s" || e.code === "KeyS");
-
-            if (isSaveShortcut) {
-                e.preventDefault();
-                handleSave();
-            }
-        };
-        // Monaco consumes some Ctrl shortcuts on Windows. Capture the event
-        // before it reaches the editor so the browser Save dialog stays closed.
-        window.addEventListener("keydown", onKey, { capture: true });
-        return () => window.removeEventListener("keydown", onKey, { capture: true });
-    }, [handleSave]);
+    const handleEditorMount = useCallback((editor, monaco) => {
+        editor.addCommand(
+            monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
+            () => saveHandler.current?.()
+        );
+    }, []);
 
     const value = files[active] ?? "";
 
@@ -141,6 +167,7 @@ const EditorApp = () => {
                         path={active}
                         value={value}
                         onChange={(v) => updateActiveFile(v ?? "")}
+                        onMount={handleEditorMount}
                         language="plaintext"
                         theme="vs-dark"
                         options={{
