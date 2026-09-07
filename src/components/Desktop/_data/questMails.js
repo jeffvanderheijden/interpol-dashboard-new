@@ -11,8 +11,6 @@ Voordat je betrokken wordt bij het echte onderzoek, moet je aantonen dat je onze
 
 In de terminal leer je navigeren door mappen, bestanden analyseren en data ophalen van externe bronnen. Deze vaardigheden heb je straks nodig om het spoor van de hacker te volgen.
 
-Bekijk de instructievideo en doorloop daarna de opdrachten in de terminal.
-
 Het echte werk begint sneller dan je denkt.
 
 Succes.

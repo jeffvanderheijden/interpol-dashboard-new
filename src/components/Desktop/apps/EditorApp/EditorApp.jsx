@@ -74,13 +74,20 @@ const EditorApp = () => {
     useEffect(() => {
         const onKey = (e) => {
             const key = e.key?.toLowerCase?.() || "";
-            if ((e.ctrlKey || e.metaKey) && key === "s") {
+            const isSaveShortcut =
+                (e.ctrlKey || e.metaKey) &&
+                !e.altKey &&
+                (key === "s" || e.code === "KeyS");
+
+            if (isSaveShortcut) {
                 e.preventDefault();
                 handleSave();
             }
         };
-        window.addEventListener("keydown", onKey);
-        return () => window.removeEventListener("keydown", onKey);
+        // Monaco consumes some Ctrl shortcuts on Windows. Capture the event
+        // before it reaches the editor so the browser Save dialog stays closed.
+        window.addEventListener("keydown", onKey, { capture: true });
+        return () => window.removeEventListener("keydown", onKey, { capture: true });
     }, [handleSave]);
 
     const value = files[active] ?? "";
