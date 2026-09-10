@@ -72,7 +72,11 @@ function buildGoogleMapsUrl(lat, lng) {
     return `https://www.google.com/maps?q=${lat},${lng}`;
 }
 
-const shuffledLocations = shuffle(locationsData);
+// Randomize the route stops, keeping the return to GLR at the end.
+const shuffledLocations = [
+    ...shuffle(locationsData.filter((location) => location.question.type !== "end")),
+    ...locationsData.filter((location) => location.question.type === "end")
+];
 const DISTANCE_THRESHOLD = 100;
 
 export default function KijkOpDeWijk() {
