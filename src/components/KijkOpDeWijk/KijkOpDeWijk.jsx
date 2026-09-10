@@ -384,5 +384,11 @@ export default function KijkOpDeWijk() {
         </section>
     );
 
-    return <ChatUI messages={messages} onSend={handleSend} header={debugHeader} />;
+    return (
+        <ChatUI
+            messages={messages}
+            onSend={handleSend}
+            // header={debugHeader}
+        />
+    );
 }
